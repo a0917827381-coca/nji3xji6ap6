@@ -1,0 +1,2071 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>所羅門的聖殿：七十二柱魔神（完整終局版）</title>
+  <style>
+    :root {
+      --bg-dark: #110c08;
+      --surface-dark: #1d150f;
+      --parchment: #f4ead5;
+      --parchment-card: #fcf7ec;
+      --parchment-dim: #e5d5b7;
+      --ink: #24180e;
+      --ink-muted: #665240;
+      --gold: #c89623;
+      --gold-bright: #f4cb54;
+      --crimson: #9e2222;
+      --crimson-bright: #e03c3c;
+      --holy: #2667a8;
+      --purple: #6b21a8;
+      --border: #7a5c3c;
+      --nav-height: 60px;
+    }
+
+    /* 黑暗萬魔殿模式（終局選黑暗路線時動態切換主題色） */
+    body.abyss-mode {
+      --bg-dark: #0a0406;
+      --surface-dark: #1a090d;
+      --parchment: #26161b;
+      --parchment-card: #331d24;
+      --parchment-dim: #1f1115;
+      --ink: #f5e6e8;
+      --ink-muted: #bda0a6;
+      --gold: #e11d48;
+      --gold-bright: #fda4af;
+      --border: #881337;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg-dark);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      padding-bottom: calc(var(--nav-height) + 16px);
+      min-height: 100vh;
+      transition: background-color 0.5s, color 0.5s;
+    }
+
+    /* 1. 頂部緊湊資源列 */
+    header {
+      background: var(--surface-dark);
+      border-bottom: 1.5px solid var(--gold);
+      padding: 8px 10px;
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      color: #f4ead5;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.65);
+    }
+
+    .top-bar-row1 {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .app-title {
+      font-size: 0.96rem;
+      font-weight: 700;
+      color: var(--gold-bright);
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 6px;
+    }
+
+    .top-actions button {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid var(--gold);
+      color: var(--gold-bright);
+      font-size: 0.75rem;
+      padding: 4px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .res-strip {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 3px;
+      text-align: center;
+    }
+
+    .res-pill {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(200, 150, 35, 0.3);
+      border-radius: 5px;
+      padding: 3px 1px;
+      overflow: hidden;
+    }
+
+    .res-pill .r-val {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #fff;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+
+    .res-pill .r-rate {
+      display: block;
+      font-size: 0.62rem;
+      color: #b8a389;
+      white-space: nowrap;
+    }
+
+    .res-pill.holy .r-val { color: #7cc4fa; }
+    .res-pill.relic .r-val { color: #e879f9; }
+    .res-pill.slots .r-val { color: var(--gold-bright); }
+
+    /* 2. 王座敕令新手引導 */
+    #tutorial-banner {
+      background: linear-gradient(90deg, #42250e, #633917);
+      border-bottom: 1px solid var(--gold);
+      color: #fff5e0;
+      padding: 7px 12px;
+      font-size: 0.8rem;
+      line-height: 1.35;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    #tutorial-banner.completed {
+      background: #1b3622;
+      border-bottom-color: #48bb78;
+    }
+
+    .tut-badge {
+      background: var(--gold);
+      color: #1a1006;
+      font-weight: 800;
+      font-size: 0.68rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+
+    .app-container {
+      max-width: 840px;
+      margin: 0 auto;
+      padding: 10px;
+    }
+
+    /* 3. 常駐三大工地監控區 */
+    .monitor-section {
+      background: var(--parchment);
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 9px;
+      margin-bottom: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 7px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid rgba(122, 92, 60, 0.28);
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-size: 0.92rem;
+      color: var(--ink);
+    }
+
+    .section-hint {
+      font-size: 0.72rem;
+      color: var(--crimson-bright);
+      font-weight: 700;
+    }
+
+    .sites-wrapper {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 7px;
+    }
+
+    @media (max-width: 620px) {
+      .sites-wrapper {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .site-box {
+      background: var(--parchment-dim);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 7px;
+    }
+
+    .site-title {
+      font-size: 0.82rem;
+      font-weight: 700;
+      margin-bottom: 5px;
+      display: flex;
+      justify-content: space-between;
+      color: var(--ink);
+    }
+
+    .worker-row {
+      background: var(--parchment-card);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 6px 7px;
+      margin-bottom: 5px;
+    }
+
+    .worker-row:last-child { margin-bottom: 0; }
+
+    .worker-row.berserk {
+      border: 1.5px solid var(--crimson-bright);
+      box-shadow: 0 0 8px rgba(224, 60, 60, 0.45);
+      animation: pulse-red 1s infinite alternate;
+    }
+
+    .worker-row.conflict {
+      border: 1.5px solid #d97706;
+    }
+
+    @keyframes pulse-red {
+      from { box-shadow: 0 0 2px rgba(224, 60, 60, 0.3); }
+      to { box-shadow: 0 0 10px rgba(224, 60, 60, 0.8); }
+    }
+
+    .w-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    .w-tags {
+      font-size: 0.71rem;
+      margin: 2px 0;
+      color: var(--ink-muted);
+    }
+
+    .wrath-track {
+      height: 7px;
+      background: rgba(0,0,0,0.2);
+      border-radius: 4px;
+      overflow: hidden;
+      margin: 4px 0;
+    }
+
+    .wrath-bar {
+      height: 100%;
+      background: #2f855a;
+      transition: width 0.25s linear, background-color 0.25s;
+    }
+
+    .w-controls {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5px;
+      margin-top: 5px;
+    }
+
+    /* 通用按鈕 */
+    .btn {
+      border: none;
+      border-radius: 5px;
+      padding: 8px 10px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      background: #47301c;
+      color: #fff;
+      text-align: center;
+      transition: opacity 0.15s, transform 0.1s;
+    }
+
+    .btn:active:not(:disabled) { transform: scale(0.97); }
+    .btn:disabled { opacity: 0.38; cursor: not-allowed; }
+    .btn-sm { padding: 5px 6px; font-size: 0.74rem; }
+    .btn-gold { background: linear-gradient(180deg, #c79422, #996e11); color: #fff; }
+    .btn-holy { background: var(--holy); color: #fff; }
+    .btn-crimson { background: var(--crimson); color: #fff; }
+    .btn-purple { background: var(--purple); color: #fff; }
+
+    /* 分頁容器 */
+    .tab-pane {
+      display: none;
+      background: var(--parchment);
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 11px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+
+    .tab-pane.active { display: block; }
+
+    /* ==========================================
+       具象聖殿 SVG 建築藍圖（未完成黑白 -> 完成彩色）
+       ========================================== */
+    .temple-canvas-wrap {
+      background: linear-gradient(180deg, #161822 0%, #262220 65%, #33271d 100%);
+      border: 2px solid var(--gold);
+      border-radius: 8px;
+      padding: 8px;
+      margin-bottom: 10px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 0 25px rgba(0,0,0,0.8);
+    }
+
+    body.abyss-mode .temple-canvas-wrap {
+      background: linear-gradient(180deg, #1f050b 0%, #360914 65%, #1a0408 100%);
+    }
+
+    .temple-canvas-wrap.defiled {
+      box-shadow: inset 0 0 35px rgba(220, 38, 38, 0.8);
+      border-color: var(--crimson-bright);
+    }
+
+    .temple-svg {
+      width: 100%;
+      max-height: 250px;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .temple-part {
+      transition: filter 0.8s ease, opacity 0.8s ease;
+    }
+
+    .temple-part.unbuilt {
+      filter: grayscale(100%) contrast(85%) brightness(115%);
+      opacity: 0.3;
+    }
+
+    .temple-part.built {
+      filter: grayscale(0%) drop-shadow(0 0 6px rgba(244, 203, 84, 0.4));
+      opacity: 1;
+    }
+
+    body.abyss-mode .temple-part.built {
+      filter: hue-rotate(-35deg) saturate(180%) drop-shadow(0 0 8px rgba(225, 29, 72, 0.7));
+    }
+
+    .temple-canvas-wrap.defiled .temple-part.built {
+      filter: sepia(70%) hue-rotate(-50deg) saturate(260%);
+    }
+
+    .blueprint-legend {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.73rem;
+      color: #d6c5ab;
+      margin-top: 4px;
+      padding: 0 4px;
+    }
+
+    /* ==========================================
+       72 魔神階級與戰術職能篩選
+       ========================================== */
+    .rank-tabs {
+      display: flex;
+      gap: 5px;
+      overflow-x: auto;
+      padding-bottom: 5px;
+      margin-bottom: 6px;
+      scrollbar-width: none;
+    }
+    .rank-tabs::-webkit-scrollbar { display: none; }
+
+    .rank-tab-btn {
+      background: var(--parchment-dim);
+      border: 1px solid var(--border);
+      color: var(--ink);
+      padding: 5px 9px;
+      border-radius: 15px;
+      font-size: 0.76rem;
+      font-weight: 700;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .rank-tab-btn.active {
+      background: #3d2510;
+      color: var(--gold-bright);
+      border-color: var(--gold);
+    }
+
+    .filter-chips-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-bottom: 8px;
+    }
+
+    .spec-chip {
+      background: var(--parchment-dim);
+      border: 1px solid var(--border);
+      color: var(--ink);
+      padding: 4px 7px;
+      border-radius: 5px;
+      font-size: 0.73rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .spec-chip.active {
+      background: var(--holy);
+      color: #fff;
+      border-color: #1e4e8c;
+    }
+
+    .spec-chip.role.active {
+      background: var(--purple);
+      color: #fff;
+      border-color: #4c1d95;
+    }
+
+    .sub-search-bar {
+      margin-bottom: 8px;
+    }
+
+    .sub-search-bar input {
+      width: 100%;
+      padding: 6px 9px;
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      background: #fffdf8;
+      color: #24180e;
+      font-size: 0.82rem;
+    }
+
+    .demon-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    @media (max-width: 560px) {
+      .demon-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .d-card {
+      background: var(--parchment-card);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .d-card.locked { opacity: 0.88; }
+    .d-card.working { border: 1.5px solid var(--holy); }
+
+    .d-card-main {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+
+    .sigil-box {
+      width: 46px;
+      height: 46px;
+      flex-shrink: 0;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #231810;
+      border: 1.5px solid var(--gold);
+    }
+
+    .d-card.locked .sigil-box {
+      filter: grayscale(100%) opacity(0.65);
+      border-color: #8c7862;
+    }
+
+    .d-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .d-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .d-name {
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: var(--ink);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .d-rate-tag {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #1d4ed8;
+      background: #dbeafe;
+      padding: 1px 5px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+
+    .d-rel-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 4px;
+      font-size: 0.7rem;
+    }
+
+    .rel-pill {
+      padding: 1px 5px;
+      border-radius: 4px;
+      font-weight: 700;
+    }
+    .rel-pill.role-pacify { background: #dbeafe; color: #1e40af; }
+    .rel-pill.role-agitate { background: #fee2e2; color: #991b1b; }
+    .rel-pill.role-burst { background: #fef3c7; color: #92400e; }
+    .rel-pill.role-diplomat { background: #f3e8ff; color: #6b21a8; }
+    .rel-pill.rival { background: rgba(0,0,0,0.08); color: var(--ink-muted); }
+    .rel-pill.syn { background: #dcfce7; color: #166534; }
+
+    .d-assign-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+    }
+
+    /* 建築、奇蹟與遠征卡片 */
+    .card-block {
+      background: var(--parchment-card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 11px;
+      margin-bottom: 9px;
+    }
+
+    .card-block h3 {
+      margin: 0 0 5px 0;
+      font-size: 0.94rem;
+      color: var(--ink);
+    }
+
+    .card-block p {
+      margin: 0 0 8px 0;
+      font-size: 0.81rem;
+      color: var(--ink-muted);
+      line-height: 1.4;
+    }
+
+    .prog-track {
+      height: 9px;
+      background: rgba(0,0,0,0.18);
+      border-radius: 5px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+
+    .prog-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--gold), #eab308);
+      width: 0%;
+      transition: width 0.3s;
+    }
+
+    /* 遠征隊伍選取槽 */
+    .expedition-squad-bar {
+      display: flex;
+      gap: 6px;
+      margin: 8px 0;
+      flex-wrap: wrap;
+    }
+
+    .squad-slot {
+      background: var(--parchment-dim);
+      border: 1px dashed var(--border);
+      padding: 5px 9px;
+      border-radius: 5px;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    /* 日誌區 */
+    .log-list {
+      background: #1a130d;
+      color: #eadbc3;
+      border-radius: 6px;
+      padding: 10px;
+      height: 340px;
+      overflow-y: auto;
+      font-size: 0.81rem;
+      line-height: 1.45;
+    }
+
+    .log-item {
+      padding: 5px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .log-item.riot { color: #fca5a5; font-weight: 600; }
+    .log-item.holy { color: #93c5fd; }
+    .log-item.gold { color: #fde047; }
+    .log-item.synergy { color: #86efac; }
+    .log-item.relic { color: #f0abfc; font-weight: 600; }
+
+    /* 底部 5 鍵導航列 */
+    nav.bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: var(--nav-height);
+      background: var(--surface-dark);
+      border-top: 1.5px solid var(--gold);
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      z-index: 50;
+      box-shadow: 0 -3px 12px rgba(0,0,0,0.65);
+    }
+
+    .nav-btn {
+      background: none;
+      border: none;
+      color: #a8957e;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      font-size: 0.7rem;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .nav-btn .nav-icon { font-size: 1.15rem; }
+
+    .nav-btn.active {
+      color: var(--gold-bright);
+      background: rgba(244, 203, 84, 0.12);
+      font-weight: 700;
+    }
+
+    .nav-badge {
+      position: absolute;
+      top: 4px;
+      right: 18%;
+      background: var(--crimson-bright);
+      color: #fff;
+      font-size: 0.64rem;
+      font-weight: 700;
+      padding: 1px 4px;
+      border-radius: 10px;
+    }
+
+    /* 彈窗 */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 7, 4, 0.88);
+      z-index: 100;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 14px;
+    }
+
+    .modal-overlay.hidden { display: none; }
+
+    .modal-card {
+      background: #f4ead5;
+      border: 3px double #7a5c3c;
+      border-radius: 8px;
+      max-width: 500px;
+      width: 100%;
+      max-height: 88vh;
+      overflow-y: auto;
+      padding: 18px;
+      color: #24180e;
+    }
+
+    .modal-card h2 {
+      margin-top: 0;
+      text-align: center;
+      font-size: 1.18rem;
+      color: #4a2508;
+      border-bottom: 1.5px solid #7a5c3c;
+      padding-bottom: 8px;
+    }
+
+    .rule-item {
+      background: #fcf7ec;
+      border-left: 4px solid #c89623;
+      padding: 8px 10px;
+      margin-bottom: 8px;
+      font-size: 0.83rem;
+      line-height: 1.4;
+      border-radius: 0 4px 4px 0;
+    }
+    .rule-item.danger { border-left-color: #9e2222; }
+    .rule-item.holy { border-left-color: #2667a8; }
+  </style>
+</head>
+<body>
+
+  <!-- 序章卷軸彈窗 -->
+  <div id="prologue-modal" class="modal-overlay">
+    <div class="modal-card">
+      <h2>✡ 所羅門的聖殿：七十二柱魔神 ✡</h2>
+      <p style="font-size: 0.87rem; line-height: 1.5;">
+        你戴上了<strong>「所羅門之戒」</strong>，奴役地獄七十二柱魔神，將第一聖殿從黑白藍圖構築為神聖殿堂——並在聖殿落成後開啟<strong>遠征異教神廟、奇蹟昇華與光暗雙路線抉擇</strong>！
+      </p>
+      <div class="rule-item danger">
+        <strong>🔥 1. 怨氣＝雙倍產能（走鋼索核心）</strong><br>
+        魔神怨氣達 <strong>70%～99%</strong> 狂暴狀態時<strong>產量翻倍</strong>！但達 <strong>100%</strong> 會暴動摧毀資源並染污聖殿。
+      </div>
+      <div class="rule-item holy">
+        <strong>🔮 2. 四大戰術職能（光環搭配）</strong><br>
+        魔神擁有 <strong>🕊️鎮壓降怒、🔥煽動狂暴、⚡瞬間爆發、🤝社交調和</strong> 四種戰術特性，在圖鑑中可一鍵篩選組合！
+      </div>
+      <div class="rule-item">
+        <strong>⚔️ 3. 聖殿竣工後的終局玩法</strong><br>
+        蓋完六階段聖殿後，可派遣魔神軍團<strong>遠征討伐深淵與異教神廟</strong>獲取「真名碎片」，並選擇成為<strong>永恆賢王</strong>或墮入<strong>黑暗萬魔殿</strong>！
+      </div>
+      <button class="btn btn-gold" style="width: 100%; padding: 11px; font-size: 0.98rem; margin-top: 4px;" onclick="startGame()">
+        💍 戴上所羅門之戒，開啟工程
+      </button>
+    </div>
+  </div>
+
+  <!-- 聖殿法典彈窗 -->
+  <div id="codex-modal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <h2>📜 聖殿法典：戰術職能與終局手冊</h2>
+      <div class="rule-item holy">
+        <strong>• 🕊️ 鎮壓者（降怒光環）</strong>：降低同工地所有魔神 <strong>30% 怨氣累積速度</strong>，適合搭配高暴躁君王級魔神。
+      </div>
+      <div class="rule-item danger">
+        <strong>• 🔥 煽動者（狂暴催化）</strong>：加速同工地全員 <strong>+50% 怨氣累積</strong>，且讓狂暴狀態產量從 2.0 倍提升至 <strong>2.5 倍</strong>！
+      </div>
+      <div class="rule-item">
+        <strong>• ⚡ 爆發型 / 🤝 社交大師</strong>：爆發型每 15 秒觸發一次資源奇蹟掠奪；社交大師可完全抵消同工地的「死對頭互毆懲罰」。
+      </div>
+      <div class="rule-item">
+        <strong>• ⚔️ 遠征與真名碎片</strong>：在「遠征討伐」分頁派遣魔神執行任務，帶回的「🔮真名碎片」可用於升級聖殿奇蹟或解鎖傳說級隱藏君王。
+      </div>
+      <button class="btn" style="width: 100%;" onclick="toggleCodex(false)">關閉手冊</button>
+    </div>
+  </div>
+
+  <!-- 魔神神話傳記詳情彈窗 -->
+  <div id="demon-detail-modal" class="modal-overlay hidden" onclick="if(event.target===this) closeDemonDetail()">
+    <div class="modal-card" id="demon-detail-body"></div>
+  </div>
+
+  <!-- 1. 頂部緊湊資源列 -->
+  <header>
+    <div class="top-bar-row1">
+      <div class="app-title" id="header-title">✡ 所羅門的聖殿 <small style="font-weight:normal;opacity:0.75;">72魔神錄</small></div>
+      <div class="top-actions">
+        <button onclick="toggleCodex(true)">📜 法典</button>
+        <button onclick="resetGame()">🔄 重置</button>
+      </div>
+    </div>
+    <div class="res-strip">
+      <div class="res-pill">
+        <span class="r-val" id="res-stone">60</span>
+        <span class="r-rate" id="rate-stone">🪨 +0/s</span>
+      </div>
+      <div class="res-pill">
+        <span class="r-val" id="res-wood">40</span>
+        <span class="r-rate" id="rate-wood">🌲 +0/s</span>
+      </div>
+      <div class="res-pill">
+        <span class="r-val" id="res-gold">50</span>
+        <span class="r-rate" id="rate-gold">🪙 +0/s</span>
+      </div>
+      <div class="res-pill relic">
+        <span class="r-val" id="res-relic">0</span>
+        <span class="r-rate">🔮 碎片</span>
+      </div>
+      <div class="res-pill holy">
+        <span class="r-val" id="res-sanctity">10</span>
+        <span class="r-rate">🕊️ 聖潔</span>
+      </div>
+      <div class="res-pill slots">
+        <span class="r-val" id="res-slots">0/3</span>
+        <span class="r-rate">💍 席位</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- 2. 王座敕令新手引導 -->
+  <div id="tutorial-banner">
+    <div style="display:flex; align-items:center; gap:7px;">
+      <span class="tut-badge" id="tut-step-tag">敕令 1/5</span>
+      <span id="tut-text">載入中...</span>
+    </div>
+    <span style="color:var(--gold-bright); font-size:0.74rem; white-space:nowrap;" id="tut-reward">+30金</span>
+  </div>
+
+  <div class="app-container">
+    <!-- 3. 常駐三大工地監控區 -->
+    <section class="monitor-section">
+      <div class="section-head">
+        <h2>⚒️ 聖殿三大工地（即時監控）</h2>
+        <span class="section-hint">怨氣 ≥70% 狂暴雙倍！</span>
+      </div>
+      <div class="sites-wrapper">
+        <div class="site-box">
+          <div class="site-title"><span>🪨 採石場</span><span style="font-weight:normal;font-size:0.72rem;">巨石</span></div>
+          <div id="slots-stone"></div>
+        </div>
+        <div class="site-box">
+          <div class="site-title"><span>🌲 香柏林</span><span style="font-weight:normal;font-size:0.72rem;">香柏木</span></div>
+          <div id="slots-wood"></div>
+        </div>
+        <div class="site-box">
+          <div class="site-title"><span>🪙 俄斐金礦</span><span style="font-weight:normal;font-size:0.72rem;">黃金</span></div>
+          <div id="slots-gold"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. 分頁 A：具象聖殿藍圖 & 終局奇蹟/光暗路線 -->
+    <section id="tab-temple" class="tab-pane active">
+      <div class="section-head">
+        <h2 id="temple-section-title">🏛️ 耶路撒冷第一聖殿（建築藍圖）</h2>
+        <span style="font-size:0.78rem; color:var(--holy); font-weight:bold;" id="temple-tier-label">已完工 0/6</span>
+      </div>
+
+      <!-- 具象分層 SVG 聖殿立面圖 -->
+      <div class="temple-canvas-wrap" id="temple-canvas-wrap">
+        <svg class="temple-svg" viewBox="0 0 600 310" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="goldGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#fde047" />
+              <stop offset="50%" stop-color="#eab308" />
+              <stop offset="100%" stop-color="#a16207" />
+            </linearGradient>
+            <linearGradient id="cedarGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#9a3412" />
+              <stop offset="100%" stop-color="#451a03" />
+            </linearGradient>
+            <linearGradient id="bronzeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#92400e" />
+              <stop offset="50%" stop-color="#f59e0b" />
+              <stop offset="100%" stop-color="#78350f" />
+            </linearGradient>
+            <linearGradient id="skyBeam" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#fef08a" stop-opacity="0.75" />
+              <stop offset="100%" stop-color="#fef08a" stop-opacity="0" />
+            </linearGradient>
+          </defs>
+
+          <circle cx="80" cy="40" r="1.5" fill="#fef08a" opacity="0.6" />
+          <circle cx="520" cy="35" r="2" fill="#fef08a" opacity="0.7" />
+          <circle cx="150" cy="25" r="1.2" fill="#fff" opacity="0.5" />
+          <circle cx="460" cy="55" r="1.5" fill="#fff" opacity="0.5" />
+          <path d="M0 285 Q140 235 300 265 T600 275 L600 310 L0 310 Z" fill="#1c1613" />
+
+          <!-- 階段六：天降神光與約櫃降臨 -->
+          <g id="svg-stage-6" class="temple-part unbuilt">
+            <polygon points="260,0 340,0 385,175 215,175" fill="url(#skyBeam)" />
+            <polygon points="300,12 312,34 288,34" fill="none" stroke="#fde047" stroke-width="2" />
+            <polygon points="300,40 312,18 288,18" fill="none" stroke="#fde047" stroke-width="2" />
+            <rect x="284" y="198" width="32" height="18" fill="url(#goldGrad)" stroke="#fffbeb" stroke-width="1.2" />
+            <path d="M286 198 Q293 186 300 196 Q307 186 314 198" fill="none" stroke="#fef08a" stroke-width="2" />
+          </g>
+
+          <!-- 階段三：黎巴嫩香柏木聖所主體 -->
+          <g id="svg-stage-3" class="temple-part unbuilt">
+            <rect x="135" y="145" width="330" height="105" fill="url(#cedarGrad)" stroke="#d97706" stroke-width="1.5" />
+            <rect x="155" y="165" width="16" height="26" fill="#fef08a" opacity="0.8" />
+            <rect x="185" y="165" width="16" height="26" fill="#fef08a" opacity="0.8" />
+            <rect x="399" y="165" width="16" height="26" fill="#fef08a" opacity="0.8" />
+            <rect x="429" y="165" width="16" height="26" fill="#fef08a" opacity="0.8" />
+            <rect x="215" y="85" width="170" height="165" fill="#7c2d12" stroke="url(#goldGrad)" stroke-width="2.5" />
+            <rect x="205" y="75" width="190" height="12" fill="url(#goldGrad)" />
+            <path d="M210 75 L220 63 L230 75 L240 63 L250 75 L260 63 L270 75 L280 63 L290 75 L300 63 L310 75 L320 63 L330 75 L340 63 L350 75 L360 63 L370 75 L380 63 L390 75" fill="url(#goldGrad)" />
+          </g>
+
+          <!-- 階段五：純金包覆至聖所與基路伯 -->
+          <g id="svg-stage-5" class="temple-part unbuilt">
+            <rect x="228" y="98" width="144" height="152" fill="url(#goldGrad)" opacity="0.92" stroke="#78350f" stroke-width="1.5" />
+            <path d="M268 250 L268 165 Q300 135 332 165 L332 250 Z" fill="#291509" stroke="#fef08a" stroke-width="2" />
+            <path d="M236 140 Q255 120 266 150 Q250 155 236 140 Z" fill="#fef08a" />
+            <path d="M364 140 Q345 120 334 150 Q350 155 364 140 Z" fill="#fef08a" />
+          </g>
+
+          <!-- 階段四：雅斤與波阿斯雙銅柱 -->
+          <g id="svg-stage-4" class="temple-part unbuilt">
+            <rect x="234" y="118" width="22" height="132" fill="url(#bronzeGrad)" stroke="#451a03" stroke-width="1.5" />
+            <path d="M228 118 Q245 98 262 118 Z" fill="url(#goldGrad)" stroke="#78350f" stroke-width="1.2" />
+            <rect x="230" y="242" width="30" height="8" fill="#b45309" />
+            <rect x="344" y="118" width="22" height="132" fill="url(#bronzeGrad)" stroke="#451a03" stroke-width="1.5" />
+            <path d="M338 118 Q355 98 372 118 Z" fill="url(#goldGrad)" stroke="#78350f" stroke-width="1.2" />
+            <rect x="340" y="242" width="30" height="8" fill="#b45309" />
+          </g>
+
+          <!-- 階段一：摩利亞山基石與白大理石階 -->
+          <g id="svg-stage-1" class="temple-part unbuilt">
+            <rect x="75" y="282" width="450" height="16" rx="2" fill="#cbd5e1" stroke="#475569" stroke-width="1.5" />
+            <rect x="105" y="270" width="390" height="12" fill="#e2e8f0" stroke="#64748b" stroke-width="1.2" />
+            <rect x="135" y="260" width="330" height="10" fill="#f1f5f9" stroke="#64748b" stroke-width="1.2" />
+            <rect x="165" y="250" width="270" height="10" fill="#ffffff" stroke="#94a3b8" stroke-width="1.2" />
+            <polygon points="245,250 355,250 385,298 215,298" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.2" />
+            <line x1="238" y1="262" x2="362" y2="262" stroke="#94a3b8" stroke-width="1" />
+            <line x1="230" y1="274" x2="370" y2="274" stroke="#94a3b8" stroke-width="1" />
+            <line x1="222" y1="286" x2="378" y2="286" stroke="#94a3b8" stroke-width="1" />
+          </g>
+
+          <!-- 階段二：外院青銅燔祭壇與銅海洗濯盆 -->
+          <g id="svg-stage-2" class="temple-part unbuilt">
+            <polygon points="105,270 165,270 158,238 112,238" fill="url(#bronzeGrad)" stroke="#451a03" stroke-width="1.5" />
+            <polygon points="108,238 114,228 120,238" fill="#f59e0b" />
+            <polygon points="150,238 156,228 162,238" fill="#f59e0b" />
+            <path d="M122 238 Q135 205 148 238 Q135 225 122 238 Z" fill="#ef4444" />
+            <path d="M127 238 Q135 216 143 238 Z" fill="#fde047" />
+
+            <ellipse cx="465" cy="264" rx="22" ry="6" fill="#78350f" />
+            <rect x="455" y="250" width="20" height="14" fill="#92400e" />
+            <path d="M432 232 Q465 262 498 232 Z" fill="url(#bronzeGrad)" stroke="#451a03" stroke-width="1.5" />
+            <ellipse cx="465" cy="232" rx="33" ry="6" fill="#38bdf8" stroke="#f59e0b" stroke-width="1.5" />
+          </g>
+        </svg>
+        <div class="blueprint-legend">
+          <span>⬜ 灰白線稿：未建造結構</span>
+          <span id="temple-status-tag" style="color:var(--gold-bright);">✨ 彩色：已落成神聖結構</span>
+        </div>
+      </div>
+
+      <!-- 主線建造卡片（6階段完成後自動切換為「終局奇蹟與光暗路線」） -->
+      <div class="card-block" id="main-build-card">
+        <h3 id="temple-name">階段一：摩利亞山基石與白大理石階</h3>
+        <p id="temple-desc">鋪設底部山岩基石與登殿白石階。完工後 +15 聖潔度，契約席位 +1。</p>
+        <div class="prog-track"><div class="prog-fill" id="temple-progress"></div></div>
+        <div style="font-size: 0.83rem; font-weight: bold; margin-bottom: 8px;" id="temple-cost-text">需求：🪨 100 | 🌲 50</div>
+        <button class="btn btn-gold" style="width:100%;" id="btn-build-temple" onclick="buildTempleStage()">🔨 動工興建聖殿階段</button>
+      </div>
+
+      <!-- 終局系統解鎖區（聖殿6階段完成後顯現） -->
+      <div id="endgame-temple-panel" style="display:none;">
+        <div class="card-block" style="border: 2px solid var(--gold);">
+          <h3>🌟 終局奇蹟擴建：所羅門智慧寶座 (Lv.<span id="wonder-lv">0</span>)</h3>
+          <p>消耗海量物資與真名碎片強化聖殿奇蹟。每級永久提升<strong>全場魔神基礎產量 +15%</strong> 與 <strong>+10 聖潔度</strong>！</p>
+          <div style="font-size:0.82rem; font-weight:bold; margin-bottom:8px;" id="wonder-cost-text">
+            升級需求：🪨 2000 | 🌲 2000 | 🪙 2000 | 🔮 2 碎片
+          </div>
+          <button class="btn btn-gold" style="width:100%;" id="btn-upgrade-wonder" onclick="upgradeWonder()">✨ 昇華聖殿奇蹟</button>
+        </div>
+
+        <div class="card-block" style="border: 2px solid var(--crimson);">
+          <h3>⚖️ 王權終極抉擇：神聖賢王 vs. 黑暗萬魔殿</h3>
+          <p id="alignment-desc">你已駕馭七十二柱魔神並建成聖殿。你隨時可以決定這座聖殿的最終命運：</p>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+            <button class="btn btn-holy" onclick="setAlignment('light')">🕊️ 光明線：永恆賢王<br><small>(怨氣增長 -25%，聖潔翻倍)</small></button>
+            <button class="btn btn-crimson" onclick="setAlignment('abyss')">🩸 黑暗線：改造萬魔殿<br><small>(全產量 +50%，狂暴倍率 3.0x)</small></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-head" style="margin-top:12px;">
+        <h2>🕯️ 神職人員與淨化儀式</h2>
+      </div>
+
+      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap:8px;">
+        <div class="card-block" style="margin-bottom:0;">
+          <h3>利未人祭司（<span id="priest-count">1</span> 名）</h3>
+          <p>每名提供 <strong>+5 聖潔度</strong>，永久減緩魔神怨氣增長。</p>
+          <button class="btn btn-holy" style="width:100%;" id="btn-hire-priest" onclick="hirePriest()">
+            🕊️ 招募祭司（🪙 <span id="priest-cost">40</span>）
+          </button>
+        </div>
+
+        <div class="card-block" style="margin-bottom:0;">
+          <h3>焚香大淨化</h3>
+          <p>降低全場在工魔神 <strong>35% 怨氣</strong>並清除聖殿污穢。</p>
+          <button class="btn btn-crimson" style="width:100%;" id="btn-purify" onclick="massPurify()">
+            🔥 舉行淨化（🪙 45）
+          </button>
+        </div>
+
+        <div class="card-block" style="margin-bottom:0;">
+          <h3>擴充封印戒律</h3>
+          <p>增加 <strong>+1 同時上工魔神席位</strong>。</p>
+          <button class="btn" style="width:100%;" id="btn-expand-seal" onclick="expandSeal()">
+            💍 擴充席位（🪙 <span id="seal-cost">80</span>）
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. 分頁 B：72 魔神名錄（階級分頁籤 ＋ 特殊戰術篩選器） -->
+    <section id="tab-grimoire" class="tab-pane">
+      <div class="section-head">
+        <h2>📖 《所羅門的小鑰匙》魔神圖鑑</h2>
+        <span style="font-size:0.78rem; color:var(--crimson-bright); font-weight:bold;" id="unlocked-count">已契約 1/72</span>
+      </div>
+
+      <!-- 階級橫向分類頁籤 -->
+      <div class="rank-tabs" id="rank-tabs">
+        <button class="rank-tab-btn active" data-rank="unlocked" onclick="selectRankTab('unlocked')">💍 已契約 (<span id="cnt-unlocked">1</span>)</button>
+        <button class="rank-tab-btn" data-rank="King" onclick="selectRankTab('King')">👑 君王 (9)</button>
+        <button class="rank-tab-btn" data-rank="Duke" onclick="selectRankTab('Duke')">🛡️ 公爵 (23)</button>
+        <button class="rank-tab-btn" data-rank="Prince" onclick="selectRankTab('Prince')">🔮 親王 (7)</button>
+        <button class="rank-tab-btn" data-rank="Marquis" onclick="selectRankTab('Marquis')">⚔️ 侯爵 (15)</button>
+        <button class="rank-tab-btn" data-rank="President" onclick="selectRankTab('President')">⚖️ 統領 (14)</button>
+        <button class="rank-tab-btn" data-rank="Earl" onclick="selectRankTab('Earl')">🐎 伯爵 (4)</button>
+      </div>
+
+      <!-- 工種 ＋ 四大戰術職能快捷過濾器 -->
+      <div class="filter-chips-wrap">
+        <button class="spec-chip" data-spec="stone" onclick="toggleSpecFilter('stone')">🪨採石</button>
+        <button class="spec-chip" data-spec="wood" onclick="toggleSpecFilter('wood')">🌲伐木</button>
+        <button class="spec-chip" data-spec="gold" onclick="toggleSpecFilter('gold')">🪙金礦</button>
+        <span style="width:1px; background:var(--border); margin:0 2px;"></span>
+        <button class="spec-chip role" data-role="pacify" onclick="toggleRoleFilter('pacify')">🕊️鎮壓降怒</button>
+        <button class="spec-chip role" data-role="agitate" onclick="toggleRoleFilter('agitate')">🔥煽動狂暴</button>
+        <button class="spec-chip role" data-role="burst" onclick="toggleRoleFilter('burst')">⚡瞬間爆發</button>
+        <button class="spec-chip role" data-role="diplomat" onclick="toggleRoleFilter('diplomat')">🤝社交調和</button>
+      </div>
+
+      <div class="sub-search-bar">
+        <input type="text" id="search-demon" placeholder="🔍 搜尋魔神編號或名號..." oninput="renderGrimoire()" />
+      </div>
+
+      <div class="demon-grid" id="demons-pool"></div>
+    </section>
+
+    <!-- 6. 分頁 C：遠征討伐（異教神殿與深淵副本） -->
+    <section id="tab-expedition" class="tab-pane">
+      <div class="section-head">
+        <h2>⚔️ 魔神遠征討伐（終局征戰）</h2>
+        <span style="font-size:0.76rem; color:var(--purple); font-weight:bold;">獲取 🔮 真名碎片</span>
+      </div>
+
+      <div class="card-block">
+        <h3>組建遠征軍團（使用已契約且空閒的魔神）</h3>
+        <p>點擊下方已契約魔神加入遠征隊（最多 3 名）。高階魔神（君王、公爵）與「🔥煽動狂暴」特性提供極高戰力！</p>
+        <div class="expedition-squad-bar" id="squad-display"></div>
+        <div id="expedition-pool-btns" style="display:flex; flex-wrap:wrap; gap:5px; margin-top:6px;"></div>
+      </div>
+
+      <div id="expedition-status-box" class="card-block" style="display:none; border:2px solid var(--purple);">
+        <h3 id="exp-active-title">遠征進行中...</h3>
+        <div class="prog-track"><div class="prog-fill" id="exp-prog-fill" style="background:var(--purple);"></div></div>
+        <div style="font-size:0.8rem; color:var(--ink-muted);" id="exp-time-left">剩餘時間：30s</div>
+      </div>
+
+      <div id="expedition-targets"></div>
+    </section>
+
+    <!-- 7. 分頁 D：王座突發事件 -->
+    <section id="tab-events" class="tab-pane">
+      <div class="section-head">
+        <h2>⚖️ 王座請願與突發事件</h2>
+      </div>
+      <div class="card-block" id="event-box">
+        <div id="event-content">
+          <h3 style="color:var(--ink-muted);">目前無待處理請願</h3>
+          <p>隨著工程推進，示巴女王使節、推羅商人或狡猾的魔神會前來晉見。有新事件時底部導航列會亮起紅點。</p>
+        </div>
+        <div id="event-actions" style="display:flex; flex-direction:column; gap:8px;"></div>
+      </div>
+    </section>
+
+    <!-- 8. 分頁 E：監工日誌 -->
+    <section id="tab-logs" class="tab-pane">
+      <div class="section-head">
+        <h2>📜 聖殿監工日誌</h2>
+      </div>
+      <div class="log-list" id="log-box"></div>
+    </section>
+  </div>
+
+  <!-- 底部 5 鍵導航列 -->
+  <nav class="bottom-nav">
+    <button class="nav-btn active" data-tab="temple" onclick="switchTab('temple')">
+      <span class="nav-icon">🏛️</span>
+      <span>聖殿藍圖</span>
+    </button>
+    <button class="nav-btn" data-tab="grimoire" onclick="switchTab('grimoire')">
+      <span class="nav-icon">📖</span>
+      <span>魔神圖鑑</span>
+    </button>
+    <button class="nav-btn" data-tab="expedition" onclick="switchTab('expedition')">
+      <span class="nav-icon">⚔️</span>
+      <span>遠征討伐</span>
+    </button>
+    <button class="nav-btn" data-tab="events" onclick="switchTab('events')">
+      <span class="nav-icon">⚖️</span>
+      <span>王座事件</span>
+      <span class="nav-badge" id="event-badge" style="display:none;">!</span>
+    </button>
+    <button class="nav-btn" data-tab="logs" onclick="switchTab('logs')">
+      <span class="nav-icon">📜</span>
+      <span>監工日誌</span>
+    </button>
+  </nav>
+
+  <script>
+    // ==========================================
+    // 1. 完整 72 柱魔神資料庫（含四大戰術職能 role）
+    // role: 'pacify'(鎮壓降怒) | 'agitate'(煽動狂暴) | 'burst'(瞬間爆發) | 'diplomat'(社交調和)
+    // ==========================================
+    const RAW_DEMONS = [
+      { id: 1, name: "巴力 (Bael)", rank: "King", spec: "gold", role: "agitate", baseRate: 18, wrathRate: 4.5, cost: 320, rival: 9, synergy: 2, trait: "東方魔神之王，擁有貓、蟾蜍與人三顆頭顱，擅長隱身與統御深層金礦，散發令全員狂熱的霸氣。" },
+      { id: 2, name: "阿加雷斯 (Agares)", rank: "Duke", spec: "stone", role: "pacify", baseRate: 13, wrathRate: 3.4, cost: 180, rival: 4, synergy: 1, trait: "騎乘鱷魚、手架蒼鷹的老者公爵，引發地震裂解巨岩並令逃跑暴動的惡魔乖乖折返。" },
+      { id: 3, name: "瓦沙克 (Vassago)", rank: "Prince", spec: "gold", role: "pacify", baseRate: 11, wrathRate: 2.2, cost: 150, rival: 12, synergy: 5, trait: "性格溫和善良的親王，能預知地底金脈方位並安撫同工地魔神的暴戾之氣。" },
+      { id: 4, name: "薩米基納 (Samigina)", rank: "Marquis", spec: "wood", role: "burst", baseRate: 9, wrathRate: 2.6, cost: 110, rival: 2, synergy: 7, trait: "以小馬形態現身的大侯爵，每隔片刻便召喚亡靈苦力瞬間搬回一批香柏木。" },
+      { id: 5, name: "馬爾巴士 (Marbas)", rank: "President", spec: "stone", role: "pacify", baseRate: 6, wrathRate: 2.3, cost: 0, rival: 10, synergy: 3, trait: "威嚴的獅首大統領，精通機械工藝與巨石開採，能穩定工地秩序降低怨氣累積。" },
+      { id: 6, name: "華利弗 (Valefor)", rank: "Duke", spec: "gold", role: "burst", baseRate: 12, wrathRate: 3.8, cost: 170, rival: 8, synergy: 14, trait: "獅首驢身的盜賊公爵，定期從異教商隊暗中掠奪大筆黃金。" },
+      { id: 7, name: "亞蒙 (Amon)", rank: "Marquis", spec: "wood", role: "diplomat", baseRate: 10, wrathRate: 3.1, cost: 125, rival: 11, synergy: 4, trait: "狼身蛇尾、口吐烈焰的侯爵，擅長調和仇敵矛盾，使同工地的死對頭停止互毆。" },
+      { id: 8, name: "巴巴妥司 (Barbatos)", rank: "Duke", spec: "wood", role: "diplomat", baseRate: 13, wrathRate: 2.8, cost: 190, rival: 6, synergy: 15, trait: "通曉百獸語言的獵人公爵，能與任何性格古怪的魔神和平共處並消除敵意。" },
+      { id: 9, name: "派蒙 (Paimon)", rank: "King", spec: "gold", role: "agitate", baseRate: 19, wrathRate: 4.8, cost: 350, rival: 1, synergy: 13, trait: "頭戴王冠、騎乘單峰駱駝的西方之王，震耳欲聾的號角聲讓同工地全員加速陷入狂暴！" },
+      { id: 10, name: "布耶爾 (Buer)", rank: "President", spec: "wood", role: "pacify", baseRate: 8, wrathRate: 1.9, cost: 95, rival: 5, synergy: 18, trait: "五輪海星形態的哲學統領，精通草藥治癒術，大幅降低全隊怨氣增長。" },
+      { id: 11, name: "古辛 (Gusion)", rank: "Duke", spec: "stone", role: "diplomat", baseRate: 12, wrathRate: 2.7, cost: 175, rival: 7, synergy: 16, trait: "洞察萬物因果的公爵，化敵為友的大師，徹底消除同工地的死對頭衝突。" },
+      { id: 12, name: "西迪 (Sitri)", rank: "Prince", spec: "gold", role: "agitate", baseRate: 11, wrathRate: 3.5, cost: 160, rival: 3, synergy: 32, trait: "豹首翼人的狂熱親王，點燃全員狂熱激情，極速衝破 70% 狂暴線並提升爆發倍率！" },
+      { id: 13, name: "貝雷特 (Beleth)", rank: "King", spec: "stone", role: "agitate", baseRate: 17, wrathRate: 4.9, cost: 310, rival: 20, synergy: 9, trait: "騎乘蒼白戰馬的暴躁君王，狂暴的戰鼓聲迫使周圍苦力瘋狂壓榨潛能。" },
+      { id: 14, name: "勒萊耶 (Leraje)", rank: "Marquis", spec: "wood", role: "agitate", baseRate: 9, wrathRate: 3.0, cost: 115, rival: 17, synergy: 6, trait: "身披綠袍的神射手侯爵，箭矢挑起工地競爭火藥味，加速進入狂暴狀態。" },
+      { id: 15, name: "埃力格 (Eligos)", rank: "Duke", spec: "stone", role: "burst", baseRate: 12, wrathRate: 3.1, cost: 185, rival: 19, synergy: 8, trait: "手持長矛的騎士公爵，定期發動軍事突擊採集大量巨石。" },
+      { id: 16, name: "桀派 (Zepar)", rank: "Duke", spec: "wood", role: "agitate", baseRate: 11, wrathRate: 3.2, cost: 165, rival: 21, synergy: 11, trait: "身著紅甲的戰士公爵，煽動苦力狂熱搬運沉重香柏木。" },
+      { id: 17, name: "布提斯 (Botis)", rank: "President", spec: "stone", role: "diplomat", baseRate: 8, wrathRate: 2.4, cost: 90, rival: 14, synergy: 22, trait: "毒蛇統領，擅長調解仇敵爭端，讓死對頭也能在同一座礦場共事。" },
+      { id: 18, name: "巴欽 (Bathin)", rank: "Duke", spec: "gold", role: "burst", baseRate: 13, wrathRate: 2.9, cost: 195, rival: 23, synergy: 10, trait: "騎乘蒼白駿馬的公爵，每隔片刻便施展空間傳送帶回一批俄斐黃金。" },
+      { id: 19, name: "塞列歐斯 (Sallos)", rank: "Duke", spec: "wood", role: "pacify", baseRate: 11, wrathRate: 2.0, cost: 160, rival: 15, synergy: 24, trait: "騎乘鱷魚的和平騎士公爵，散發寧靜光環，大幅壓制隊友怨氣。" },
+      { id: 20, name: "普爾森 (Purson)", rank: "King", spec: "gold", role: "burst", baseRate: 18, wrathRate: 4.3, cost: 330, rival: 13, synergy: 25, trait: "獅首騎熊的強大君王，定期探測出地底隱藏的巨大金脈爆發資源。" },
+      { id: 21, name: "馬拉克斯 (Marax)", rank: "Earl", spec: "stone", role: "pacify", baseRate: 7, wrathRate: 2.1, cost: 75, rival: 16, synergy: 26, trait: "人面公牛伯爵，以星象幾何規律穩定採石節奏，降低全場怨氣。" },
+      { id: 22, name: "因波斯 (Ipos)", rank: "Earl", spec: "gold", role: "diplomat", baseRate: 8, wrathRate: 2.5, cost: 85, rival: 27, synergy: 17, trait: "獅頭鵝足伯爵，賦予團隊幽默與勇氣，化解死對頭之間的敵意。" },
+      { id: 23, name: "艾尼 (Aim)", rank: "Duke", spec: "wood", role: "agitate", baseRate: 13, wrathRate: 3.9, cost: 190, rival: 18, synergy: 28, trait: "三頭縱火公爵，熊熊烈火逼迫周圍勞工陷入瘋狂趕工模式。" },
+      { id: 24, name: "納貝流士 (Naberius)", rank: "Marquis", spec: "stone", role: "pacify", baseRate: 10, wrathRate: 2.5, cost: 120, rival: 29, synergy: 19, trait: "三頭黑鶴侯爵，恢復秩序與紀律，有效抑制工地怨氣上升。" },
+      { id: 25, name: "格剌希亞拉波斯 (Glasya-Labolas)", rank: "President", spec: "stone", role: "agitate", baseRate: 10, wrathRate: 4.2, cost: 130, rival: 30, synergy: 20, trait: "生有獅鷲雙翼的惡犬統領，嗜血狂暴光環讓整座工地瞬間進入雙倍產出！" },
+      { id: 26, name: "布涅 (Bune)", rank: "Duke", spec: "gold", role: "burst", baseRate: 14, wrathRate: 2.6, cost: 210, rival: 31, synergy: 46, trait: "三頭巨龍公爵，掌管冥界物流網，定期輸送額外財寶進庫。" },
+      { id: 27, name: "羅諾比 (Ronove)", rank: "Marquis", spec: "wood", role: "diplomat", baseRate: 9, wrathRate: 2.2, cost: 110, rival: 22, synergy: 29, trait: "修辭學侯爵，三寸不爛之舌能讓水火不容的魔神握手言和。" },
+      { id: 28, name: "比利士 (Berith)", rank: "Duke", spec: "gold", role: "burst", baseRate: 14, wrathRate: 4.0, cost: 220, rival: 33, synergy: 23, trait: "鍊金術公爵，每隔一段時間便將廢石點化為純金塊。" },
+      { id: 29, name: "亞斯她錄 (Astaroth)", rank: "Duke", spec: "stone", role: "agitate", baseRate: 15, wrathRate: 3.7, cost: 240, rival: 24, synergy: 27, trait: "騎乘毒龍的大公爵，刺鼻毒氣令周圍苦力狂躁加速。" },
+      { id: 30, name: "弗內烏斯 (Forneus)", rank: "Marquis", spec: "wood", role: "diplomat", baseRate: 10, wrathRate: 2.3, cost: 125, rival: 25, synergy: 31, trait: "巨型海怪侯爵，受人愛戴的海洋使者，消除同工地死對頭衝突。" },
+      { id: 31, name: "佛爾卡斯 (Foras)", rank: "President", spec: "stone", role: "pacify", baseRate: 9, wrathRate: 2.0, cost: 105, rival: 26, synergy: 30, trait: "白髮長者統領，傳授長壽與冷靜智慧，降低隊友怨氣累積。" },
+      { id: 32, name: "阿斯莫德 (Asmodeus)", rank: "King", spec: "gold", role: "agitate", baseRate: 20, wrathRate: 5.0, cost: 380, rival: 35, synergy: 12, trait: "狂怒與慾望之王，產量全場最高，且大幅催化全隊狂暴倍率！" },
+      { id: 33, name: "概布 (Gaap)", rank: "Prince", spec: "stone", role: "burst", baseRate: 12, wrathRate: 3.0, cost: 165, rival: 28, synergy: 34, trait: "空間傳送親王，定期直接將整座山頭的巨石瞬移至聖殿工地。" },
+      { id: 34, name: "弗爾弗爾 (Furfur)", rank: "Earl", spec: "wood", role: "agitate", baseRate: 8, wrathRate: 3.4, cost: 85, rival: 36, synergy: 33, trait: "烈焰雄鹿伯爵，操控雷電轟擊林地，迫使全隊狂暴趕工。" },
+      { id: 35, name: "馬可西亞斯 (Marchosias)", rank: "Marquis", spec: "stone", role: "burst", baseRate: 11, wrathRate: 3.3, cost: 135, rival: 32, synergy: 37, trait: "生有獅鷲翼的巨狼侯爵，渴望重返天堂而定期爆發驚人採石量。" },
+      { id: 36, name: "斯托拉斯 (Stolas)", rank: "Prince", spec: "wood", role: "pacify", baseRate: 11, wrathRate: 1.8, cost: 155, rival: 34, synergy: 38, trait: "頭戴王冠的博學貓頭鷹親王，靜謐的星象學識能大幅壓制怨氣。" },
+      { id: 37, name: "菲尼克斯 (Phenex)", rank: "Marquis", spec: "wood", role: "pacify", baseRate: 10, wrathRate: 2.1, cost: 120, rival: 39, synergy: 35, trait: "不死鳥詩人侯爵，天籟般的歌聲直接撫平同工地魔神的暴怒。" },
+      { id: 38, name: "哈帕斯 (Halphas)", rank: "Earl", spec: "stone", role: "burst", baseRate: 9, wrathRate: 3.2, cost: 95, rival: 40, synergy: 36, trait: "軍事補給伯爵，定期調度大量石料資源支援前線。" },
+      { id: 39, name: "瑪帕斯 (Malphas)", rank: "President", spec: "stone", role: "agitate", baseRate: 10, wrathRate: 3.5, cost: 115, rival: 37, synergy: 41, trait: "黑烏鴉統領，煽動工地互相猜忌與狂熱內卷，加速進入狂暴。" },
+      { id: 40, name: "勞姆 (Raum)", rank: "Earl", spec: "gold", role: "burst", baseRate: 9, wrathRate: 3.3, cost: 100, rival: 38, synergy: 42, trait: "烏鴉伯爵，定期潛入鄰國國庫偷取大筆黃金充實聖殿。" },
+      { id: 41, name: "弗卡洛 (Focalor)", rank: "Duke", spec: "wood", role: "agitate", baseRate: 12, wrathRate: 3.4, cost: 180, rival: 43, synergy: 39, trait: "獅鷲翼人公爵，掀起狂風巨浪加速運木，同時推高全員怨氣。" },
+      { id: 42, name: "威沛 (Vepar)", rank: "Duke", spec: "gold", role: "pacify", baseRate: 12, wrathRate: 3.1, cost: 175, rival: 44, synergy: 40, trait: "人魚公爵，海潮的韻律使同工地魔神情緒保持平穩。" },
+      { id: 43, name: "斯伯納克 (Sabnock)", rank: "Marquis", spec: "stone", role: "agitate", baseRate: 11, wrathRate: 3.4, cost: 130, rival: 41, synergy: 45, trait: "獅頭武裝建築師，嚴苛的軍事督工令全隊迅速陷入狂暴趕工。" },
+      { id: 44, name: "沙克斯 (Shax)", rank: "Marquis", spec: "gold", role: "burst", baseRate: 10, wrathRate: 3.2, cost: 120, rival: 42, synergy: 47, trait: "送子鳥侯爵，定期剝奪守衛視聽搬空遠方金庫。" },
+      { id: 45, name: "拜恩 (Vine)", rank: "King", spec: "stone", role: "burst", baseRate: 18, wrathRate: 4.4, cost: 325, rival: 48, synergy: 43, trait: "騎乘黑獅的君王，能在一瞬間爆發出構築高牆的巨量石材。" },
+      { id: 46, name: "畢弗隆斯 (Bifrons)", rank: "Earl", spec: "stone", role: "pacify", baseRate: 8, wrathRate: 2.4, cost: 85, rival: 49, synergy: 26, trait: "星象幾何伯爵，有條不紊地排列巨石，減少工地混亂與怨氣。" },
+      { id: 47, name: "化勒 (Uvall)", rank: "Duke", spec: "gold", role: "diplomat", baseRate: 12, wrathRate: 2.5, cost: 175, rival: 50, synergy: 44, trait: "單峰駱駝公爵，擅長促進友愛與商業結盟，化解死對頭敵意。" },
+      { id: 48, name: "哈艮地 (Haagenti)", rank: "President", spec: "gold", role: "burst", baseRate: 10, wrathRate: 2.8, cost: 120, rival: 45, synergy: 51, trait: "翼牛統領，定期施展物質轉化術將石塊變成純金。" },
+      { id: 49, name: "克羅賽爾 (Crocell)", rank: "Duke", spec: "wood", role: "pacify", baseRate: 12, wrathRate: 2.4, cost: 170, rival: 46, synergy: 52, trait: "墮落天使公爵，引出山林溫暖泉水舒緩勞工疲勞與怨氣。" },
+      { id: 50, name: "弗爾卡斯騎士 (Furcas)", rank: "Earl", spec: "wood", role: "pacify", baseRate: 8, wrathRate: 2.3, cost: 80, rival: 47, synergy: 53, trait: "銀鬚老騎士，紀律嚴明地指揮伐木，抑制魔神暴躁情緒。" },
+      { id: 51, name: "巴拉姆 (Balam)", rank: "King", spec: "gold", role: "diplomat", baseRate: 18, wrathRate: 4.2, cost: 330, rival: 54, synergy: 48, trait: "三頭君王，賦予統御者極致機智，鎮壓死對頭之間的衝突。" },
+      { id: 52, name: "阿洛斯 (Alloces)", rank: "Duke", spec: "stone", role: "agitate", baseRate: 13, wrathRate: 3.6, cost: 190, rival: 55, synergy: 49, trait: "獅頭火目公爵，震耳咆哮震碎岩層並讓全員陷入狂暴狀態。" },
+      { id: 53, name: "蓋因 (Camio)", rank: "President", spec: "wood", role: "diplomat", baseRate: 9, wrathRate: 2.4, cost: 105, rival: 56, synergy: 50, trait: "畫眉鳥統領，通曉萬物語言，能說服死對頭放下成見合作。" },
+      { id: 54, name: "毛莫 (Murmur)", rank: "Duke", spec: "stone", role: "burst", baseRate: 12, wrathRate: 2.9, cost: 180, rival: 51, synergy: 57, trait: "騎鷲公爵，吹響號角召喚亡靈礦工定期運送大量巨石。" },
+      { id: 55, name: "歐若博司 (Orobas)", rank: "Prince", spec: "gold", role: "pacify", baseRate: 12, wrathRate: 1.5, cost: 175, rival: 52, synergy: 58, trait: "最忠誠的駿馬親王，極度順從且能鎮壓全場魔神的叛逆之心！" },
+      { id: 56, name: "格莫瑞 (Gremory)", rank: "Duke", spec: "gold", role: "burst", baseRate: 13, wrathRate: 2.6, cost: 195, rival: 53, synergy: 59, trait: "騎駱駝的公爵夫人，定期發掘出隱藏的王室珠寶與黃金。" },
+      { id: 57, name: "歐賽 (Ose)", rank: "President", spec: "wood", role: "agitate", baseRate: 9, wrathRate: 3.1, cost: 105, rival: 60, synergy: 54, trait: "花豹統領，製造瘋狂幻覺讓勞工忘我地狂暴趕工。" },
+      { id: 58, name: "亞米 (Amy)", rank: "President", spec: "gold", role: "pacify", baseRate: 10, wrathRate: 2.5, cost: 115, rival: 61, synergy: 55, trait: "烈焰統領，透過占星術調和工地氣場，減緩怨氣累積。" },
+      { id: 59, name: "歐里亞斯 (Orias)", rank: "Marquis", spec: "stone", role: "diplomat", baseRate: 10, wrathRate: 2.6, cost: 120, rival: 62, synergy: 56, trait: "騎獅持蛇侯爵，改變星象位格消除死對頭之間的相剋。" },
+      { id: 60, name: "瓦布拉 (Vapula)", rank: "Duke", spec: "stone", role: "pacify", baseRate: 14, wrathRate: 2.7, cost: 205, rival: 57, synergy: 63, trait: "獅鷲翼獅子公爵，用精密機械取代苦力重擔，降低團隊怨氣。" },
+      { id: 61, name: "撒共 (Zagan)", rank: "King", spec: "gold", role: "burst", baseRate: 17, wrathRate: 3.9, cost: 310, rival: 58, synergy: 64, trait: "翼牛君王，定期施展大規模鍊金奇蹟將銅石轉化為純金。" },
+      { id: 62, name: "華劣克 (Valac)", rank: "President", spec: "gold", role: "burst", baseRate: 11, wrathRate: 2.4, cost: 135, rival: 59, synergy: 65, trait: "騎雙頭巨龍的孩童統領，天生的尋寶獵人，定期挖出大筆黃金。" },
+      { id: 63, name: "安德拉斯 (Andras)", rank: "Marquis", spec: "wood", role: "agitate", baseRate: 12, wrathRate: 4.9, cost: 140, rival: 66, synergy: 60, trait: "鴉首天使翼的極致挑撥者，瞬間點燃全隊最高狂暴倍率，極度危險！" },
+      { id: 64, name: "佛勞洛斯 (Flauros)", rank: "Duke", spec: "stone", role: "agitate", baseRate: 13, wrathRate: 3.5, cost: 190, rival: 67, synergy: 61, trait: "花豹公爵，烈焰焚燒礦坑迫使全員進入狂暴高速開採。" },
+      { id: 65, name: "安德雷斐斯 (Andrealphus)", rank: "Marquis", spec: "stone", role: "pacify", baseRate: 10, wrathRate: 2.5, cost: 120, rival: 68, synergy: 62, trait: "孔雀侯爵，精算聖殿建築幾何，秩序井然地降低工地怨氣。" },
+      { id: 66, name: "錫蒙力 (Cimejes)", rank: "Marquis", spec: "wood", role: "burst", baseRate: 10, wrathRate: 2.7, cost: 125, rival: 63, synergy: 69, trait: "騎乘黑馬的戰士侯爵，定期尋回失落的巨木運輸隊。" },
+      { id: 67, name: "安度西亞斯 (Amdusias)", rank: "Duke", spec: "wood", role: "agitate", baseRate: 14, wrathRate: 3.6, cost: 200, rival: 64, synergy: 70, trait: "獨角獸公爵，奏響狂亂地獄交響樂讓全員狂暴伐木！" },
+      { id: 68, name: "彼列 (Belial)", rank: "King", spec: "gold", role: "agitate", baseRate: 20, wrathRate: 4.7, cost: 370, rival: 65, synergy: 71, trait: "駕馭火戰車的無主之王，狂傲的威壓讓全員瘋狂產金。" },
+      { id: 69, name: "單卡拉比 (Decarabia)", rank: "Marquis", spec: "gold", role: "pacify", baseRate: 10, wrathRate: 2.1, cost: 120, rival: 72, synergy: 66, trait: "五芒星侯爵，星光結界穩定工地心神，減緩怨氣增長。" },
+      { id: 70, name: "系爾 (Seere)", rank: "Prince", spec: "wood", role: "burst", baseRate: 13, wrathRate: 1.7, cost: 185, rival: 71, synergy: 67, trait: "騎乘飛馬的俊美親王，眨眼間就能搬運一筆巨量物資回聖殿。" },
+      { id: 71, name: "但他林 (Dantalion)", rank: "Duke", spec: "gold", role: "diplomat", baseRate: 13, wrathRate: 2.5, cost: 195, rival: 70, synergy: 68, trait: "千面公爵，洞悉並操縱全場魔神心理，徹底消除死對頭衝突！" },
+      { id: 72, name: "安杜馬利烏士 (Andromalius)", rank: "Earl", spec: "gold", role: "pacify", baseRate: 10, wrathRate: 2.2, cost: 130, rival: 69, synergy: 1, trait: "手持巨蛇的執法伯爵，嚴懲怠工與暴動，強力壓制全場怨氣。" }
+    ];
+
+    const TEMPLE_STAGES = [
+      { name: "階段一：摩利亞山基石與白大理石階", desc: "鋪設底部山岩基石與登殿白石階。完工後 +15 聖潔度，契約席位 +1。", stone: 100, wood: 50, gold: 0, sanctityGain: 15, slotGain: 1 },
+      { name: "階段二：外院青銅燔祭壇與銅海洗濯盆", desc: "在庭院左右鑄造燔祭壇與盛水銅海。完工後 +25 聖潔度。", stone: 250, wood: 180, gold: 100, sanctityGain: 25, slotGain: 0 },
+      { name: "階段三：黎巴嫩香柏木聖所主體", desc: "立起高聳的香柏木聖所主殿與金色屋簷。完工後 +35 聖潔度，契約席位 +1。", stone: 550, wood: 500, gold: 250, sanctityGain: 35, slotGain: 1 },
+      { name: "階段四：雅斤與波阿斯雙巨型青銅柱", desc: "在殿廊前豎立象徵神權的兩根巨型銅柱。完工後 +50 聖潔度，契約席位 +1。", stone: 1100, wood: 900, gold: 600, sanctityGain: 50, slotGain: 1 },
+      { name: "階段五：純金包覆至聖所與基路伯", desc: "以俄斐純金包覆內殿並雕刻展翅基路伯。完工後 +80 聖潔度，契約席位 +2。", stone: 2200, wood: 1800, gold: 1500, sanctityGain: 80, slotGain: 2 },
+      { name: "階段六：天降神光，約櫃降臨至聖所", desc: "第一聖殿正式落成！解鎖【聖殿奇蹟昇華】與【光暗王權抉擇】！", stone: 4500, wood: 3500, gold: 3200, sanctityGain: 150, slotGain: 2 }
+    ];
+
+    const EXPEDITION_MISSIONS = [
+      { id: "exp1", title: "迦南邊境：摧毀巴力異教祭壇", reqPower: 25, duration: 20, rewardRelic: 1, rewardGold: 220, desc: "派遣魔神突襲非利士邊境神廟，奪回神聖獻祭器皿與真名碎片。" },
+      { id: "exp2", title: "紅海古航道：打撈俄斐沉船寶藏", reqPower: 45, duration: 30, rewardRelic: 2, rewardGold: 480, desc: "穿越風暴海域，從遠古海怪守護的沉船中打撈真名碎片與黃金。" },
+      { id: "exp3", title: "巴比倫通天塔：討伐墮落星靈守衛", reqPower: 75, duration: 45, rewardRelic: 4, rewardGold: 950, desc: "遠征兩河流域遺跡，需要強大的高階魔神軍團方能凱旋。" },
+      { id: "exp4", title: "無底深淵第七層：封印混沌利維坦", reqPower: 115, duration: 60, rewardRelic: 8, rewardGold: 2000, desc: "終極深淵遠征！唯有君王級魔神組成的精銳遠征軍才能征服。" }
+    ];
+
+    const KINGDOM_EVENTS = [
+      {
+        title: "示巴女王的使節團",
+        desc: "南方示巴商隊抵達，願以黃金與真名碎片換取建築石材。",
+        choices: [
+          { label: "贈予 150 巨石換取 180 黃金 + 1 🔮碎片", req: s => s.stone >= 150, run: s => { s.stone -= 150; s.gold += 180; s.relics += 1; addLog("與示巴使節達成交易，獲得 180 黃金與 1 枚真名碎片！", "relic"); } },
+          { label: "婉拒交易（聖潔度 +4）", req: () => true, run: s => { s.sanctity += 4; addLog("專注聖殿工程，聖潔度 +4。", "holy"); } }
+        ]
+      },
+      {
+        title: "推羅王希蘭的香柏木船隊",
+        desc: "盟友推羅王送來優質香柏木，希望獲得少許黃金補貼運費。",
+        choices: [
+          { label: "支付 80 黃金購買 240 香柏木", req: s => s.gold >= 80, run: s => { s.gold -= 80; s.wood += 240; addLog("獲得 240 單位優質香柏木！", "synergy"); } },
+          { label: "僅口頭致謝", req: () => true, run: () => { addLog("推羅使者離開了耶路撒冷。", ""); } }
+        ]
+      },
+      {
+        title: "深淵裂隙的暗夜低語",
+        desc: "魔神提議：獻祭少許聖潔度，換取連夜趕工爆量產出！",
+        choices: [
+          { label: "默許交易（聖潔 -8，全資源 +160）", req: s => s.sanctity >= 12, run: s => { s.sanctity -= 8; s.stone += 160; s.wood += 160; s.gold += 160; addLog("魔神連夜趕工產出大量物資！", "riot"); } },
+          { label: "嚴厲斥責（聖潔 +5）", req: () => true, run: s => { s.sanctity += 5; addLog("斥退邪念，聖潔度 +5。", "holy"); } }
+        ]
+      }
+    ];
+
+    // ==========================================
+    // 2. 遊戲狀態
+    // ==========================================
+    let state = {
+      stone: 60,
+      wood: 40,
+      gold: 50,
+      relics: 0, // 🔮 真名碎片
+      sanctity: 10,
+      maxSlots: 3,
+      priests: 1,
+      templeStage: 0,
+      wonderLevel: 0,
+      alignment: "neutral", // 'neutral' | 'light' | 'abyss'
+      isDefiled: false,
+      tutStep: 1,
+      tutActionDone: false,
+      unlockedDemons: [5],
+      assigned: { stone: [], wood: [], gold: [] },
+      expeditionSquad: [], // 最多 3 位魔神 ID
+      activeExpedition: null, // { missionId, remaining, total }
+      activeEvent: null,
+      activeRankTab: "unlocked",
+      specFilter: "all",
+      roleFilter: "all",
+      tickCounter: 0
+    };
+
+    const TUTORIAL_STEPS = [
+      { step: 1, text: "切到「📖魔神圖鑑」，派【No.5 馬爾巴士】去「🪨採石」上工！", rewardText: "+30金", check: s => getTotalAssignedCount(s) >= 1, reward: s => { s.gold += 30; } },
+      { step: 2, text: "觀察上方工地怨氣條，嘗試按一次「安撫」或「召回」。", rewardText: "+60石 +40木", check: s => s.tutActionDone, reward: s => { s.stone += 60; s.wood += 40; } },
+      { step: 3, text: "回「🏛️聖殿藍圖」動工興建階段一，看底部白大理石階亮起彩色！", rewardText: "+80金", check: s => s.templeStage >= 1, reward: s => { s.gold += 80; } },
+      { step: 4, text: "在「📖魔神圖鑑」點選階級或戰術篩選器，召喚第 2 位魔神！", rewardText: "+5聖潔", check: s => s.unlockedDemons.length >= 2, reward: s => { s.sanctity += 5; } },
+      { step: 5, text: "試著在「⚔️遠征討伐」組隊出發，或招募第 2 名祭司完成新王敕令！", rewardText: "+120金 +1🔮", check: s => s.priests >= 2 || s.activeExpedition !== null || s.relics >= 1, reward: s => { s.gold += 120; s.relics += 1; } }
+    ];
+
+    function getTotalAssignedCount(s = state) {
+      return s.assigned.stone.length + s.assigned.wood.length + s.assigned.gold.length;
+    }
+
+    function getDemonData(id) {
+      return RAW_DEMONS.find(d => d.id === id);
+    }
+
+    function isDemonWorking(id) {
+      for (const site of ["stone", "wood", "gold"]) {
+        if (state.assigned[site].some(w => w.id === id)) return site;
+      }
+      return null;
+    }
+
+    function isDemonOnExpedition(id) {
+      return state.activeExpedition && state.expeditionSquad.includes(id);
+    }
+
+    // ==========================================
+    // 3. 動態 SVG 魔神紋章圖騰生成器
+    // ==========================================
+    function generateDemonSigilSVG(demon, size = 44) {
+      const rankColors = {
+        King: "#facc15",
+        Duke: "#60a5fa",
+        Prince: "#c084fc",
+        Marquis: "#f87171",
+        President: "#34d399",
+        Earl: "#fb923c"
+      };
+      const color = rankColors[demon.rank] || "#eab308";
+
+      let frameSvg = "";
+      if (demon.rank === "King") {
+        frameSvg = `<circle cx="24" cy="24" r="20" fill="none" stroke="${color}" stroke-width="1.8"/><polygon points="24,2 28,8 20,8" fill="${color}"/><polygon points="14,5 19,10 13,11" fill="${color}"/><polygon points="34,5 35,11 29,10" fill="${color}"/>`;
+      } else if (demon.rank === "Duke") {
+        frameSvg = `<path d="M8,6 L40,6 L40,24 Q40,38 24,44 Q8,38 8,24 Z" fill="none" stroke="${color}" stroke-width="1.8"/>`;
+      } else if (demon.rank === "Prince") {
+        frameSvg = `<polygon points="24,4 41,34 7,34" fill="none" stroke="${color}" stroke-width="1.4"/><polygon points="24,44 41,14 7,14" fill="none" stroke="${color}" stroke-width="1.4"/>`;
+      } else if (demon.rank === "Marquis") {
+        frameSvg = `<polygon points="24,4 44,24 24,44 4,24" fill="none" stroke="${color}" stroke-width="1.8"/><circle cx="24" cy="24" r="13" fill="none" stroke="${color}" stroke-width="1" stroke-dasharray="2,2"/>`;
+      } else if (demon.rank === "President") {
+        frameSvg = `<circle cx="24" cy="24" r="19" fill="none" stroke="${color}" stroke-width="1.5"/><polygon points="24,6 40,36 8,36" fill="none" stroke="${color}" stroke-width="1.4"/>`;
+      } else {
+        frameSvg = `<circle cx="24" cy="24" r="18" fill="none" stroke="${color}" stroke-width="1.6"/><circle cx="24" cy="24" r="14" fill="none" stroke="${color}" stroke-width="0.9"/>`;
+      }
+
+      let coreSvg = "";
+      if (demon.spec === "stone") {
+        coreSvg = `<polygon points="24,13 33,22 29,34 19,34 15,22" fill="${color}" opacity="0.25" stroke="${color}" stroke-width="1.5"/>`;
+      } else if (demon.spec === "wood") {
+        coreSvg = `<path d="M24,12 L24,36 M17,22 L24,16 L31,22 M15,29 L24,22 L33,29" fill="none" stroke="${color}" stroke-width="1.8" stroke-linecap="round"/>`;
+      } else {
+        coreSvg = `<circle cx="24" cy="24" r="8" fill="${color}" opacity="0.25" stroke="${color}" stroke-width="1.6"/><circle cx="24" cy="24" r="2.5" fill="${color}"/>`;
+      }
+
+      return `<svg width="${size}" height="${size}" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">${frameSvg}${coreSvg}</svg>`;
+    }
+
+    // ==========================================
+    // 4. 分頁、篩選與詳情彈窗
+    // ==========================================
+    function switchTab(tabName) {
+      document.querySelectorAll(".tab-pane").forEach(el => el.classList.remove("active"));
+      document.querySelectorAll(".nav-btn").forEach(btn => btn.classList.remove("active"));
+
+      document.getElementById(`tab-${tabName}`).classList.add("active");
+      document.querySelector(`.nav-btn[data-tab="${tabName}"]`).classList.add("active");
+
+      if (tabName === "events") document.getElementById("event-badge").style.display = "none";
+      if (tabName === "expedition") renderExpeditionTab();
+    }
+
+    function selectRankTab(rank) {
+      state.activeRankTab = rank;
+      document.querySelectorAll(".rank-tab-btn").forEach(b => {
+        b.classList.toggle("active", b.dataset.rank === rank);
+      });
+      renderGrimoire();
+    }
+
+    function toggleSpecFilter(spec) {
+      state.specFilter = (state.specFilter === spec) ? "all" : spec;
+      document.querySelectorAll(".spec-chip:not(.role)").forEach(c => {
+        c.classList.toggle("active", c.dataset.spec === state.specFilter);
+      });
+      renderGrimoire();
+    }
+
+    function toggleRoleFilter(role) {
+      state.roleFilter = (state.roleFilter === role) ? "all" : role;
+      document.querySelectorAll(".spec-chip.role").forEach(c => {
+        c.classList.toggle("active", c.dataset.role === state.roleFilter);
+      });
+      renderGrimoire();
+    }
+
+    function openDemonDetail(id) {
+      const d = getDemonData(id);
+      if (!d) return;
+      const rivalD = getDemonData(d.rival);
+      const synD = getDemonData(d.synergy);
+      const specText = { stone: "🪨 採石場 (+40%)", wood: "🌲 香柏林 (+40%)", gold: "🪙 俄斐金礦 (+40%)" };
+      const roleDesc = {
+        pacify: "🕊️ 鎮壓降怒光環：同工地所有魔神怨氣增長 -30%",
+        agitate: "🔥 煽動狂暴光環：同工地怨氣增長 +50%，狂暴產量提升至 2.5 倍！",
+        burst: "⚡ 瞬間爆發奇蹟：每 15 秒觸發一次資源奇蹟掠奪（+基礎產量×12）",
+        diplomat: "🤝 社交調和光環：完全抵消同工地的「死對頭互毆懲罰」"
+      };
+      const isUnlocked = state.unlockedDemons.includes(id);
+
+      const body = document.getElementById("demon-detail-body");
+      body.innerHTML = `
+        <div style="display:flex; flex-direction:column; align-items:center; text-align:center; gap:8px;">
+          <div style="background:#1c140d; padding:12px; border-radius:12px; border:2px solid #c89623;">
+            ${generateDemonSigilSVG(d, 74)}
+          </div>
+          <h2 style="border:none; margin:0; padding:0;">No.${d.id} ${d.name}</h2>
+          <div style="font-size:0.8rem; color:#9e2222; font-weight:700;">階級：${d.rank} ｜ 專長：${specText[d.spec]}</div>
+        </div>
+        <div class="rule-item holy" style="margin-top:10px;">
+          <strong>🔮 戰術職能特性：</strong><br>${roleDesc[d.role]}
+        </div>
+        <div class="rule-item">
+          <strong>📜 禁書典故與能力：</strong><br>${d.trait}
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; font-size:0.8rem; margin-bottom:10px;">
+          <div class="rule-item danger" style="margin:0;">
+            <strong>⚔️ 死對頭</strong><br>No.${d.rival} ${rivalD.name.split(" ")[0]}
+          </div>
+          <div class="rule-item" style="margin:0; border-left-color:#16a34a;">
+            <strong>🤝 共鳴 (+35%)</strong><br>No.${d.synergy} ${synD.name.split(" ")[0]}
+          </div>
+        </div>
+        <div style="font-size:0.78rem; color:#665240; text-align:center; margin-bottom:10px;">
+          基礎產出：<strong>${d.baseRate}/s</strong> ｜ 暴躁增長：<strong>+${d.wrathRate}%/s</strong> ｜ 狀態：${isUnlocked ? "✅ 已締結契約" : `🔒 需 ${d.cost} 黃金召喚`}
+        </div>
+        <button class="btn" style="width:100%;" onclick="closeDemonDetail()">闔上卷軸</button>
+      `;
+      document.getElementById("demon-detail-modal").classList.remove("hidden");
+    }
+
+    function closeDemonDetail() {
+      document.getElementById("demon-detail-modal").classList.add("hidden");
+    }
+
+    function startGame() {
+      document.getElementById("prologue-modal").classList.add("hidden");
+      addLog("你戴上了所羅門之戒。No.5【馬爾巴士】已聽候差遣。", "gold");
+      updateAllUI();
+    }
+
+    function toggleCodex(show) {
+      document.getElementById("codex-modal").classList.toggle("hidden", !show);
+    }
+
+    function checkTutorialProgress() {
+      if (state.tutStep > TUTORIAL_STEPS.length) return;
+      const current = TUTORIAL_STEPS[state.tutStep - 1];
+      if (current && current.check(state)) {
+        current.reward(state);
+        addLog(`✨ 完成敕令 ${current.step}/5！獲得獎勵 ${current.rewardText}`, "synergy");
+        state.tutStep++;
+      }
+    }
+
+    // ==========================================
+    // 5. 玩家操作（工地、聖殿、奇蹟、光暗路線、遠征）
+    // ==========================================
+    function summonDemon(id) {
+      const d = getDemonData(id);
+      if (!d || state.unlockedDemons.includes(id) || state.gold < d.cost) return;
+      state.gold -= d.cost;
+      state.unlockedDemons.push(id);
+      addLog(`🕯️ 成功契約 No.${d.id}【${d.name}】！`, "gold");
+      checkTutorialProgress();
+      updateAllUI();
+    }
+
+    function assignDemon(id, site) {
+      if (!state.unlockedDemons.includes(id) || isDemonWorking(id)) return;
+      if (isDemonOnExpedition(id)) {
+        addLog("該魔神正在遠征討伐中，無法派往工地！", "riot");
+        return;
+      }
+      if (getTotalAssignedCount() >= state.maxSlots) {
+        addLog(`契約席位已滿（${state.maxSlots}/${state.maxSlots}）！請先召回魔神或擴充席位。`, "riot");
+        return;
+      }
+      // 若在遠征待命列中，自動移出
+      state.expeditionSquad = state.expeditionSquad.filter(x => x !== id);
+      state.assigned[site].push({ id, wrath: 0 });
+      const d = getDemonData(id);
+      const siteNames = { stone: "採石場", wood: "香柏林", gold: "俄斐金礦" };
+      addLog(`派遣【${d.name.split(" ")[0]}】前往${siteNames[site]}。`, "");
+      checkTutorialProgress();
+      updateAllUI();
+    }
+
+    function recallDemon(site, id) {
+      const idx = state.assigned[site].findIndex(w => w.id === id);
+      if (idx === -1) return;
+      state.assigned[site].splice(idx, 1);
+      state.tutActionDone = true;
+      addLog(`已召回【${getDemonData(id).name.split(" ")[0]}】休整，怨氣歸零。`, "holy");
+      checkTutorialProgress();
+      updateAllUI();
+    }
+
+    function sootheDemon(site, id) {
+      const worker = state.assigned[site].find(w => w.id === id);
+      if (!worker || state.gold < 15) return;
+      state.gold -= 15;
+      worker.wrath = Math.max(0, worker.wrath - 40);
+      state.tutActionDone = true;
+      addLog(`獻上沒藥安撫【${getDemonData(id).name.split(" ")[0]}】，怨氣 -40%！`, "holy");
+      checkTutorialProgress();
+      updateAllUI();
+    }
+
+    function buildTempleStage() {
+      if (state.templeStage >= TEMPLE_STAGES.length) return;
+      const st = TEMPLE_STAGES[state.templeStage];
+      if (state.stone < st.stone || state.wood < st.wood || state.gold < st.gold) return;
+
+      state.stone -= st.stone;
+      state.wood -= st.wood;
+      state.gold -= st.gold;
+      state.sanctity += st.sanctityGain;
+      state.maxSlots += st.slotGain;
+      state.templeStage++;
+      state.isDefiled = false;
+
+      addLog(`🏛️ 聖殿神蹟！完成【${st.name}】，建築藍圖對應部位已點亮全彩！`, "holy");
+      checkTutorialProgress();
+      updateAllUI();
+    }
+
+    function upgradeWonder() {
+      const costRes = 2000 + state.wonderLevel * 1500;
+      const costRelic = 2 + state.wonderLevel * 2;
+      if (state.stone < costRes || state.wood < costRes || state.gold < costRes || state.relics < costRelic) return;
+
+      state.stone -= costRes;
+      state.wood -= costRes;
+      state.gold -= costRes;
+      state.relics -= costRelic;
+      state.wonderLevel++;
+      state.sanctity += 10;
+      addLog(`🌟 聖殿奇蹟昇華至 Lv.${state.wonderLevel}！全場魔神產能永久 +15%！`, "relic");
+      updateAllUI();
+    }
+
+    function setAlignment(mode) {
+      state.alignment = mode;
+      if (mode === "abyss") {
+        document.body.classList.add("abyss-mode");
+        document.getElementById("header-title").innerHTML = `🩸 所羅門萬魔殿 <small style="font-weight:normal;opacity:0.8;">地獄之主</small>`;
+        document.getElementById("temple-section-title").textContent = "🩸 耶路撒冷萬魔殿（黑暗昇華）";
+        addLog("🩸 你墮入了深淵誘惑，將聖殿改造成【人間萬魔殿】！全產量 +50%，狂暴倍率提升至 3.0 倍！", "riot");
+      } else {
+        document.body.classList.remove("abyss-mode");
+        document.getElementById("header-title").innerHTML = `👑 永恆賢王所羅門 <small style="font-weight:normal;opacity:0.8;">神聖紀元</small>`;
+        document.getElementById("temple-section-title").textContent = "👑 耶路撒冷永恆聖殿（神光加冕）";
+        state.sanctity += 50;
+        addLog("🕊️ 你堅守智慧律法加冕為【永恆賢王】！聖潔度 +50，全場魔神怨氣累積大幅減緩！", "holy");
+      }
+      updateAllUI();
+    }
+
+    function hirePriest() {
+      const cost = 40 + (state.priests - 1) * 35;
+      if (state.gold < cost) return;
+      state.gold -= cost;
+      state.priests++;
+      state.sanctity += 5;
+      state.isDefiled = false;
+      addLog(`🕊️ 招募新利未人祭司，聖潔度 +5！`, "holy");
+      checkTutorialProgress();
+      updateAllUI();
+    }
+
+    function massPurify() {
+      if (state.gold < 45) return;
+      state.gold -= 45;
+      state.isDefiled = false;
+      for (const site of ["stone", "wood", "gold"]) {
+        state.assigned[site].forEach(w => w.wrath = Math.max(0, w.wrath - 35));
+      }
+      addLog("🔥 舉行焚香大淨化，全場怨氣 -35% 且聖殿恢復光輝！", "holy");
+      updateAllUI();
+    }
+
+    function expandSeal() {
+      const cost = 80 + (state.maxSlots - 3) * 75;
+      if (state.gold < cost) return;
+      state.gold -= cost;
+      state.maxSlots++;
+      addLog(`💍 契約席位擴充至 ${state.maxSlots} 名。`, "gold");
+      updateAllUI();
+    }
+
+    // 遠征討伐操作
+    function toggleSquadMember(id) {
+      if (state.activeExpedition) return;
+      if (isDemonWorking(id)) {
+        addLog("該魔神正在工地上工，請先召回再編入遠征隊。", "riot");
+        return;
+      }
+      if (state.expeditionSquad.includes(id)) {
+        state.expeditionSquad = state.expeditionSquad.filter(x => x !== id);
+      } else {
+        if (state.expeditionSquad.length >= 3) {
+          addLog("遠征軍團最多編制 3 柱魔神！", "riot");
+          return;
+        }
+        state.expeditionSquad.push(id);
+      }
+      renderExpeditionTab();
+    }
+
+    function getSquadPower() {
+      const rankPower = { King: 42, Duke: 28, Prince: 24, Marquis: 18, President: 15, Earl: 12 };
+      let total = 0;
+      state.expeditionSquad.forEach(id => {
+        const d = getDemonData(id);
+        let p = rankPower[d.rank] || 10;
+        if (d.role === "agitate") p = Math.floor(p * 1.25);
+        total += p;
+      });
+      return total;
+    }
+
+    function startExpedition(missionId) {
+      if (state.activeExpedition || state.expeditionSquad.length === 0) return;
+      const m = EXPEDITION_MISSIONS.find(x => x.id === missionId);
+      if (!m) return;
+      if (getSquadPower() < m.reqPower) {
+        addLog(`遠征軍戰力不足（需 ${m.reqPower}），請編入更高階魔神！`, "riot");
+        return;
+      }
+      state.activeExpedition = { missionId: m.id, remaining: m.duration, total: m.duration };
+      addLog(`⚔️ 魔神遠征軍出發討伐【${m.title}】！預計 ${m.duration} 秒後凱旋。`, "relic");
+      checkTutorialProgress();
+      renderExpeditionTab();
+      renderGrimoire();
+    }
+
+    // ==========================================
+    // 6. 核心遊戲迴圈（含光環、爆發奇蹟與遠征倒數）
+    // ==========================================
+    function calculateWorkerStats(worker, site) {
+      const d = getDemonData(worker.id);
+      const peerDemons = state.assigned[site].map(w => getDemonData(w.id));
+      const peerIds = peerDemons.map(x => x.id);
+
+      const hasPacifier = peerDemons.some(x => x.role === "pacify");
+      const hasAgitator = peerDemons.some(x => x.role === "agitate");
+      const hasDiplomat = peerDemons.some(x => x.role === "diplomat");
+
+      const hasRival = peerIds.includes(d.rival) && !hasDiplomat;
+      const hasSynergy = peerIds.includes(d.synergy);
+      const isSpec = d.spec === site;
+      const isBerserk = worker.wrath >= 70;
+
+      // 奇蹟與陣營加成
+      const wonderMult = 1 + state.wonderLevel * 0.15;
+      const alignProdMult = (state.alignment === "abyss") ? 1.5 : 1.0;
+
+      let mult = wonderMult * alignProdMult;
+      if (isSpec) mult *= 1.4;
+      if (hasSynergy) mult *= 1.35;
+      if (isBerserk) {
+        let berserkMult = hasAgitator ? 2.5 : 2.0;
+        if (state.alignment === "abyss") berserkMult = 3.0;
+        mult *= berserkMult;
+      }
+      if (hasRival) mult = 0;
+
+      const output = d.baseRate * mult;
+
+      // 怨氣增減計算
+      const sanctityResist = Math.min(0.65, (state.sanctity / 10) * 0.08);
+      let wrathDelta = d.wrathRate * (1 - sanctityResist);
+      if (hasPacifier) wrathDelta *= 0.7;
+      if (hasAgitator) wrathDelta *= 1.5;
+      if (state.alignment === "light") wrathDelta *= 0.75;
+      if (hasRival) wrathDelta *= 2.5;
+
+      return { output, wrathDelta, hasRival, hasSynergy, isSpec, isBerserk, hasPacifier, hasAgitator, hasDiplomat };
+    }
+
+    setInterval(() => {
+      if (!document.getElementById("prologue-modal").classList.contains("hidden")) return;
+
+      state.tickCounter++;
+      const rates = { stone: 0, wood: 0, gold: 0 };
+
+      for (const site of ["stone", "wood", "gold"]) {
+        const list = state.assigned[site];
+        for (let i = list.length - 1; i >= 0; i--) {
+          const w = list[i];
+          const d = getDemonData(w.id);
+          const stats = calculateWorkerStats(w, site);
+
+          rates[site] += stats.output;
+          state[site] += stats.output;
+          w.wrath += stats.wrathDelta;
+
+          // ⚡ 瞬間爆發型魔神每 15 秒觸發一次資源奇蹟
+          if (d.role === "burst" && state.tickCounter % 15 === 0 && !stats.hasRival) {
+            const bonus = Math.floor(d.baseRate * 12 * (1 + state.wonderLevel * 0.15));
+            state[site] += bonus;
+            addLog(`⚡【奇蹟爆發】No.${d.id} ${d.name.split(" ")[0]} 額外掠奪了 +${bonus} 單位物資！`, "synergy");
+          }
+
+          if (w.wrath >= 100) triggerRiot(site, i, d);
+        }
+      }
+
+      document.getElementById("rate-stone").textContent = `🪨 +${rates.stone.toFixed(1)}/s`;
+      document.getElementById("rate-wood").textContent = `🌲 +${rates.wood.toFixed(1)}/s`;
+      document.getElementById("rate-gold").textContent = `🪙 +${rates.gold.toFixed(1)}/s`;
+
+      // 遠征進度推進
+      if (state.activeExpedition) {
+        state.activeExpedition.remaining--;
+        if (state.activeExpedition.remaining <= 0) {
+          const m = EXPEDITION_MISSIONS.find(x => x.id === state.activeExpedition.missionId);
+          state.relics += m.rewardRelic;
+          state.gold += m.rewardGold;
+          addLog(`🏆【遠征凱旋！】討伐【${m.title}】成功！帶回 🔮 ${m.rewardRelic} 枚真名碎片與 🪙 ${m.rewardGold} 黃金！`, "relic");
+          state.activeExpedition = null;
+          checkTutorialProgress();
+          renderGrimoire();
+        }
+        if (document.getElementById("tab-expedition").classList.contains("active")) {
+          renderExpeditionTab();
+        }
+      }
+
+      if (!state.activeEvent && Math.random() < 0.04) spawnRandomEvent();
+
+      updateHeaderAndTempleUI();
+      renderWorksites();
+    }, 1000);
+
+    function triggerRiot(site, index, demon) {
+      state.assigned[site].splice(index, 1);
+      const lossStone = Math.min(state.stone, Math.floor(25 + state.stone * 0.12));
+      const lossWood = Math.min(state.wood, Math.floor(20 + state.wood * 0.12));
+      state.stone -= lossStone;
+      state.wood -= lossWood;
+      state.sanctity = Math.max(0, state.sanctity - 3);
+      if (state.templeStage > 0) state.isDefiled = true;
+
+      addLog(`💥【暴動！】No.${demon.id}【${demon.name.split(" ")[0]}】掀翻工地並染污聖殿！損失 ${lossStone}石、${lossWood}木！`, "riot");
+      renderGrimoire();
+    }
+
+    function spawnRandomEvent() {
+      const ev = KINGDOM_EVENTS[Math.floor(Math.random() * KINGDOM_EVENTS.length)];
+      state.activeEvent = ev;
+      document.getElementById("event-badge").style.display = "inline-block";
+
+      const contentEl = document.getElementById("event-content");
+      const actionsEl = document.getElementById("event-actions");
+
+      contentEl.innerHTML = `<h3 style="color:#9e2222;">⚖️ ${ev.title}</h3><p>${ev.desc}</p>`;
+      actionsEl.innerHTML = "";
+
+      ev.choices.forEach(c => {
+        const btn = document.createElement("button");
+        btn.className = "btn btn-gold";
+        btn.textContent = c.label;
+        btn.disabled = !c.req(state);
+        btn.onclick = () => {
+          c.run(state);
+          state.activeEvent = null;
+          contentEl.innerHTML = `<h3 style="color:var(--ink-muted);">請願已處置完畢</h3><p>王國秩序穩定，請繼續推進聖殿大業。</p>`;
+          actionsEl.innerHTML = "";
+          updateAllUI();
+        };
+        actionsEl.appendChild(btn);
+      });
+    }
+
+    // ==========================================
+    // 7. 畫面渲染
+    // ==========================================
+    function addLog(msg, type = "") {
+      const box = document.getElementById("log-box");
+      const div = document.createElement("div");
+      div.className = `log-item ${type}`;
+      const time = new Date().toLocaleTimeString("zh-TW", { hour12: false, hour: "2-digit", minute: "2-digit", second: "2-digit" });
+      div.textContent = `[${time}] ${msg}`;
+      box.prepend(div);
+      if (box.children.length > 40) box.removeChild(box.lastChild);
+    }
+
+    function updateTempleVisualSVG() {
+      for (let i = 1; i <= 6; i++) {
+        const el = document.getElementById(`svg-stage-${i}`);
+        if (!el) continue;
+        el.classList.toggle("built", state.templeStage >= i);
+        el.classList.toggle("unbuilt", state.templeStage < i);
+      }
+
+      const wrap = document.getElementById("temple-canvas-wrap");
+      const statusTag = document.getElementById("temple-status-tag");
+      if (state.isDefiled) {
+        wrap.classList.add("defiled");
+        statusTag.textContent = "🩸 警告：聖殿遭暴動染污（需淨化或招募祭司）";
+        statusTag.style.color = "#fca5a5";
+      } else {
+        wrap.classList.remove("defiled");
+        statusTag.textContent = `✨ 已點亮 ${state.templeStage}/6 層神聖結構`;
+        statusTag.style.color = "var(--gold-bright)";
+      }
+    }
+
+    function updateHeaderAndTempleUI() {
+      document.getElementById("res-stone").textContent = Math.floor(state.stone);
+      document.getElementById("res-wood").textContent = Math.floor(state.wood);
+      document.getElementById("res-gold").textContent = Math.floor(state.gold);
+      document.getElementById("res-relic").textContent = state.relics;
+      document.getElementById("res-sanctity").textContent = state.sanctity;
+      document.getElementById("res-slots").textContent = `${getTotalAssignedCount()}/${state.maxSlots}`;
+
+      const banner = document.getElementById("tutorial-banner");
+      if (state.tutStep <= TUTORIAL_STEPS.length) {
+        const cur = TUTORIAL_STEPS[state.tutStep - 1];
+        document.getElementById("tut-step-tag").textContent = `敕令 ${cur.step}/5`;
+        document.getElementById("tut-text").textContent = cur.text;
+        document.getElementById("tut-reward").textContent = cur.rewardText;
+      } else {
+        banner.classList.add("completed");
+        document.getElementById("tut-step-tag").textContent = "👑 智者所羅門";
+        document.getElementById("tut-text").textContent = state.templeStage >= 6 ? "聖殿已落成！挑戰遠征深淵與光暗雙路線！" : "目標：點亮聖殿六層全彩結構並遠征異教神廟！";
+        document.getElementById("tut-reward").textContent = "史詩進程";
+      }
+
+      updateTempleVisualSVG();
+
+      if (state.templeStage < TEMPLE_STAGES.length) {
+        const st = TEMPLE_STAGES[state.templeStage];
+        document.getElementById("temple-tier-label").textContent = `已完工 ${state.templeStage}/6`;
+        document.getElementById("temple-name").textContent = st.name;
+        document.getElementById("temple-desc").textContent = st.desc;
+        document.getElementById("temple-cost-text").textContent = `需求：🪨 ${st.stone} | 🌲 ${st.wood}` + (st.gold > 0 ? ` | 🪙 ${st.gold}` : "");
+
+        const pStone = Math.min(1, state.stone / st.stone);
+        const pWood = Math.min(1, state.wood / st.wood);
+        const pGold = st.gold > 0 ? Math.min(1, state.gold / st.gold) : 1;
+        document.getElementById("temple-progress").style.width = `${Math.floor(((pStone + pWood + pGold) / 3) * 100)}%`;
+
+        document.getElementById("btn-build-temple").disabled = !(state.stone >= st.stone && state.wood >= st.wood && state.gold >= st.gold);
+      } else {
+        // 聖殿竣工，隱藏舊建造卡，開啟終局奇蹟與光暗路線面板！
+        document.getElementById("temple-tier-label").textContent = "👑 聖殿落成";
+        document.getElementById("main-build-card").style.display = "none";
+        document.getElementById("endgame-temple-panel").style.display = "block";
+
+        const costRes = 2000 + state.wonderLevel * 1500;
+        const costRelic = 2 + state.wonderLevel * 2;
+        document.getElementById("wonder-lv").textContent = state.wonderLevel;
+        document.getElementById("wonder-cost-text").textContent = `升級需求：🪨 ${costRes} | 🌲 ${costRes} | 🪙 ${costRes} | 🔮 ${costRelic} 碎片`;
+        document.getElementById("btn-upgrade-wonder").disabled = !(state.stone >= costRes && state.wood >= costRes && state.gold >= costRes && state.relics >= costRelic);
+      }
+
+      const priestCost = 40 + (state.priests - 1) * 35;
+      document.getElementById("priest-count").textContent = state.priests;
+      document.getElementById("priest-cost").textContent = priestCost;
+      document.getElementById("btn-hire-priest").disabled = state.gold < priestCost;
+
+      document.getElementById("btn-purify").disabled = state.gold < 45 || (getTotalAssignedCount() === 0 && !state.isDefiled);
+
+      const sealCost = 80 + (state.maxSlots - 3) * 75;
+      document.getElementById("seal-cost").textContent = sealCost;
+      document.getElementById("btn-expand-seal").disabled = state.gold < sealCost;
+    }
+
+    function renderWorksites() {
+      for (const site of ["stone", "wood", "gold"]) {
+        const container = document.getElementById(`slots-${site}`);
+        const list = state.assigned[site];
+
+        if (list.length === 0) {
+          container.innerHTML = `<div style="color:var(--ink-muted); font-size:0.74rem; text-align:center; padding:10px 4px; border:1px dashed var(--border); border-radius:4px;">空閒中</div>`;
+          continue;
+        }
+
+        container.innerHTML = list.map(w => {
+          const d = getDemonData(w.id);
+          const stats = calculateWorkerStats(w, site);
+          const wrathPct = Math.min(100, Math.floor(w.wrath));
+          let barColor = "#2f855a";
+          if (wrathPct >= 70) barColor = "#e03c3c";
+          else if (wrathPct >= 45) barColor = "#dd6b20";
+
+          let tags = [];
+          if (stats.hasRival) tags.push(`<span style="color:#b45309;font-weight:bold;">⚔️死對頭互毆(0)</span>`);
+          else {
+            if (stats.isBerserk) tags.push(`<span style="color:#dc2626;font-weight:bold;">🔥狂暴爆發!</span>`);
+            if (stats.hasPacifier) tags.push(`<span style="color:#2563eb;">🕊️降怒</span>`);
+            if (stats.hasAgitator) tags.push(`<span style="color:#b91c1c;">🔥煽動</span>`);
+            if (stats.hasDiplomat) tags.push(`<span style="color:#7e22ce;">🤝調和</span>`);
+          }
+
+          return `
+            <div class="worker-row ${stats.isBerserk ? "berserk" : ""} ${stats.hasRival ? "conflict" : ""}">
+              <div class="w-top">
+                <span>No.${d.id} ${d.name.split(" ")[0]}</span>
+                <span style="color:#2563eb;">+${stats.output.toFixed(1)}/s</span>
+              </div>
+              <div class="w-tags">${tags.join(" ") || "穩定勞作"} · 怨氣 <strong>${wrathPct}%</strong></div>
+              <div class="wrath-track"><div class="wrath-bar" style="width:${wrathPct}%; background:${barColor};"></div></div>
+              <div class="w-controls">
+                <button class="btn btn-sm btn-holy" onclick="sootheDemon('${site}', ${d.id})" ${state.gold < 15 ? "disabled" : ""}>🕊️安撫(15金)</button>
+                <button class="btn btn-sm" onclick="recallDemon('${site}', ${d.id})">↩️召回</button>
+              </div>
+            </div>
+          `;
+        }).join("");
+      }
+    }
+
+    function renderGrimoire() {
+      const search = document.getElementById("search-demon").value.trim().toLowerCase();
+      document.getElementById("unlocked-count").textContent = `已契約 ${state.unlockedDemons.length}/72`;
+      document.getElementById("cnt-unlocked").textContent = state.unlockedDemons.length;
+
+      const pool = document.getElementById("demons-pool");
+      const specIcon = { stone: "🪨", wood: "🌲", gold: "🪙" };
+      const specName = { stone: "採石", wood: "伐木", gold: "金礦" };
+      const roleBadge = {
+        pacify: `<span class="rel-pill role-pacify">🕊️鎮壓降怒</span>`,
+        agitate: `<span class="rel-pill role-agitate">🔥煽動狂暴</span>`,
+        burst: `<span class="rel-pill role-burst">⚡瞬間爆發</span>`,
+        diplomat: `<span class="rel-pill role-diplomat">🤝社交調和</span>`
+      };
+
+      const filtered = RAW_DEMONS.filter(d => {
+        const isUnlocked = state.unlockedDemons.includes(d.id);
+        if (search) {
+          return d.name.toLowerCase().includes(search) || String(d.id) === search;
+        }
+        if (state.activeRankTab === "unlocked" && !isUnlocked) return false;
+        if (state.activeRankTab !== "unlocked" && d.rank !== state.activeRankTab) return false;
+        if (state.specFilter !== "all" && d.spec !== state.specFilter) return false;
+        if (state.roleFilter !== "all" && d.role !== state.roleFilter) return false;
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        pool.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:22px; color:var(--ink-muted); font-size:0.84rem;">此分類篩選下尚無符合條件的魔神，請切換頁籤或取消過濾條件。</div>`;
+        return;
+      }
+
+      pool.innerHTML = filtered.map(d => {
+        const isUnlocked = state.unlockedDemons.includes(d.id);
+        const workingSite = isDemonWorking(d.id);
+        const onExp = isDemonOnExpedition(d.id);
+
+        let actionHtml = "";
+        if (!isUnlocked) {
+          actionHtml = `<button class="btn btn-sm btn-gold" style="width:100%;" onclick="summonDemon(${d.id})" ${state.gold < d.cost ? "disabled" : ""}>✡ 召喚契約（🪙 ${d.cost}）</button>`;
+        } else if (onExp) {
+          actionHtml = `<button class="btn btn-sm btn-purple" style="width:100%;" disabled>⚔️ 正在遠征討伐中...</button>`;
+        } else if (workingSite) {
+          actionHtml = `<button class="btn btn-sm btn-holy" style="width:100%;" onclick="recallDemon('${workingSite}', ${d.id})">⚒️ ${specName[workingSite]}中（點擊召回）</button>`;
+        } else {
+          const full = getTotalAssignedCount() >= state.maxSlots;
+          actionHtml = `
+            <div class="d-assign-row">
+              <button class="btn btn-sm" onclick="assignDemon(${d.id}, 'stone')" ${full ? "disabled" : ""}>🪨採石</button>
+              <button class="btn btn-sm" onclick="assignDemon(${d.id}, 'wood')" ${full ? "disabled" : ""}>🌲伐木</button>
+              <button class="btn btn-sm" onclick="assignDemon(${d.id}, 'gold')" ${full ? "disabled" : ""}>🪙金礦</button>
+            </div>
+          `;
+        }
+
+        return `
+          <div class="d-card ${isUnlocked ? (workingSite ? "working" : "") : "locked"}">
+            <div class="d-card-main" onclick="openDemonDetail(${d.id})" title="點擊查看神話傳記">
+              <div class="sigil-box">${generateDemonSigilSVG(d, 42)}</div>
+              <div class="d-info">
+                <div class="d-title-row">
+                  <span class="d-name">No.${d.id} ${d.name.split(" ")[0]}</span>
+                  <span class="d-rate-tag">${specIcon[d.spec]} +${d.baseRate}/s</span>
+                </div>
+                <div class="d-rel-row">
+                  ${roleBadge[d.role]}
+                  <span class="rel-pill rival">⚔️忌${d.rival}</span>
+                  <span class="rel-pill syn">🤝合${d.synergy}</span>
+                </div>
+              </div>
+            </div>
+            ${actionHtml}
+          </div>
+        `;
+      }).join("");
+    }
+
+    function renderExpeditionTab() {
+      const power = getSquadPower();
+      const squadDiv = document.getElementById("squad-display");
+      if (state.expeditionSquad.length === 0) {
+        squadDiv.innerHTML = `<div class="squad-slot">尚未編入遠征魔神（當前戰力：0）</div>`;
+      } else {
+        squadDiv.innerHTML = state.expeditionSquad.map(id => {
+          const d = getDemonData(id);
+          return `<div class="squad-slot" style="border-style:solid; border-color:var(--purple);">No.${d.id} ${d.name.split(" ")[0]} (${d.rank})</div>`;
+        }).join("") + `<div class="squad-slot" style="background:var(--purple); color:#fff;">⚔️ 軍團總戰力：${power}</div>`;
+      }
+
+      // 顯示可編組的已契約空閒魔神
+      const poolBtns = document.getElementById("expedition-pool-btns");
+      const idleDemons = state.unlockedDemons.filter(id => !isDemonWorking(id));
+      poolBtns.innerHTML = idleDemons.map(id => {
+        const d = getDemonData(id);
+        const selected = state.expeditionSquad.includes(id);
+        return `<button class="btn btn-sm ${selected ? "btn-purple" : ""}" onclick="toggleSquadMember(${id})" ${state.activeExpedition ? "disabled" : ""}>
+          ${selected ? "✅" : "➕"} No.${d.id} ${d.name.split(" ")[0]}
+        </button>`;
+      }).join("") || `<span style="font-size:0.78rem; color:var(--ink-muted);">所有已契約魔神皆在工地上工，請先召回再編組。</span>`;
+
+      // 遠征進度條
+      const statusBox = document.getElementById("expedition-status-box");
+      if (state.activeExpedition) {
+        statusBox.style.display = "block";
+        const m = EXPEDITION_MISSIONS.find(x => x.id === state.activeExpedition.missionId);
+        const pct = Math.floor(((state.activeExpedition.total - state.activeExpedition.remaining) / state.activeExpedition.total) * 100);
+        document.getElementById("exp-active-title").textContent = `⚔️ 正在征討：${m.title}`;
+        document.getElementById("exp-prog-fill").style.width = `${pct}%`;
+        document.getElementById("exp-time-left").textContent = `預計凱旋倒數：${state.activeExpedition.remaining} 秒`;
+      } else {
+        statusBox.style.display = "none";
+      }
+
+      // 遠征關卡列表
+      const targetsDiv = document.getElementById("expedition-targets");
+      targetsDiv.innerHTML = EXPEDITION_MISSIONS.map(m => {
+        const canGo = !state.activeExpedition && state.expeditionSquad.length > 0 && power >= m.reqPower;
+        return `
+          <div class="card-block">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <h3 style="margin:0;">${m.title}</h3>
+              <span style="font-size:0.76rem; font-weight:bold; color:${power >= m.reqPower ? "#16a34a" : "#dc2626"};">需求戰力：${m.reqPower}</span>
+            </div>
+            <p style="margin-top:5px;">${m.desc}</p>
+            <div style="font-size:0.8rem; font-weight:bold; margin-bottom:8px; color:var(--purple);">
+              凱旋戰利品：🔮 +${m.rewardRelic} 真名碎片 ｜ 🪙 +${m.rewardGold} 黃金 ｜ 耗時 ${m.duration}s
+            </div>
+            <button class="btn btn-purple" style="width:100%;" onclick="startExpedition('${m.id}')" ${canGo ? "" : "disabled"}>
+              ${state.activeExpedition ? "軍團遠征中" : (power < m.reqPower ? `戰力不足 (${power}/${m.reqPower})` : "⚔️ 發動遠征討伐")}
+            </button>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function updateAllUI() {
+      updateHeaderAndTempleUI();
+      renderWorksites();
+      renderGrimoire();
+      renderExpeditionTab();
+    }
+
+    function resetGame() {
+      if (!confirm("確定要重置聖殿工程並重新開始嗎？")) return;
+      location.reload();
+    }
+
+    updateAllUI();
+  </script>
+</body>
+</html>
