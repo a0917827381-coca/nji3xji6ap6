@@ -21,7 +21,7 @@
       --purple: #7e22ce;
       --teal: #0d9488;
       --border: #7a5c3c;
-      --nav-height: 60px;
+      --nav-height: 58px;
     }
 
     * {
@@ -36,15 +36,16 @@
       background-color: var(--bg-dark);
       color: var(--ink);
       font-family: -apple-system, BlinkMacSystemFont, "Noto Sans TC", "Microsoft JhengHei", sans-serif;
-      padding-bottom: calc(var(--nav-height) + 16px + env(safe-area-inset-bottom));
+      padding-bottom: calc(var(--nav-height) + 14px + env(safe-area-inset-bottom));
       min-height: 100vh;
+      overflow-x: hidden;
     }
 
     /* 1. 頂部資源列 */
     header {
       background: var(--surface-dark);
       border-bottom: 1.5px solid var(--gold);
-      padding: calc(8px + env(safe-area-inset-top)) 10px 8px 10px;
+      padding: calc(7px + env(safe-area-inset-top)) 10px 7px 10px;
       position: sticky;
       top: 0;
       z-index: 40;
@@ -56,12 +57,12 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 6px;
+      margin-bottom: 5px;
       gap: 6px;
     }
 
     .app-title {
-      font-size: 0.94rem;
+      font-size: 0.92rem;
       font-weight: 800;
       color: var(--gold-bright);
       white-space: nowrap;
@@ -80,7 +81,7 @@
       border: 1px solid var(--gold);
       color: var(--gold-bright);
       font-size: 0.72rem;
-      padding: 4px 7px;
+      padding: 3px 7px;
       border-radius: 4px;
       cursor: pointer;
     }
@@ -96,12 +97,12 @@
       background: rgba(255,255,255,0.06);
       border: 1px solid rgba(200, 150, 35, 0.3);
       border-radius: 5px;
-      padding: 4px 2px;
+      padding: 3px 2px;
     }
 
     .res-pill .r-val {
       display: block;
-      font-size: 0.84rem;
+      font-size: 0.82rem;
       font-weight: 800;
       color: #fff;
       font-variant-numeric: tabular-nums;
@@ -109,7 +110,7 @@
 
     .res-pill .r-lbl {
       display: block;
-      font-size: 0.62rem;
+      font-size: 0.6rem;
       color: #cbb699;
     }
 
@@ -119,23 +120,17 @@
       border-bottom: 1px solid var(--gold);
       color: #fff5e0;
       padding: 6px 10px;
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-    }
-
-    #tutorial-banner.completed {
-      background: #1b3622;
-      border-bottom-color: #48bb78;
+      gap: 6px;
     }
 
     .tut-badge {
       background: var(--gold);
       color: #1a1006;
       font-weight: 800;
-      font-size: 0.66rem;
+      font-size: 0.65rem;
       padding: 2px 6px;
       border-radius: 4px;
       white-space: nowrap;
@@ -172,7 +167,7 @@
 
     .section-head h2 {
       margin: 0;
-      font-size: 0.92rem;
+      font-size: 0.9rem;
       color: var(--ink);
     }
 
@@ -187,7 +182,7 @@
       background: #47301c;
       color: #fff;
       text-align: center;
-      transition: transform 0.1s, opacity 0.15s, box-shadow 0.15s;
+      transition: transform 0.1s, opacity 0.15s;
       box-shadow: 0 2px 6px rgba(0,0,0,0.45);
     }
 
@@ -214,7 +209,7 @@
 
     .temple-svg {
       width: 100%;
-      max-height: 230px;
+      max-height: 220px;
       display: block;
       margin: 0 auto;
     }
@@ -226,10 +221,9 @@
     .blueprint-legend {
       display: flex;
       justify-content: space-between;
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       color: #d6c5ab;
       margin-top: 4px;
-      padding: 0 2px;
     }
 
     .card-block {
@@ -240,8 +234,8 @@
       margin-bottom: 9px;
     }
 
-    .card-block h3 { margin: 0 0 5px 0; font-size: 0.92rem; color: var(--ink); }
-    .card-block p { margin: 0 0 8px 0; font-size: 0.8rem; color: var(--ink-muted); line-height: 1.4; }
+    .card-block h3 { margin: 0 0 5px 0; font-size: 0.9rem; color: var(--ink); }
+    .card-block p { margin: 0 0 8px 0; font-size: 0.78rem; color: var(--ink-muted); line-height: 1.4; }
 
     .prog-track {
       height: 9px;
@@ -271,12 +265,12 @@
       border: 1px solid var(--border);
       border-radius: 5px;
       padding: 5px 2px;
-      font-size: 0.7rem;
+      font-size: 0.68rem;
     }
 
     .buff-box strong {
       display: block;
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       color: var(--holy);
       margin-top: 2px;
     }
@@ -291,9 +285,9 @@
       border-radius: 10px;
       overflow: hidden;
       box-shadow: inset 0 0 40px rgba(45, 24, 8, 0.75), 0 6px 16px rgba(0,0,0,0.5);
-      margin-bottom: 10px;
-      aspect-ratio: 16 / 11;
-      min-height: 360px;
+      margin-bottom: 8px;
+      aspect-ratio: 16 / 12;
+      min-height: 340px;
     }
 
     .world-map-svg { width: 100%; height: 100%; display: block; }
@@ -320,36 +314,36 @@
       align-items: center;
       cursor: pointer;
       z-index: 5;
-      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: transform 0.2s ease;
     }
-    .castle-node:hover { transform: translate(-50%, -56%) scale(1.1); z-index: 10; }
+    .castle-node:active { transform: translate(-50%, -50%) scale(0.95); }
     .castle-icon-box {
-      width: 42px;
-      height: 42px;
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
       background: radial-gradient(circle, #3d2314 0%, #1c0f08 100%);
       border: 2px solid var(--gold-bright);
-      box-shadow: 0 4px 10px rgba(0,0,0,0.75);
+      box-shadow: 0 3px 8px rgba(0,0,0,0.75);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.25rem;
+      font-size: 1.15rem;
       position: relative;
     }
     .castle-node.selected .castle-icon-box {
       border-color: #ef4444;
-      box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.35), 0 0 18px #ef4444;
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.4), 0 0 14px #ef4444;
     }
     .castle-node.conquered .castle-icon-box { border-color: #4ade80; }
     .castle-node.locked { filter: grayscale(90%); opacity: 0.65; }
 
     .castle-flag {
       position: absolute;
-      top: -9px;
+      top: -8px;
       right: -8px;
       background: #15803d;
       color: #fff;
-      font-size: 0.6rem;
+      font-size: 0.58rem;
       font-weight: 900;
       padding: 1px 4px;
       border-radius: 8px;
@@ -357,41 +351,40 @@
     }
 
     .castle-name-tag {
-      margin-top: 3px;
+      margin-top: 2px;
       background: rgba(24, 15, 9, 0.92);
       color: #fef08a;
       border: 1px solid var(--gold);
-      padding: 2px 6px;
-      border-radius: 10px;
-      font-size: 0.66rem;
+      padding: 1px 5px;
+      border-radius: 8px;
+      font-size: 0.62rem;
       font-weight: 800;
       white-space: nowrap;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.6);
     }
 
+    /* [修復] 城池出征視窗改為全螢幕 fixed 居中，絕不再被地圖容器裁切！ */
     .siege-popup-backdrop {
-      position: absolute;
+      position: fixed;
       inset: 0;
-      background: rgba(10, 6, 3, 0.62);
+      background: rgba(10, 6, 3, 0.78);
       backdrop-filter: blur(2px);
-      z-index: 20;
+      z-index: 110;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 10px;
+      padding: 14px;
     }
     .siege-popup-backdrop.hidden { display: none !important; }
 
     .siege-panel {
-      position: relative;
       width: 100%;
-      max-width: 440px;
-      background: linear-gradient(180deg, rgba(43, 28, 18, 0.98) 0%, rgba(21, 13, 8, 0.98) 100%);
+      max-width: 400px;
+      background: linear-gradient(180deg, #2b1c12 0%, #150d08 100%);
       color: #f4ead5;
       border: 2px solid var(--gold-bright);
       border-radius: 12px;
-      padding: 12px;
-      box-shadow: 0 16px 38px rgba(0,0,0,0.9), 0 0 24px rgba(200, 150, 35, 0.35);
+      padding: 14px;
+      box-shadow: 0 16px 38px rgba(0,0,0,0.95);
     }
 
     .siege-close-btn {
@@ -483,21 +476,22 @@
       background: #78350f;
       color: #fde047;
       font-weight: 800;
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       padding: 1px 5px;
       border-radius: 10px;
       white-space: nowrap;
     }
-    .spell-badge { background: #15803d; color: #fff; font-weight: 800; font-size: 0.7rem; padding: 1px 5px; border-radius: 10px; white-space: nowrap; }
-    .trap-badge { background: #be185d; color: #fff; font-weight: 800; font-size: 0.7rem; padding: 1px 5px; border-radius: 10px; white-space: nowrap; }
+    .spell-badge { background: #15803d; color: #fff; font-weight: 800; font-size: 0.68rem; padding: 1px 5px; border-radius: 10px; white-space: nowrap; }
+    .trap-badge { background: #be185d; color: #fff; font-weight: 800; font-size: 0.68rem; padding: 1px 5px; border-radius: 10px; white-space: nowrap; }
 
     /* ==========================================
-       所羅門魔導決鬥盤戰場 (Desktop + Mobile-First 雙適配)
+       [手機一屏鎖定適配] 遊戲王 x 所羅門魔導決鬥盤戰場
        ========================================== */
     #battle-overlay {
       position: fixed;
       inset: 0;
       height: 100dvh;
+      max-height: 100dvh;
       background:
         radial-gradient(ellipse at 50% 8%, rgba(220, 38, 38, 0.35) 0%, transparent 48%),
         radial-gradient(ellipse at 50% 50%, rgba(234, 179, 8, 0.16) 0%, transparent 62%),
@@ -506,9 +500,9 @@
       z-index: 90;
       display: flex;
       flex-direction: column;
-      padding: calc(5px + env(safe-area-inset-top)) 10px calc(8px + env(safe-area-inset-bottom)) 10px;
+      padding: calc(4px + env(safe-area-inset-top)) 8px calc(6px + env(safe-area-inset-bottom)) 8px;
       color: #fff;
-      overflow-y: auto;
+      overflow: hidden;
     }
 
     #battle-overlay.hidden { display: none; }
@@ -535,35 +529,33 @@
     @keyframes screen-flash-anim { 0% { opacity: 1; } 100% { opacity: 0; } }
 
     .duel-inner {
-      max-width: 880px;
+      max-width: 860px;
       width: 100%;
-      min-height: 100%;
+      height: 100%;
       margin: 0 auto;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      gap: 5px;
-      position: relative;
+      gap: 4px;
     }
 
-    /* 1. 高對比度敵軍主將計分橫幅 */
+    /* 1. 敵軍主將計分橫幅 */
     .duel-top-bar {
       background: linear-gradient(90deg, #3b0d14 0%, #1f0a10 50%, #3b0d14 100%);
       border: 1.5px solid #f43f5e;
-      border-radius: 9px;
-      padding: 4px 10px;
+      border-radius: 8px;
+      padding: 4px 8px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 6px;
-      box-shadow: 0 3px 12px rgba(244, 63, 94, 0.28);
       flex-shrink: 0;
     }
 
     .boss-crest-frame {
-      width: 34px;
-      height: 34px;
-      border-radius: 8px;
+      width: 30px;
+      height: 30px;
+      border-radius: 7px;
       background: radial-gradient(circle, #5e111b 0%, #1a0508 100%);
       border: 1.5px solid #fda4af;
       display: flex;
@@ -575,52 +567,48 @@
     .lp-meter-panel {
       display: flex;
       flex-direction: column;
-      min-width: 138px;
+      min-width: 105px;
       background: rgba(0, 0, 0, 0.55);
       border: 1px solid rgba(255, 255, 255, 0.2);
       border-radius: 6px;
-      padding: 2px 8px;
+      padding: 2px 7px;
       flex-shrink: 0;
     }
 
     .lp-number-bright {
-      font-size: 1.1rem;
+      font-size: 1rem;
       font-weight: 900;
       font-variant-numeric: tabular-nums;
-      letter-spacing: 0.4px;
-      text-shadow: 0 2px 6px rgba(0,0,0,0.9);
+      text-shadow: 0 1px 4px #000;
     }
 
     .lp-bar-mini {
-      height: 5px;
+      height: 4px;
       background: #14080a;
-      border-radius: 4px;
+      border-radius: 3px;
       overflow: hidden;
       margin-top: 2px;
-      border: 1px solid rgba(255,255,255,0.22);
     }
     .lp-bar-mini-fill { height: 100%; transition: width 0.25s ease; }
 
-    /* 2. 魔導法陣決鬥墊 */
+    /* 2. 魔導法陣決鬥墊 (緊湊 5 排，絕對不溢出螢幕) */
     .duel-board {
       position: relative;
       background:
         linear-gradient(180deg, rgba(136, 19, 55, 0.24) 0%, rgba(15, 11, 20, 0.92) 48%, rgba(30, 58, 138, 0.24) 100%);
-      border: 2px solid #d97706;
-      border-radius: 12px;
-      padding: 6px 10px;
+      border: 1.5px solid #d97706;
+      border-radius: 10px;
+      padding: 5px 6px;
       display: flex;
       flex-direction: column;
-      gap: 5px;
+      gap: 4px;
       flex-shrink: 0;
-      box-shadow:
-        0 6px 22px rgba(0,0,0,0.85),
-        inset 0 0 30px rgba(217, 119, 6, 0.22);
+      box-shadow: inset 0 0 24px rgba(217, 119, 6, 0.2);
     }
 
     .duel-board.hellfire-active {
       border-color: #ef4444;
-      box-shadow: 0 0 24px rgba(239, 68, 68, 0.65), inset 0 0 40px rgba(220, 38, 38, 0.45);
+      box-shadow: 0 0 18px rgba(239, 68, 68, 0.65), inset 0 0 30px rgba(220, 38, 38, 0.45);
     }
 
     .duel-mat-watermark {
@@ -629,7 +617,7 @@
       width: 100%;
       height: 100%;
       pointer-events: none;
-      opacity: 0.24;
+      opacity: 0.22;
       z-index: 0;
     }
 
@@ -637,94 +625,87 @@
       position: relative;
       z-index: 2;
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 156px));
+      grid-template-columns: repeat(3, minmax(0, 150px));
       justify-content: center;
-      gap: 12px;
+      gap: 8px;
     }
 
-    /* 前排怪獸卡槽 */
+    @media (max-width: 640px) {
+      .board-row {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 5px;
+      }
+    }
+
     .zone-slot {
       background: radial-gradient(circle at 50% 45%, rgba(45, 32, 22, 0.65) 0%, rgba(15, 11, 14, 0.85) 100%);
       border: 1.5px solid rgba(245, 158, 11, 0.42);
-      border-radius: 8px;
-      height: 74px;
-      padding: 3px 6px;
+      border-radius: 7px;
+      height: 62px;
+      padding: 2px 4px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
       position: relative;
       cursor: pointer;
-      box-shadow: inset 0 0 10px rgba(0,0,0,0.85), 0 2px 5px rgba(0,0,0,0.5);
-      transition: transform 0.16s ease, border-color 0.16s, box-shadow 0.16s;
     }
 
-    .zone-slot:hover { border-color: rgba(253, 224, 71, 0.85); }
-
-    /* 後台魔陷與場地卡槽 */
     .zone-slot.backrow-slot {
-      height: 36px;
+      height: 28px;
       background: linear-gradient(180deg, rgba(24, 22, 38, 0.85) 0%, rgba(12, 11, 20, 0.95) 100%);
       border: 1px solid rgba(96, 165, 250, 0.4);
       justify-content: center;
-      padding: 2px 4px;
+      padding: 1px 3px;
     }
 
     .zone-slot.player-trap-empty {
-      border: 1px dashed rgba(244, 114, 182, 0.6);
+      border: 1px dashed rgba(244, 114, 182, 0.65);
       background: linear-gradient(180deg, rgba(46, 16, 36, 0.55) 0%, rgba(15, 10, 20, 0.88) 100%);
     }
 
     .zone-slot.occupied {
       border: 2px solid #facc15;
       background: linear-gradient(165deg, #422814 0%, #1f1209 65%, #120a05 100%);
-      box-shadow: 0 3px 10px rgba(0,0,0,0.85), 0 0 8px rgba(250, 204, 21, 0.35);
     }
 
     .zone-slot.enemy-occupied {
       border: 2px solid #fb7185;
       background: linear-gradient(165deg, #4c111b 0%, #24080d 65%, #140407 100%);
-      box-shadow: 0 3px 10px rgba(0,0,0,0.85), 0 0 8px rgba(244, 63, 94, 0.35);
     }
 
     .zone-slot.def-stance {
       border: 2px solid #38bdf8;
       background: linear-gradient(90deg, #0c2d48 0%, #164e63 50%, #0c2d48 100%);
-      box-shadow: 0 3px 10px rgba(0,0,0,0.85), 0 0 10px rgba(56, 189, 248, 0.45);
     }
 
     .zone-slot.tribute-target {
       border: 2.5px solid #fde047 !important;
-      box-shadow: 0 0 16px rgba(250, 204, 21, 0.95) !important;
-      animation: slot-pulse 0.75s infinite alternate;
+      box-shadow: 0 0 14px rgba(250, 204, 21, 0.95) !important;
     }
 
     .zone-slot.tribute-selected {
       border: 2.5px solid #4ade80 !important;
       background: linear-gradient(180deg, #14532d, #052e16) !important;
-      box-shadow: 0 0 18px #4ade80 !important;
     }
 
     .zone-slot.attack-target {
       border: 2.5px solid #ef4444 !important;
-      box-shadow: 0 0 16px rgba(239, 68, 68, 0.95) !important;
-      animation: slot-pulse 0.65s infinite alternate;
+      box-shadow: 0 0 14px rgba(239, 68, 68, 0.95) !important;
     }
 
     .zone-slot.attacker-selected {
       border: 2.5px solid #fde047 !important;
-      transform: translateY(-3px) scale(1.03);
-      box-shadow: 0 6px 16px rgba(0,0,0,0.9), 0 0 18px rgba(253, 224, 71, 0.95) !important;
+      transform: translateY(-2px);
+      box-shadow: 0 0 14px rgba(253, 224, 71, 0.95) !important;
     }
-
-    @keyframes slot-pulse { from { transform: scale(1); } to { transform: scale(1.03); } }
 
     .field-card-header {
       width: 100%;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       font-weight: 900;
       color: #fef08a;
       gap: 2px;
@@ -734,27 +715,25 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 78px;
-      text-shadow: 0 1px 3px #000;
+      max-width: 58px;
     }
 
     .stance-pill {
-      font-size: 0.6rem;
+      font-size: 0.56rem;
       font-weight: 900;
-      padding: 1px 4px;
-      border-radius: 4px;
+      padding: 0 3px;
+      border-radius: 3px;
       white-space: nowrap;
       flex-shrink: 0;
     }
 
     .monster-stats-bar {
       width: 100%;
-      background: rgba(0, 0, 0, 0.8);
-      border: 1px solid rgba(255, 255, 255, 0.22);
-      border-radius: 4px;
-      padding: 0 3px;
+      background: rgba(0, 0, 0, 0.82);
+      border-radius: 3px;
+      padding: 0 2px;
       text-align: center;
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       font-weight: 900;
       font-variant-numeric: tabular-nums;
       white-space: nowrap;
@@ -767,17 +746,17 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: linear-gradient(90deg, rgba(15, 23, 42, 0.94), rgba(45, 26, 12, 0.96), rgba(15, 23, 42, 0.94));
+      background: rgba(15, 23, 42, 0.95);
       border: 1px solid rgba(250, 204, 21, 0.55);
-      padding: 4px 8px;
-      border-radius: 7px;
+      padding: 3px 6px;
+      border-radius: 6px;
       gap: 4px;
     }
 
     .phase-pills { display: flex; gap: 3px; }
 
     .phase-pill {
-      font-size: 0.68rem;
+      font-size: 0.64rem;
       font-weight: 800;
       padding: 2px 5px;
       border-radius: 4px;
@@ -786,17 +765,16 @@
       white-space: nowrap;
     }
     .phase-pill.active {
-      background: linear-gradient(180deg, #fde047, #eab308);
+      background: #fde047;
       color: #1a1006;
-      box-shadow: 0 0 8px rgba(250, 204, 21, 0.75);
     }
 
-    /* 3. 所羅門王 LP、真名印記與支配怨氣條 */
+    /* 3. 所羅門王計分與支配怨氣條 */
     .player-duel-bar {
       background: linear-gradient(90deg, #0f1f3d 0%, #161829 50%, #0f1f3d 100%);
       border: 1.5px solid #60a5fa;
-      border-radius: 9px;
-      padding: 5px 10px;
+      border-radius: 8px;
+      padding: 4px 8px;
       flex-shrink: 0;
     }
 
@@ -814,12 +792,12 @@
     }
 
     .wrath-meter-track {
-      height: 7px;
+      height: 6px;
       background: #090d16;
-      border-radius: 4px;
+      border-radius: 3px;
       overflow: hidden;
       border: 1px solid #92400e;
-      margin-top: 3px;
+      margin-top: 2px;
     }
 
     .wrath-meter-fill {
@@ -834,15 +812,15 @@
       border: 1.5px solid #93c5fd;
       color: #ffffff;
       border-radius: 7px;
-      padding: 5px 9px;
-      font-size: 0.78rem;
+      padding: 4px 8px;
+      font-size: 0.74rem;
       font-weight: 700;
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
-      gap: 5px;
-      min-height: 34px;
+      gap: 4px;
+      min-height: 32px;
       flex-shrink: 0;
     }
 
@@ -852,14 +830,14 @@
       color: #fef08a;
     }
 
-    /* 5. 立體手牌區（桌面置中、手機左起橫向順暢滑動） */
+    /* 5. [核心修復] 左起對齊手牌區，第一張牌永遠完整靠左絕不裁切！ */
     .hand-container {
       display: flex;
-      justify-content: center;
+      justify-content: flex-start;
       align-items: flex-end;
-      gap: 9px;
-      padding: 6px 8px 2px 8px;
-      min-height: 168px;
+      gap: 7px;
+      padding: 6px 8px 2px 2px;
+      height: 142px;
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
@@ -867,22 +845,37 @@
     }
     .hand-container::-webkit-scrollbar { display: none; }
 
+    @media (min-width: 680px) {
+      .hand-container {
+        justify-content: center;
+        height: 164px;
+      }
+    }
+
     .battle-card {
-      flex: 0 0 132px;
-      height: 164px;
+      flex: 0 0 106px;
+      height: 132px;
       background: linear-gradient(165deg, #d98a3c 0%, #b4621e 55%, #8a4310 100%);
       color: #1a1006;
-      border: 2.5px solid #f59e0b;
-      border-radius: 9px;
-      padding: 4px;
+      border: 2px solid #f59e0b;
+      border-radius: 8px;
+      padding: 3px;
       position: relative;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       gap: 2px;
-      box-shadow: 0 5px 14px rgba(0,0,0,0.8), inset 0 0 0 1px rgba(255,255,255,0.45);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.8);
       cursor: pointer;
-      transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s;
+      transition: transform 0.14s ease, border-color 0.14s;
+    }
+
+    @media (min-width: 680px) {
+      .battle-card {
+        flex: 0 0 128px;
+        height: 154px;
+        padding: 4px;
+      }
     }
 
     .battle-card.rank-high {
@@ -893,7 +886,6 @@
     .battle-card.rank-king {
       background: linear-gradient(165deg, #fde047 0%, #d97706 55%, #78350f 100%);
       border-color: #ffffff;
-      box-shadow: 0 5px 16px rgba(250, 204, 21, 0.45), inset 0 0 0 1.5px #fff;
     }
 
     .battle-card.is-spell {
@@ -906,23 +898,22 @@
       border-color: #fbcfe8;
     }
 
-    .battle-card:hover,
     .battle-card.selected-hand {
-      transform: translateY(-10px) scale(1.04) !important;
+      transform: translateY(-6px) !important;
       z-index: 30;
       border-color: #fde047 !important;
-      box-shadow: 0 12px 24px rgba(0,0,0,0.95), 0 0 18px rgba(253, 224, 71, 0.95);
+      box-shadow: 0 0 14px rgba(253, 224, 71, 0.95);
     }
 
     .bc-top {
       background: rgba(255, 251, 235, 0.95);
       border-radius: 4px;
-      padding: 2px 4px;
+      padding: 1px 4px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       font-weight: 900;
-      font-size: 0.74rem;
+      font-size: 0.68rem;
       color: #1c1008;
     }
 
@@ -930,7 +921,7 @@
       background: radial-gradient(circle, #2a1b12 0%, #0f0906 100%);
       border: 1px solid rgba(253, 224, 71, 0.65);
       border-radius: 4px;
-      height: 34px;
+      height: 24px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -942,10 +933,10 @@
       background: #fffbeb;
       border: 1px solid #b45309;
       border-radius: 4px;
-      padding: 2px 4px;
-      font-size: 0.68rem;
+      padding: 2px 3px;
+      font-size: 0.61rem;
       font-weight: 700;
-      line-height: 1.24;
+      line-height: 1.18;
       color: #1c1208;
       overflow-y: auto;
       display: flex;
@@ -955,9 +946,9 @@
     .bc-footer {
       background: #140d08;
       color: #fff;
-      border-radius: 4px;
-      padding: 2px 4px;
-      font-size: 0.68rem;
+      border-radius: 3px;
+      padding: 1px 3px;
+      font-size: 0.61rem;
       font-weight: 900;
       display: flex;
       justify-content: space-between;
@@ -966,182 +957,17 @@
       white-space: nowrap;
     }
 
-    /* 桌面專用浮動卡牌放大檢視鏡 */
-    #card-zoom-inspector {
-      position: fixed;
-      right: 14px;
-      top: 58px;
-      width: 220px;
-      background: linear-gradient(165deg, #2d1d12 0%, #140c07 100%);
-      border: 2.5px solid #fde047;
-      border-radius: 12px;
-      padding: 12px;
-      color: #fff;
-      z-index: 95;
-      box-shadow: 0 12px 32px rgba(0,0,0,0.9), 0 0 18px rgba(250, 204, 21, 0.45);
-      pointer-events: none;
-    }
-    #card-zoom-inspector.hidden { display: none; }
-
-    /* ==========================================
-       [核心修復] 手機窄螢幕專屬響應式適配 (<= 640px)
-       ========================================== */
-    @media (max-width: 640px) {
-      #card-zoom-inspector {
-        display: none !important; /* 手機觸控絕不彈出遮擋戰場的懸浮框 */
-      }
-
-      #battle-overlay {
-        padding: calc(4px + env(safe-area-inset-top)) 6px calc(6px + env(safe-area-inset-bottom)) 6px;
-      }
-
-      .duel-inner {
-        gap: 4px;
-      }
-
-      /* 頂部敵軍橫幅緊湊化 */
-      .duel-top-bar {
-        padding: 4px 6px;
-        gap: 4px;
-      }
-      .boss-crest-frame {
-        width: 30px;
-        height: 30px;
-      }
-      .lp-meter-panel {
-        min-width: 108px;
-        padding: 2px 6px;
-      }
-      .lp-number-bright {
-        font-size: 0.95rem;
-      }
-      #enemy-name {
-        font-size: 0.8rem !important;
-        max-width: 105px;
-      }
-      .enemy-sub-meta {
-        font-size: 0.64rem !important;
-      }
-
-      /* 5 排決鬥盤高度壓縮，確保一屏完整顯示不需上下捲動 */
-      .duel-board {
-        padding: 5px 6px;
-        gap: 4px;
-        border-radius: 10px;
-      }
-      .board-row {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 5px;
-      }
-      .zone-slot {
-        height: 60px;
-        padding: 2px 4px;
-        border-radius: 6px;
-      }
-      .zone-slot svg {
-        width: 20px !important;
-        height: 20px !important;
-      }
-      .zone-slot.backrow-slot {
-        height: 30px;
-        padding: 1px 3px;
-      }
-      .field-card-header {
-        font-size: 0.64rem;
-      }
-      .field-card-name {
-        max-width: 56px;
-      }
-      .stance-pill {
-        font-size: 0.56rem;
-        padding: 0 3px;
-      }
-      .monster-stats-bar {
-        font-size: 0.64rem;
-      }
-
-      /* 中央階段列精簡化 */
-      .duel-mid-strip {
-        padding: 3px 5px;
-      }
-      .phase-pill {
-        font-size: 0.62rem;
-        padding: 2px 4px;
-      }
-      .phase-label-full {
-        display: none; /* 手機隱藏「抽牌/主要/戰鬥/結束」贅字，只留 DP/MP/BP/EP */
-      }
-
-      /* 玩家狀態條緊湊化 */
-      .player-duel-bar {
-        padding: 4px 8px;
-      }
-      .wrath-sub-text {
-        font-size: 0.64rem !important;
-      }
-
-      /* 指令操作列：手指好點的大按鈕 */
-      .duel-action-banner {
-        padding: 4px 7px;
-        font-size: 0.72rem;
-        min-height: 32px;
-      }
-      .duel-action-banner .btn-sm {
-        padding: 5px 7px;
-        font-size: 0.72rem;
-      }
-
-      /* 手牌區修復：左對齊橫向順暢滑動，絕不裁切第一張牌！ */
-      .hand-container {
-        justify-content: flex-start !important;
-        gap: 7px;
-        padding: 8px 6px 4px 6px;
-        min-height: 146px;
-        scroll-snap-type: x proximity;
-      }
-      .battle-card {
-        flex: 0 0 108px;
-        height: 138px;
-        padding: 3px;
-        scroll-snap-align: start;
-      }
-      .battle-card:hover,
-      .battle-card.selected-hand {
-        transform: translateY(-7px) scale(1.02) !important;
-      }
-      .bc-top {
-        font-size: 0.68rem;
-        padding: 1px 4px;
-      }
-      .battle-card .card-art-well {
-        height: 26px;
-      }
-      .battle-card .card-art-well svg {
-        width: 22px !important;
-        height: 22px !important;
-      }
-      .bc-desc {
-        font-size: 0.62rem;
-        line-height: 1.2;
-        padding: 2px 3px;
-      }
-      .bc-footer {
-        font-size: 0.62rem;
-        padding: 1px 3px;
-      }
-    }
-
     /* 彈道與浮動數字特效 */
     .vfx-projectile {
       position: fixed;
-      width: 24px;
-      height: 24px;
+      width: 22px;
+      height: 22px;
       border-radius: 50%;
       pointer-events: none;
       z-index: 9995;
       transform: translate(-50%, -50%);
       background: radial-gradient(circle, #ffffff 0%, #fde047 45%, #ef4444 85%, transparent 100%);
-      box-shadow: 0 0 20px 8px rgba(239, 68, 68, 0.95);
+      box-shadow: 0 0 18px 6px rgba(239, 68, 68, 0.95);
     }
 
     .vfx-shockwave {
@@ -1157,7 +983,7 @@
     }
     @keyframes shockwave-expand {
       0% { width: 14px; height: 14px; opacity: 1; }
-      100% { width: 130px; height: 130px; opacity: 0; border-width: 1px; }
+      100% { width: 120px; height: 120px; opacity: 0; border-width: 1px; }
     }
 
     .float-banner-text {
@@ -1165,7 +991,7 @@
       left: 50%;
       top: 42%;
       transform: translate(-50%, -50%);
-      font-size: 1.15rem;
+      font-size: 1.05rem;
       font-weight: 900;
       z-index: 9998;
       pointer-events: none;
@@ -1177,7 +1003,7 @@
 
     @keyframes float-up-fade {
       0% { opacity: 1; transform: translate(-50%, 0) scale(0.85); }
-      25% { opacity: 1; transform: translate(-50%, -14px) scale(1.08); }
+      25% { opacity: 1; transform: translate(-50%, -14px) scale(1.06); }
       100% { opacity: 0; transform: translate(-50%, -42px) scale(1); }
     }
 
@@ -1206,11 +1032,11 @@
       align-items: center;
       justify-content: center;
       gap: 2px;
-      font-size: 0.76rem;
+      font-size: 0.74rem;
       cursor: pointer;
     }
 
-    .nav-btn .nav-icon { font-size: 1.2rem; }
+    .nav-btn .nav-icon { font-size: 1.15rem; }
     .nav-btn.active { color: var(--gold-bright); background: rgba(244, 203, 84, 0.12); font-weight: 800; }
 
     /* 彈窗 */
@@ -1241,7 +1067,7 @@
     .modal-card h2 {
       margin-top: 0;
       text-align: center;
-      font-size: 1.1rem;
+      font-size: 1.08rem;
       color: #4a2508;
       border-bottom: 1.5px solid #7a5c3c;
       padding-bottom: 8px;
@@ -1252,8 +1078,8 @@
       border-left: 4px solid #c89623;
       padding: 8px 10px;
       margin-bottom: 8px;
-      font-size: 0.81rem;
-      line-height: 1.42;
+      font-size: 0.8rem;
+      line-height: 1.4;
       border-radius: 0 4px 4px 0;
     }
     .rule-item.danger { border-left-color: #9e2222; }
@@ -1266,27 +1092,32 @@
   <div id="prologue-modal" class="modal-overlay">
     <div class="modal-card">
       <h2>✡ 所羅門的聖殿：魔神決鬥錄 ✡</h2>
-      <p style="font-size: 0.85rem; line-height: 1.5;">
-        以所羅門印戒統率<strong>七十二柱魔神怪獸</strong>與<strong>《所羅門秘儀》魔法陷阱</strong>！在魔導決鬥盤上擊潰四方列國主將，掠奪物資構築全彩耶路撒冷第一聖殿！
+      <p style="font-size: 0.84rem; line-height: 1.5;">
+        以所羅門印戒統率<strong>七十二柱魔神怪獸</strong>與<strong>《所羅門秘儀》魔法陷阱</strong>！在決鬥盤上擊潰四方列國主將，掠奪物資構築全彩耶路撒冷第一聖殿！
       </p>
       <div class="rule-item holy">
         <strong>⚔️ 1. 決鬥盤與祭品召喚（LP 4000 對決）</strong><br>
         • <strong>3～4★ 魔神</strong>：每回合可直接「攻擊召喚」或「裏側守備蓋牌」。<br>
         • <strong>5～6★ 魔神</strong>需解放 <strong>1 隻</strong>祭品；<strong>8★ 君王</strong>需解放 <strong>2 隻</strong>祭品（解放攻擊怪 +300 ATK；解放守備怪獲一次破壞免疫盾）。<br>
-        • <strong>✨ 真名降臨</strong>：擊破敵怪或獻祭可累積「所羅門印記」，集滿 <strong>3 枚</strong>可免祭品直接特召 8★ 君王！
+        • <strong>✨ 真名降臨</strong>：擊破敵怪或獻祭可累積「印記」，集滿 <strong>3 枚</strong>可免祭品特召 8★ 君王！
       </div>
       <div class="rule-item danger">
         <strong>🔥 2. 70% 地獄火暴走 vs. 100% 惡魔反噬</strong><br>
-        高星魔神進攻會推升支配怨氣。達 <strong>70%～99%</strong> 全軍團 ATK 暴增 <strong>+500</strong>（強制轉攻）；但衝破 <strong>100%</strong> 時最高星魔神將叛變扣減所羅門王一半 ATK 的 LP 並自毀！<strong>適時將高怨氣魔神當成祭品獻祭</strong>即可完美化解！
+        高星魔神進攻會推升怨氣。達 <strong>70%～99%</strong> 全軍團 ATK 暴增 <strong>+500</strong>（強制轉攻）；但衝破 <strong>100%</strong> 時最高星魔神將叛變扣減所羅門王一半 ATK 的 LP 並自毀！<strong>適時將高怨氣魔神當成祭品獻祭</strong>即可化解！
       </div>
       <div class="rule-item">
         <strong>🏛️ 3. 聖殿藍圖＝永久場地魔法卡</strong><br>
-        每建成 1 層聖殿，決鬥開場自動獲得強力場地增益（提升 LP、減免祭品、自動淨化怨氣），建成 <strong>6/6 全彩聖殿</strong>後擊敗最終首領<strong>【深淵利維坦】</strong>即破關！
+        每建成 1 層聖殿，決鬥開場自動獲得強力場地增益，建成 <strong>6/6 全彩聖殿</strong>後擊敗最終首領<strong>【深淵利維坦】</strong>即破關！
       </div>
       <button class="btn btn-gold" style="width: 100%; padding: 11px; font-size: 0.96rem;" onclick="startGame()">
         💍 戴上所羅門之戒，開啟決鬥
       </button>
     </div>
+  </div>
+
+  <!-- 全螢幕出征城池情報彈窗（獨立置於外層，絕不裁切） -->
+  <div id="siege-popup-backdrop" class="siege-popup-backdrop hidden" onclick="if(event.target===this) closeSiegePopup()">
+    <div id="siege-command-panel" class="siege-panel"></div>
   </div>
 
   <!-- 戰後戰利品與選牌獎勵彈窗 -->
@@ -1307,7 +1138,7 @@
   <!-- 頂部資源列 -->
   <header>
     <div class="top-bar-row1">
-      <div class="app-title">✡ 所羅門的聖殿 <small style="font-weight:normal;opacity:0.75;">決鬥盤版</small></div>
+      <div class="app-title">✡ 所羅門的聖殿 <span style="background:#eab308;color:#1a1006;font-size:0.66rem;padding:1px 5px;border-radius:4px;font-weight:900;">v5 手機適配版</span></div>
       <div class="top-actions">
         <button onclick="document.getElementById('prologue-modal').classList.remove('hidden')">📜 規則</button>
         <button onclick="resetGame()">🔄 重置</button>
@@ -1324,10 +1155,8 @@
 
   <!-- 新手引導列 -->
   <div id="tutorial-banner">
-    <div style="display:flex; align-items:center; gap:6px; min-width:0;">
-      <span class="tut-badge" id="tut-step-tag">征戰敕令 1/3</span>
-      <span id="tut-text" style="line-height:1.3;">切換至下方「⚔️世界決鬥」，率領魔神牌組決鬥第一座要塞！</span>
-    </div>
+    <span class="tut-badge" id="tut-step-tag">敕令 1/3</span>
+    <span id="tut-text" style="line-height:1.3;">點下方「⚔️世界決鬥」，點擊城池開啟決鬥掠奪建材！</span>
   </div>
 
   <div class="app-container">
@@ -1335,7 +1164,7 @@
     <section id="tab-temple" class="tab-pane active">
       <div class="section-head">
         <h2>🏛️ 場地魔法《耶路撒冷第一聖殿》</h2>
-        <span style="font-size:0.76rem; color:var(--holy); font-weight:bold;" id="temple-tier-label">已完工 0/6</span>
+        <span style="font-size:0.75rem; color:var(--holy); font-weight:bold;" id="temple-tier-label">已完工 0/6</span>
       </div>
 
       <div class="temple-canvas-wrap">
@@ -1400,8 +1229,8 @@
       </div>
 
       <div class="buff-grid">
-        <div class="buff-box">初始基本分<strong id="stat-lp">4000 LP</strong></div>
-        <div class="buff-box">起手牌數<strong id="stat-draw">4 張</strong></div>
+        <div class="buff-box">初始LP<strong id="stat-lp">4000 LP</strong></div>
+        <div class="buff-box">起手牌<strong id="stat-draw">4 張</strong></div>
         <div class="buff-box">場地靈氣<strong id="stat-aura">無</strong></div>
         <div class="buff-box">70%狂暴<strong id="stat-berserk" style="color:var(--crimson);">ATK +500</strong></div>
       </div>
@@ -1410,7 +1239,7 @@
         <h3 id="temple-name">階段一：摩利亞山基石與白大理石階</h3>
         <p id="temple-desc">鋪設白大理石階梯與地基。完工後場地魔法永久提升：【決鬥初始 LP 4000 → 5000】！</p>
         <div class="prog-track"><div class="prog-fill" id="temple-progress"></div></div>
-        <div style="font-size: 0.8rem; font-weight: bold; margin-bottom: 8px;" id="temple-cost-text">
+        <div style="font-size: 0.78rem; font-weight: bold; margin-bottom: 8px;" id="temple-cost-text">
           需求：🪨 80 巨石 | 🌲 40 香柏木 | 👷 10 人力
         </div>
         <button class="btn btn-gold" style="width:100%;" id="btn-build-temple" onclick="buildTempleStage()">🔨 動工興建聖殿階段</button>
@@ -1420,8 +1249,8 @@
     <!-- 分頁 2：世界征戰大地圖 -->
     <section id="tab-campaign" class="tab-pane">
       <div class="section-head">
-        <h2>🗺️ 所羅門王國：四方列國決鬥遠征</h2>
-        <span style="font-size:0.74rem; color:var(--crimson); font-weight:bold;">點擊地圖城池開啟決鬥！</span>
+        <h2>🗺️ 四方列國決鬥遠征</h2>
+        <span style="font-size:0.72rem; color:var(--crimson); font-weight:bold;">點擊地圖城池出征！</span>
       </div>
 
       <div class="world-map-stage" id="world-map-stage">
@@ -1438,28 +1267,24 @@
           <g id="map-routes-layer"></g>
         </svg>
 
-        <div class="castle-node" style="left:35%; top:50%; pointer-events:none;">
+        <div class="castle-node" style="left:36%; top:50%; pointer-events:none;">
           <div class="castle-icon-box" style="border-color:#38bdf8; background:#0c4a6e;">✡️</div>
-          <div class="castle-name-tag" style="background:#0c4a6e; color:#e0f2fe;">耶路撒冷聖殿</div>
+          <div class="castle-name-tag" style="background:#0c4a6e; color:#e0f2fe;">耶路撒冷</div>
         </div>
 
         <div id="map-castles-layer"></div>
-
-        <div id="siege-popup-backdrop" class="siege-popup-backdrop hidden" onclick="if(event.target===this) closeSiegePopup()">
-          <div id="siege-command-panel" class="siege-panel"></div>
-        </div>
       </div>
     </section>
 
     <!-- 分頁 3：72 魔神與秘儀牌庫 -->
     <section id="tab-grimoire" class="tab-pane">
       <div class="section-head">
-        <h2>📖 決鬥牌組構築（72 魔神＋秘儀魔陷）</h2>
-        <span style="font-size:0.76rem; color:var(--holy); font-weight:bold;" id="deck-count-label">出戰牌組：12 張 (10~24張)</span>
+        <h2>📖 決鬥牌組構築</h2>
+        <span style="font-size:0.74rem; color:var(--holy); font-weight:bold;" id="deck-count-label">出戰牌組：12 張 (10~24張)</span>
       </div>
 
       <div class="rank-tabs" id="rank-tabs">
-        <button class="rank-tab-btn active" data-rank="deck" onclick="selectRankTab('deck')">🃏 出戰牌組 (<span id="cnt-deck">12</span>)</button>
+        <button class="rank-tab-btn active" data-rank="deck" onclick="selectRankTab('deck')">🃏 出戰 (<span id="cnt-deck">12</span>)</button>
         <button class="rank-tab-btn" data-rank="unlocked" onclick="selectRankTab('unlocked')">💍 已契約 (<span id="cnt-unlocked">12</span>)</button>
         <button class="rank-tab-btn" data-rank="arcana" onclick="selectRankTab('arcana')">🔮 秘儀魔陷 (10)</button>
         <button class="rank-tab-btn" data-rank="King" onclick="selectRankTab('King')">👑 君王 8★ (9)</button>
@@ -1475,22 +1300,19 @@
   </div>
 
   <!-- ==========================================
-       遊戲王 x 所羅門魔導決鬥盤戰場 (Duel Overlay)
+       [一屏完整顯示] 遊戲王 x 所羅門魔導決鬥盤戰場
        ========================================== -->
   <div id="battle-overlay" class="hidden">
     <div id="battle-screen-flash"></div>
 
-    <!-- 桌面版專用懸浮卡牌放大檢視鏡（手機自動隱藏避免遮擋） -->
-    <div id="card-zoom-inspector" class="hidden"></div>
-
     <div class="duel-inner">
-      <!-- 1. 高對比度敵軍主將計分橫幅 -->
+      <!-- 1. 敵軍主將計分橫幅 -->
       <div class="duel-top-bar">
         <div style="display:flex; align-items:center; gap:6px; min-width:0; flex:1;">
           <div class="boss-crest-frame" id="boss-mini-avatar"></div>
           <div style="min-width:0;">
-            <div style="font-size:0.9rem; font-weight:900; color:#fde047; text-shadow:0 1px 4px #000; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" id="enemy-name">迦特巨人百夫長</div>
-            <div class="enemy-sub-meta" style="font-size:0.7rem; font-weight:700; color:#fecdd3; white-space:nowrap;">
+            <div style="font-size:0.82rem; font-weight:900; color:#fde047; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" id="enemy-name">迦特巨人百夫長</div>
+            <div style="font-size:0.64rem; font-weight:700; color:#fecdd3; white-space:nowrap;">
               敵手:<strong style="color:#fff;" id="enemy-hand-cnt">4</strong> ｜ 牌庫:<strong style="color:#fff;" id="enemy-deck-cnt">8</strong>
             </div>
           </div>
@@ -1498,23 +1320,22 @@
 
         <div class="lp-meter-panel">
           <div style="display:flex; justify-content:space-between; align-items:baseline; gap:4px;">
-            <span style="font-size:0.65rem; font-weight:800; color:#fda4af;">敵LP</span>
+            <span style="font-size:0.64rem; font-weight:800; color:#fda4af;">敵LP</span>
             <span class="lp-number-bright" style="color:#ff6b6b;"><span id="enemy-lp-text">3000</span></span>
           </div>
-          <div class="lp-bar-mini"><div class="lp-bar-mini-fill" id="enemy-lp-bar" style="width:100%; background:linear-gradient(90deg,#dc2626,#ff6b6b);"></div></div>
+          <div class="lp-bar-mini"><div class="lp-bar-mini-fill" id="enemy-lp-bar" style="width:100%; background:#ef4444;"></div></div>
         </div>
 
         <div style="display:flex; gap:4px; flex-shrink:0;">
-          <button class="btn btn-sm" id="btn-sfx-toggle" style="background:#1e293b; border:1px solid var(--gold); padding:4px 7px;" onclick="toggleSfx()">🔊</button>
-          <button class="btn btn-sm" style="background:#374151; border:1px solid #6b7280; padding:4px 7px;" onclick="retreatBattle()">🏳️</button>
+          <button class="btn btn-sm" id="btn-sfx-toggle" style="background:#1e293b; border:1px solid var(--gold); padding:4px 6px;" onclick="toggleSfx()">🔊</button>
+          <button class="btn btn-sm" style="background:#374151; border:1px solid #6b7280; padding:4px 6px;" onclick="retreatBattle()">🏳️</button>
         </div>
       </div>
 
-      <!-- 2. 魔導法陣決鬥墊 (共 5 排完整顯示！) -->
+      <!-- 2. 魔導法陣決鬥墊 (共 5 排完整顯示) -->
       <div class="duel-board" id="duel-board">
         <svg class="duel-mat-watermark" viewBox="0 0 800 360" preserveAspectRatio="none">
           <circle cx="400" cy="180" r="165" fill="none" stroke="#f59e0b" stroke-width="2" stroke-dasharray="10 6" />
-          <circle cx="400" cy="180" r="125" fill="none" stroke="#fbbf24" stroke-width="1.5" />
           <polygon points="400,22 536,258 264,258" fill="none" stroke="#f59e0b" stroke-width="1.8" />
           <polygon points="400,338 536,102 264,102" fill="none" stroke="#f59e0b" stroke-width="1.8" />
           <line x1="40" y1="180" x2="760" y2="180" stroke="#fde047" stroke-width="1.5" stroke-dasharray="6 4" />
@@ -1523,47 +1344,47 @@
         <!-- 第 1 排：敵方後台魔陷區 -->
         <div class="board-row" id="enemy-backrow"></div>
 
-        <!-- 第 2 排：敵方前排怪獸區 (3 格卡槽) -->
+        <!-- 第 2 排：敵方前排怪獸區 -->
         <div class="board-row" id="enemy-monsters-row"></div>
 
         <!-- 第 3 排：中央對決階段光帶 -->
         <div class="duel-mid-strip">
-          <div style="font-size:0.74rem; font-weight:900; color:#fde047; white-space:nowrap;">
+          <div style="font-size:0.72rem; font-weight:900; color:#fde047; white-space:nowrap;">
             T<span id="duel-turn-num">1</span>
           </div>
           <div class="phase-pills">
-            <span class="phase-pill" id="phase-DP">DP<span class="phase-label-full"> 抽牌</span></span>
-            <span class="phase-pill active" id="phase-MP">MP<span class="phase-label-full"> 主要</span></span>
-            <span class="phase-pill" id="phase-BP">BP<span class="phase-label-full"> 戰鬥</span></span>
-            <span class="phase-pill" id="phase-EP">EP<span class="phase-label-full"> 結束</span></span>
+            <span class="phase-pill" id="phase-DP">DP</span>
+            <span class="phase-pill active" id="phase-MP">MP</span>
+            <span class="phase-pill" id="phase-BP">BP</span>
+            <span class="phase-pill" id="phase-EP">EP</span>
           </div>
           <div id="mid-phase-btns" style="display:flex; gap:4px; flex-shrink:0;"></div>
         </div>
 
-        <!-- 第 4 排：我方前排怪獸區 (3 格卡槽) -->
+        <!-- 第 4 排：我方前排怪獸區 -->
         <div class="board-row" id="player-monsters-row"></div>
 
-        <!-- 第 5 排：我方後台 (聖殿場地格 + 2 個我方魔陷/陷阱槽) -->
+        <!-- 第 5 排：我方後台 (聖殿場地格 + 2 個我方魔陷槽) -->
         <div class="board-row" id="player-backrow"></div>
       </div>
 
       <!-- 3. 所羅門王計分與支配怨氣條 -->
       <div class="player-duel-bar" id="player-duel-bar">
         <div style="display:flex; justify-content:space-between; align-items:center; gap:6px;">
-          <div style="display:flex; align-items:center; gap:8px;">
-            <span style="font-size:0.82rem; font-weight:900; color:#fde047;">👑 所羅門</span>
+          <div style="display:flex; align-items:center; gap:6px;">
+            <span style="font-size:0.78rem; font-weight:900; color:#fde047;">👑 所羅門</span>
             <span class="lp-number-bright" style="color:#4ade80;">LP <span id="player-lp-text">4000</span></span>
           </div>
-          <div style="display:flex; align-items:center; gap:8px;">
-            <span style="font-size:0.72rem; font-weight:900; color:#e9d5ff; background:rgba(126,34,206,0.45); padding:2px 7px; border-radius:10px; border:1px solid #c084fc; white-space:nowrap;" id="seals-status-text">
+          <div style="display:flex; align-items:center; gap:6px;">
+            <span style="font-size:0.68rem; font-weight:900; color:#e9d5ff; background:rgba(126,34,206,0.5); padding:1px 6px; border-radius:8px; border:1px solid #c084fc; white-space:nowrap;" id="seals-status-text">
               ✡️ 印記 0/3
             </span>
-            <span style="font-size:0.7rem; color:#93c5fd; font-weight:700; white-space:nowrap;" id="player-deck-left">牌庫:8</span>
+            <span style="font-size:0.66rem; color:#93c5fd; font-weight:700; white-space:nowrap;" id="player-deck-left">牌庫:8</span>
           </div>
         </div>
-        <div style="display:flex; justify-content:space-between; font-size:0.68rem; font-weight:700; margin-top:2px;">
-          <span class="wrath-sub-text" id="wrath-status-label" style="color:#fde68a;">🔥 怨氣：0%（達 70% 全軍暴走 +500 ATK！）</span>
-          <span class="wrath-sub-text" style="color:#fca5a5; white-space:nowrap;">100% 叛變</span>
+        <div style="display:flex; justify-content:space-between; font-size:0.64rem; font-weight:700; margin-top:2px;">
+          <span id="wrath-status-label" style="color:#fde68a;">🔥 怨氣：0%（70% 暴走 +500 ATK）</span>
+          <span style="color:#fca5a5; white-space:nowrap;">100% 叛變</span>
         </div>
         <div class="wrath-meter-track">
           <div class="wrath-meter-fill" id="wrath-meter-fill" style="width:0%;"></div>
@@ -1572,10 +1393,10 @@
 
       <!-- 4. 高亮度指令操作與提示列 -->
       <div class="duel-action-banner" id="duel-action-banner">
-        <span>💡 點擊手牌進行【召喚 / 蓋放陷阱 / 發動魔法】，完成後按【結束回合】。</span>
+        <span>💡 點擊下方手牌【召喚 / 蓋陷阱 / 發動魔法】，完成後按【結束】。</span>
       </div>
 
-      <!-- 5. 左對齊無截斷橫向滑動手牌區 -->
+      <!-- 5. 左起對齊手牌區（第一張牌永遠靠左完整可見！） -->
       <div class="hand-container" id="hand-container"></div>
     </div>
   </div>
@@ -1763,7 +1584,7 @@
     // ==========================================
     // 4. 遊戲狀態與自動存檔
     // ==========================================
-    const SAVE_KEY = "solomon_yugioh_save_v4";
+    const SAVE_KEY = "solomon_yugioh_save_v5";
     const STARTER_IDS = [5, 5, 10, 7, 40, 27, 29, 55, 1, 101, 107, 105];
 
     let state = {
@@ -1836,7 +1657,7 @@
     function generateBossMiniSVG(regionId) {
       const colors = { r1: "#ff6b6b", r2: "#38bdf8", r3: "#fbbf24", r4: "#c084fc", r5: "#fde047", final: "#f43f5e" };
       const c = colors[regionId] || "#ff6b6b";
-      return `<svg width="24" height="24" viewBox="0 0 48 48">
+      return `<svg width="22" height="22" viewBox="0 0 48 48">
         <polygon points="24,4 42,16 36,42 12,42 6,16" fill="none" stroke="${c}" stroke-width="2.6"/>
         <circle cx="18" cy="22" r="3.2" fill="#fde047"/><circle cx="30" cy="22" r="3.2" fill="#fde047"/>
         <path d="M16,33 L24,29 L32,33" fill="none" stroke="${c}" stroke-width="2.6"/>
@@ -1940,43 +1761,6 @@
         setTimeout(() => wave.remove(), 420);
         callback();
       };
-    }
-
-    function showCardInspector(card, unitObj = null) {
-      if (window.innerWidth <= 640) return; // 手機版改在底部橫幅顯示，不遮擋戰場
-      const box = document.getElementById("card-zoom-inspector");
-      if (!box || !card) return;
-      const isMon = card.cardType === "monster";
-      const atkStr = isMon ? (unitObj ? getEffectiveAtk(unitObj, true) : card.atk) : 0;
-      const defStr = isMon ? (unitObj ? getEffectiveDef(unitObj, true) : card.def) : 0;
-
-      box.innerHTML = `
-        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(253,224,71,0.4); padding-bottom:5px; margin-bottom:6px;">
-          <strong style="font-size:0.95rem; color:#fde047;">${card.name}</strong>
-          <span class="star-badge">${isMon ? `${card.stars}★` : card.subType}</span>
-        </div>
-        <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
-          <div style="background:#0f0906; border:1.5px solid #f59e0b; border-radius:8px; padding:6px;">
-            ${generateCardSigilSVG(card, 46)}
-          </div>
-          ${isMon ? `
-            <div style="font-size:0.84rem; font-weight:900; line-height:1.45;">
-              <div style="color:#fde047;">⚔️ 攻擊力：${atkStr}</div>
-              <div style="color:#7dd3fc;">🛡️ 守備力：${defStr}</div>
-              <div style="color:${card.agitate > 0 ? "#fca5a5" : "#86efac"};">🔥 躁動值：${card.agitate > 0 ? `+${card.agitate}%` : `${card.agitate}%`}</div>
-            </div>
-          ` : `<div style="font-size:0.8rem; color:#fbcfe8; font-weight:700;">《所羅門秘儀》<br>${card.subType}</div>`}
-        </div>
-        <div style="background:#fffbeb; color:#1c1208; border-radius:6px; padding:7px 8px; font-size:0.78rem; font-weight:700; line-height:1.38;">
-          ${card.effText}
-        </div>
-      `;
-      box.classList.remove("hidden");
-    }
-
-    function hideCardInspector() {
-      const box = document.getElementById("card-zoom-inspector");
-      if (box) box.classList.add("hidden");
     }
 
     // ==========================================
@@ -2091,11 +1875,6 @@
       duel.selectedFieldSlot = null;
       duel.tributeMode = null;
       duel.selectedHandIdx = (duel.selectedHandIdx === idx) ? null : idx;
-      if (duel.selectedHandIdx !== null) {
-        showCardInspector(duel.playerHand[duel.selectedHandIdx]);
-      } else {
-        hideCardInspector();
-      }
       updateDuelUI();
     }
 
@@ -2104,7 +1883,6 @@
       const idx = duel.selectedHandIdx;
       const card = duel.playerHand[idx];
       if (!card) return;
-      hideCardInspector();
 
       if (card.cardType === "monster") {
         const emptySlot = findEmptySlot(duel.playerMonsters);
@@ -2387,7 +2165,6 @@
         if (!unit) return;
         duel.selectedHandIdx = null;
         duel.selectedFieldSlot = (duel.selectedFieldSlot === slotIdx) ? null : slotIdx;
-        if (duel.selectedFieldSlot !== null) showCardInspector(unit.card, unit);
         updateDuelUI();
       }
     }
@@ -2448,7 +2225,6 @@
 
     function resolveCombat(attackerSide, atkSlotIdx, defSlotIdx, onComplete) {
       duel.busy = true;
-      hideCardInspector();
       const isPAtk = attackerSide === "player";
       const atkArr = isPAtk ? duel.playerMonsters : duel.enemyMonsters;
       const defArr = isPAtk ? duel.enemyMonsters : duel.playerMonsters;
@@ -2667,7 +2443,6 @@
       duel.selectedHandIdx = null;
       duel.selectedFieldSlot = null;
       duel.tributeMode = null;
-      hideCardInspector();
 
       if (targetPhase === "BP") {
         if (duel.turn === 1) {
@@ -2687,7 +2462,6 @@
       if (!duel || !duel.isPlayerTurn || duel.busy) return;
       duel.phase = "EP";
       duel.selectedAttackerSlot = null;
-      hideCardInspector();
 
       duel.playerMonsters.forEach((m, i) => { if (m && m.destroyAtEnd) duel.playerMonsters[i] = null; });
       if (state.templeStage >= 4 && duel.wrath > 0) duel.wrath = Math.max(0, duel.wrath - 10);
@@ -2860,7 +2634,7 @@
 
       const midBtns = document.getElementById("mid-phase-btns");
       if (!duel.isPlayerTurn) {
-        midBtns.innerHTML = `<span style="font-size:0.7rem; color:#fda4af; font-weight:900;">👹 敵方行動中</span>`;
+        midBtns.innerHTML = `<span style="font-size:0.68rem; color:#fda4af; font-weight:900;">👹 敵方行動中</span>`;
       } else if (duel.phase === "MP") {
         midBtns.innerHTML = `
           ${duel.turn > 1 ? `<button class="btn btn-sm btn-crimson" onclick="advancePhase('BP')">⚔️ 戰鬥</button>` : ""}
@@ -2876,7 +2650,7 @@
 
       document.getElementById("enemy-backrow").innerHTML = `
         <div class="zone-slot backrow-slot" style="cursor:default; border-color:rgba(244,63,94,0.45);">
-          <span style="font-size:0.66rem; font-weight:800; color:#fda4af; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%;">🏰 ${duel.region.name.slice(0, 5)}</span>
+          <span style="font-size:0.62rem; font-weight:800; color:#fda4af; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%;">🏰 ${duel.region.name.slice(0, 5)}</span>
         </div>
         ${duel.enemySpells.map(s => renderSpellSlotHTML(s, false)).join("")}
       `;
@@ -2895,7 +2669,7 @@
 
       document.getElementById("player-backrow").innerHTML = `
         <div class="zone-slot backrow-slot occupied" style="border-color:#fde047; cursor:default;">
-          <span style="font-size:0.68rem; font-weight:900; color:#fde047; white-space:nowrap;">🏛️ 聖殿 ${state.templeStage}/6</span>
+          <span style="font-size:0.64rem; font-weight:900; color:#fde047; white-space:nowrap;">🏛️ 聖殿 ${state.templeStage}/6</span>
         </div>
         ${duel.playerSpells.map(s => renderSpellSlotHTML(s, true)).join("")}
       `;
@@ -2907,13 +2681,12 @@
     function renderSpellSlotHTML(slotObj, isPlayer) {
       if (!slotObj) {
         return isPlayer
-          ? `<div class="zone-slot backrow-slot player-trap-empty" style="cursor:default;"><span style="font-size:0.62rem; font-weight:800; color:#f9a8d4; white-space:nowrap;">✦ 我方魔陷</span></div>`
-          : `<div class="zone-slot backrow-slot" style="cursor:default;"><span style="font-size:0.62rem; color:rgba(147,197,253,0.45); white-space:nowrap;">✦ 敵方魔陷</span></div>`;
+          ? `<div class="zone-slot backrow-slot player-trap-empty" style="cursor:default;"><span style="font-size:0.6rem; font-weight:800; color:#f9a8d4; white-space:nowrap;">✦ 我方魔陷</span></div>`
+          : `<div class="zone-slot backrow-slot" style="cursor:default;"><span style="font-size:0.6rem; color:rgba(147,197,253,0.45); white-space:nowrap;">✦ 敵方魔陷</span></div>`;
       }
-      const hoverAttr = isPlayer ? `onmouseenter="showCardInspector(getCardData(${slotObj.card.id}))" onmouseleave="hideCardInspector()"` : "";
       return `
-        <div class="zone-slot backrow-slot occupied" style="border-color:#ec4899; background:linear-gradient(180deg,#500724,#1f0612);" ${hoverAttr} onclick="openDemonDetail(${slotObj.card.id})">
-          <span style="font-size:0.66rem; font-weight:900; color:#fbcfe8; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%;">🎴 ${isPlayer ? slotObj.card.name.slice(0, 5) : "敵蓋牌"}</span>
+        <div class="zone-slot backrow-slot occupied" style="border-color:#ec4899; background:linear-gradient(180deg,#500724,#1f0612);" onclick="openDemonDetail(${slotObj.card.id})">
+          <span style="font-size:0.62rem; font-weight:900; color:#fbcfe8; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%;">🎴 ${isPlayer ? slotObj.card.name.slice(0, 5) : "敵蓋牌"}</span>
         </div>
       `;
     }
@@ -2925,21 +2698,17 @@
       if (!unit) {
         return `
           <div class="zone-slot" id="${domId}" onclick="${clickFn}">
-            <span style="font-size:0.95rem; color:rgba(245,158,11,0.3); margin-top:8px;">✡</span>
-            <span style="font-size:0.58rem; color:rgba(253,230,138,0.42); margin-bottom:2px;">召喚陣位</span>
+            <span style="font-size:0.85rem; color:rgba(245,158,11,0.3); margin-top:6px;">✡</span>
+            <span style="font-size:0.55rem; color:rgba(253,230,138,0.4); margin-bottom:2px;">召喚陣位</span>
           </div>
         `;
       }
 
-      const hoverAttr = (!unit.faceDown || isPlayer)
-        ? `onmouseenter="showCardInspector(getCardData(${unit.card.id}))" onmouseleave="hideCardInspector()"`
-        : "";
-
       if (unit.faceDown) {
         return `
-          <div class="zone-slot def-stance ${highlightTarget ? "attack-target" : ""} ${isTribSel ? "tribute-selected" : ""}" id="${domId}" ${hoverAttr} onclick="${clickFn}">
+          <div class="zone-slot def-stance ${highlightTarget ? "attack-target" : ""} ${isTribSel ? "tribute-selected" : ""}" id="${domId}" onclick="${clickFn}">
             <span class="stance-pill" style="background:#0284c7; color:#fff;">裏側守備</span>
-            <span style="font-size:1.15rem;">🏺</span>
+            <span style="font-size:1rem;">🏺</span>
             <div class="monster-stats-bar" style="color:#7dd3fc;">
               ${isPlayer ? `守 ${getEffectiveDef(unit, true)}` : "DEF ???"}
             </div>
@@ -2960,14 +2729,14 @@
       ].join(" ");
 
       return `
-        <div class="${cls}" id="${domId}" ${hoverAttr} onclick="${clickFn}">
+        <div class="${cls}" id="${domId}" onclick="${clickFn}">
           <div class="field-card-header">
             <span class="field-card-name">${unit.card.name.split(" ")[0]}</span>
             <span class="stance-pill" style="background:${isDef ? "#0284c7" : "#dc2626"}; color:#fff;">
               ${unit.card.stars}★${isDef ? "守" : "攻"}${unit.shield ? "🛡️" : ""}
             </span>
           </div>
-          ${generateCardSigilSVG(unit.card, 24)}
+          ${generateCardSigilSVG(unit.card, 20)}
           <div class="monster-stats-bar">
             <span style="color:${isDef ? "#94a3b8" : "#fde047"};">${atk}</span>/<span style="color:${isDef ? "#38bdf8" : "#94a3b8"};">${def}</span>
           </div>
@@ -2980,15 +2749,14 @@
       banner.className = "duel-action-banner";
 
       if (!duel.isPlayerTurn) {
-        banner.innerHTML = `<span>👹 敵軍主將【${duel.region.bossName}】正在思考戰術與發動攻勢...</span>`;
+        banner.innerHTML = `<span>👹 敵軍主將【${duel.region.bossName}】正在發動攻勢...</span>`;
         return;
       }
 
       if (duel.tributeMode) {
         banner.classList.add("warn-mode");
-        const c = duel.playerHand[duel.tributeMode.handIdx];
         banner.innerHTML = `
-          <span>🔥 請點擊場上 <strong>${duel.tributeMode.required} 隻魔神</strong> 作為祭品（${duel.tributeMode.selected.length}/${duel.tributeMode.required}）</span>
+          <span>🔥 點擊場上 <strong>${duel.tributeMode.required} 隻魔神</strong> 作為祭品（${duel.tributeMode.selected.length}/${duel.tributeMode.required}）</span>
           <button class="btn btn-sm" style="background:#374151;" onclick="cancelTributeMode()">取消</button>
         `;
         return;
@@ -3001,7 +2769,7 @@
           const canSeal = c.stars >= 8 && duel.seals >= getSealRequired();
           banner.innerHTML = `
             <span style="color:#fde047;">🃏 ${c.name.split(" ")[0]} (${c.stars}★ ${c.atk}/${c.def})</span>
-            <div style="display:flex; gap:5px; flex-wrap:wrap;">
+            <div style="display:flex; gap:4px; flex-wrap:wrap;">
               ${reqTrib === 0
                 ? `<button class="btn btn-sm btn-crimson" onclick="executeHandAction('normal_atk')">⚔️ 攻擊召喚</button>
                    <button class="btn btn-sm btn-holy" onclick="executeHandAction('set_def')">🛡️ 守備蓋牌</button>`
@@ -3012,8 +2780,8 @@
           `;
         } else {
           banner.innerHTML = `
-            <span style="color:#fbcfe8;">🎴 ${c.name}（${c.subType}）</span>
-            <div style="display:flex; gap:5px;">
+            <span style="color:#fbcfe8;">🎴 ${c.name}</span>
+            <div style="display:flex; gap:4px;">
               ${c.cardType === "spell"
                 ? `<button class="btn btn-sm btn-teal" onclick="executeHandAction('activate_spell')">⚡ 發動魔法</button>`
                 : `<button class="btn btn-sm btn-purple" onclick="executeHandAction('set_trap')">🎴 蓋放至魔陷槽</button>`}
@@ -3030,7 +2798,7 @@
           const hasAct = (u.card.eff === "act_heal" || u.card.eff === "act_destroy") && !u.faceDown && u.usedActTurn !== duel.turn;
           banner.innerHTML = `
             <span style="color:#fde047;">✡️ ${u.card.name.split(" ")[0]}（${u.pos === "ATK" ? "攻擊" : "守備"}）</span>
-            <div style="display:flex; gap:5px;">
+            <div style="display:flex; gap:4px;">
               <button class="btn btn-sm btn-holy" onclick="toggleUnitPosition(${duel.selectedFieldSlot})">🔄 切換攻/守</button>
               ${hasAct ? `<button class="btn btn-sm btn-purple" onclick="activateUnitIgnition(${duel.selectedFieldSlot})">⚡ 起動效果</button>` : ""}
               <button class="btn btn-sm" style="background:#334155;" onclick="openDemonDetail(${u.card.id})">📖 詳情</button>
@@ -3073,16 +2841,13 @@
           : `<span style="color:#a7f3d0;">${c.subType}</span><span style="color:#fde047;">秘儀</span>`;
 
         return `
-          <div class="battle-card ${frameCls} ${isSel ? "selected-hand" : ""}"
-               onmouseenter="showCardInspector(getCardData(${c.id}))"
-               onmouseleave="if(duel && duel.selectedHandIdx===null) hideCardInspector()"
-               onclick="selectHandCard(${idx})">
+          <div class="battle-card ${frameCls} ${isSel ? "selected-hand" : ""}" onclick="selectHandCard(${idx})">
             <div class="bc-top">
-              <span style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:68px;">${c.name.split(" ")[0]}</span>
+              <span style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:64px;">${c.name.split(" ")[0]}</span>
               ${headerBadge}
             </div>
             <div class="card-art-well">
-              ${generateCardSigilSVG(c, 28)}
+              ${generateCardSigilSVG(c, 20)}
             </div>
             <div class="bc-desc">${c.effText}</div>
             <div class="bc-footer">${footerHtml}</div>
@@ -3189,7 +2954,6 @@
 
     function closeBattleOverlay() {
       duel = null;
-      hideCardInspector();
       document.getElementById("battle-overlay").classList.add("hidden");
     }
 
@@ -3266,7 +3030,7 @@
       const backdrop = document.getElementById("siege-popup-backdrop");
       if (!castlesLayer || !panel || !backdrop) return;
 
-      const hqX = 280, hqY = 250;
+      const hqX = 288, hqY = 250;
       routesLayer.innerHTML = WORLD_REGIONS.map(r => {
         const tx = (r.x / 100) * 800, ty = (r.y / 100) * 500;
         return `<line x1="${hqX}" y1="${hqY}" x2="${tx}" y2="${ty}" class="march-route ${state.selectedRegionId === r.id ? "unlocked" : ""}" />`;
@@ -3301,9 +3065,9 @@
           <button class="siege-close-btn" onclick="closeSiegePopup()">✕</button>
         </div>
         <div style="font-size:0.8rem; color:#e4d4b7; line-height:1.45; margin-bottom:10px;">${cur.desc}</div>
-        <div style="background:rgba(0,0,0,0.42); border:1px solid rgba(200,150,35,0.28); padding:8px; border-radius:8px; margin-bottom:10px;">
-          <div style="font-size:0.8rem; font-weight:800; color:#fca5a5; margin-bottom:6px;">
-            👹 決鬥對手：${cur.bossName} <span style="color:#fff;">(初始 LP ${cur.bossLp})</span>
+        <div style="background:rgba(0,0,0,0.42); border:1px solid rgba(200,150,35,0.28); padding:8px; border-radius:8px; margin-bottom:12px;">
+          <div style="font-size:0.78rem; font-weight:800; color:#fca5a5; margin-bottom:6px;">
+            👹 對手：${cur.bossName} <span style="color:#fff;">(LP ${cur.bossLp})</span>
           </div>
           <div class="region-loot" style="color:#1c140e;">
             <span class="loot-tag">🪨 +${cur.loot.stone}</span>
@@ -3366,7 +3130,7 @@
       body.innerHTML = `
         <div style="display:flex; flex-direction:column; align-items:center; text-align:center; gap:8px;">
           <div style="background:#1c140d; padding:12px; border-radius:12px; border:2px solid #c89623;">
-            ${generateCardSigilSVG(c, 68)}
+            ${generateCardSigilSVG(c, 64)}
           </div>
           <h2 style="border:none; margin:0; padding:0;">${c.name}</h2>
           <div style="font-size:0.78rem; color:#9e2222; font-weight:700;">${meta}</div>
@@ -3409,7 +3173,7 @@
         if (!isUnlocked) {
           btnHtml = `<button class="btn btn-sm btn-gold" style="width:100%;" onclick="summonNewCard(${c.id})" ${state.gold < c.summonCost ? "disabled" : ""}>✡ 刻印新卡（🪙 ${c.summonCost}）</button>`;
         } else if (inDeckCount > 0) {
-          btnHtml = `<button class="btn btn-sm btn-holy" style="width:100%;" onclick="toggleCardInDeck(${c.id})">✅ 已編入牌組 (${inDeckCount}張) · 移出</button>`;
+          btnHtml = `<button class="btn btn-sm btn-holy" style="width:100%;" onclick="toggleCardInDeck(${c.id})">✅ 已編入 (${inDeckCount}張) · 移出</button>`;
         } else {
           btnHtml = `<button class="btn btn-sm" style="width:100%;" onclick="toggleCardInDeck(${c.id})">➕ 加入決鬥牌組</button>`;
         }
@@ -3424,10 +3188,10 @@
               <div class="sigil-box">${generateCardSigilSVG(c, 36)}</div>
               <div style="flex:1; min-width:0;">
                 <div style="display:flex; justify-content:space-between; align-items:center; gap:4px;">
-                  <strong style="font-size:0.85rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${c.name.split(" ")[0]}</strong>
+                  <strong style="font-size:0.84rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${c.name.split(" ")[0]}</strong>
                   ${badge}
                 </div>
-                <div style="font-size:0.71rem; color:var(--ink-muted); margin-top:2px; line-height:1.3;">${c.effText}</div>
+                <div style="font-size:0.7rem; color:var(--ink-muted); margin-top:2px; line-height:1.3;">${c.effText}</div>
               </div>
             </div>
             ${btnHtml}
@@ -3454,19 +3218,19 @@
       const text = document.getElementById("tut-text");
       if (state.isGameCleared) {
         tag.textContent = "👑 聖殿落成";
-        text.textContent = "你已擊敗深淵利維坦，成為永恆賢王所羅門！可繼續收集全套牌組！";
+        text.textContent = "已擊敗深淵利維坦，成為永恆賢王！可繼續收集全套牌組！";
       } else if (state.battlesWon === 0) {
-        tag.textContent = "征戰敕令 1/3";
-        text.textContent = "前往「⚔️世界決鬥」點擊地圖城池開啟決鬥，掠奪建殿石材與人力！";
+        tag.textContent = "敕令 1/3";
+        text.textContent = "點下方「⚔️世界決鬥」，點擊城池開啟決鬥掠奪建材！";
       } else if (state.templeStage === 0) {
-        tag.textContent = "征戰敕令 2/3";
-        text.textContent = "物資充足後，在「🏛️聖殿場地」興建階段一，啟動永久場地魔法加成！";
+        tag.textContent = "敕令 2/3";
+        text.textContent = "物資充足！在「🏛️聖殿場地」興建階段一啟動場地魔法！";
       } else if (state.templeStage < 6) {
-        tag.textContent = "征戰敕令 3/3";
-        text.textContent = `持續征戰列國並點亮聖殿（目前 ${state.templeStage}/6），全彩竣工後開啟最終決戰！`;
+        tag.textContent = "敕令 3/3";
+        text.textContent = `持續征戰並點亮聖殿（目前 ${state.templeStage}/6），竣工後開啟最終決戰！`;
       } else {
         tag.textContent = "🔥 最終決戰";
-        text.textContent = "聖殿場地已完全覺醒！前往「⚔️世界決鬥」擊敗【深淵利維坦】即可破關！";
+        text.textContent = "聖殿已完全覺醒！前往「⚔️世界決鬥」擊敗【深淵利維坦】！";
       }
     }
 
