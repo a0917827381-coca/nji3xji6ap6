@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <title>所羅門的聖殿：七十二柱魔神決鬥錄</title>
+  <title>所羅門的聖殿：全球征服與弑神終局</title>
   <style>
     :root {
       --bg-dark: #100b08;
@@ -70,12 +70,7 @@
       text-overflow: ellipsis;
     }
 
-    .top-actions {
-      display: flex;
-      gap: 5px;
-      flex-shrink: 0;
-    }
-
+    .top-actions { display: flex; gap: 5px; flex-shrink: 0; }
     .top-actions button {
       background: rgba(255,255,255,0.08);
       border: 1px solid var(--gold);
@@ -108,11 +103,7 @@
       font-variant-numeric: tabular-nums;
     }
 
-    .res-pill .r-lbl {
-      display: block;
-      font-size: 0.6rem;
-      color: #cbb699;
-    }
+    .res-pill .r-lbl { display: block; font-size: 0.6rem; color: #cbb699; }
 
     /* 新手引導列 */
     #tutorial-banner {
@@ -124,6 +115,11 @@
       display: flex;
       align-items: center;
       gap: 6px;
+    }
+
+    #tutorial-banner.ruined-mode {
+      background: linear-gradient(90deg, #3b0a0a, #1c0808);
+      border-bottom-color: #ef4444;
     }
 
     .tut-badge {
@@ -138,7 +134,7 @@
     }
 
     .app-container {
-      max-width: 820px;
+      max-width: 840px;
       margin: 0 auto;
       padding: 8px;
     }
@@ -165,11 +161,7 @@
       border-bottom: 1px solid rgba(122, 92, 60, 0.28);
     }
 
-    .section-head h2 {
-      margin: 0;
-      font-size: 0.9rem;
-      color: var(--ink);
-    }
+    .section-head h2 { margin: 0; font-size: 0.9rem; color: var(--ink); }
 
     /* 通用按鈕 */
     .btn {
@@ -187,7 +179,7 @@
     }
 
     .btn:active:not(:disabled) { transform: scale(0.96); }
-    .btn:disabled { opacity: 0.38; cursor: not-allowed; }
+    .btn:disabled { opacity: 0.36; cursor: not-allowed; }
     .btn-sm { padding: 5px 8px; font-size: 0.74rem; }
     .btn-gold { background: linear-gradient(180deg, #eab308, #b45309); color: #1a0f04; border: 1px solid #fef08a; }
     .btn-holy { background: linear-gradient(180deg, #3b82f6, #1d4ed8); color: #fff; border: 1px solid #93c5fd; }
@@ -196,7 +188,7 @@
     .btn-teal { background: linear-gradient(180deg, #14b8a6, #0f766e); color: #fff; border: 1px solid #99f6e4; }
 
     /* ==========================================
-       分頁 1：具象聖殿藍圖
+       分頁 1：具象聖殿藍圖（支援焦黑廢墟遺跡外觀）
        ========================================== */
     .temple-canvas-wrap {
       background: linear-gradient(180deg, #161822 0%, #262220 65%, #33271d 100%);
@@ -205,18 +197,29 @@
       padding: 8px;
       margin-bottom: 10px;
       box-shadow: inset 0 0 25px rgba(0,0,0,0.8);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .temple-canvas-wrap.ruined-canvas {
+      background: linear-gradient(180deg, #1f0909 0%, #140c0c 65%, #0a0606 100%);
+      border-color: #7f1d1d;
     }
 
     .temple-svg {
       width: 100%;
-      max-height: 220px;
+      max-height: 225px;
       display: block;
       margin: 0 auto;
     }
 
-    .temple-part { transition: filter 0.8s ease, opacity 0.8s ease; }
+    .temple-part { transition: filter 0.8s ease, opacity 0.8s ease, transform 0.8s ease; }
     .temple-part.unbuilt { filter: grayscale(100%) contrast(85%) brightness(115%); opacity: 0.3; }
     .temple-part.built { filter: grayscale(0%) drop-shadow(0 0 6px rgba(244, 203, 84, 0.45)); opacity: 1; }
+    .temple-part.ruined {
+      filter: grayscale(85%) contrast(140%) brightness(55%) drop-shadow(0 0 8px rgba(239, 68, 68, 0.45));
+      opacity: 0.85;
+    }
 
     .blueprint-legend {
       display: flex;
@@ -276,35 +279,43 @@
     }
 
     /* ==========================================
-       分頁 2：戰略大地圖與城池節點
+       分頁 2：全球十大板塊征服大地圖（可左右滑動探索）
        ========================================== */
-    .world-map-stage {
-      position: relative;
-      background: radial-gradient(circle at center, #e6d3a7 0%, #c8ad78 70%, #9c7a44 100%);
+    .world-map-scroll-wrap {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
       border: 3px double #5c3a18;
       border-radius: 10px;
-      overflow: hidden;
-      box-shadow: inset 0 0 40px rgba(45, 24, 8, 0.75), 0 6px 16px rgba(0,0,0,0.5);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.5);
       margin-bottom: 8px;
-      aspect-ratio: 16 / 12;
-      min-height: 340px;
+      background: #9c7a44;
+    }
+
+    .world-map-stage {
+      position: relative;
+      width: 820px;
+      height: 440px;
+      background: radial-gradient(circle at 42% 52%, #e8d5aa 0%, #c8ad78 65%, #9c7a44 100%);
+      box-shadow: inset 0 0 40px rgba(45, 24, 8, 0.75);
     }
 
     .world-map-svg { width: 100%; height: 100%; display: block; }
 
     .march-route {
       stroke: #6b2114;
-      stroke-width: 3;
-      stroke-dasharray: 7 5;
+      stroke-width: 2.5;
+      stroke-dasharray: 6 5;
       fill: none;
-      opacity: 0.45;
+      opacity: 0.42;
     }
     .march-route.unlocked {
       stroke: #b91c1c;
-      opacity: 0.9;
-      animation: march-dash 1.2s linear infinite;
+      stroke-width: 3.5;
+      opacity: 0.95;
+      animation: march-dash 1.1s linear infinite;
     }
-    @keyframes march-dash { to { stroke-dashoffset: -12; } }
+    @keyframes march-dash { to { stroke-dashoffset: -11; } }
 
     .castle-node {
       position: absolute;
@@ -316,10 +327,10 @@
       z-index: 5;
       transition: transform 0.2s ease;
     }
-    .castle-node:active { transform: translate(-50%, -50%) scale(0.95); }
+    .castle-node:hover { transform: translate(-50%, -54%) scale(1.08); z-index: 12; }
     .castle-icon-box {
-      width: 38px;
-      height: 38px;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
       background: radial-gradient(circle, #3d2314 0%, #1c0f08 100%);
       border: 2px solid var(--gold-bright);
@@ -327,14 +338,19 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.15rem;
+      font-size: 1.2rem;
       position: relative;
     }
     .castle-node.selected .castle-icon-box {
       border-color: #ef4444;
-      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.4), 0 0 14px #ef4444;
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.45), 0 0 16px #ef4444;
     }
     .castle-node.conquered .castle-icon-box { border-color: #4ade80; }
+    .castle-node.final-angel .castle-icon-box {
+      border-color: #fef08a;
+      background: radial-gradient(circle, #fef08a 0%, #b45309 100%);
+      box-shadow: 0 0 18px #fde047;
+    }
     .castle-node.locked { filter: grayscale(90%); opacity: 0.65; }
 
     .castle-flag {
@@ -351,18 +367,18 @@
     }
 
     .castle-name-tag {
-      margin-top: 2px;
+      margin-top: 3px;
       background: rgba(24, 15, 9, 0.92);
       color: #fef08a;
       border: 1px solid var(--gold);
-      padding: 1px 5px;
+      padding: 1px 6px;
       border-radius: 8px;
-      font-size: 0.62rem;
+      font-size: 0.65rem;
       font-weight: 800;
       white-space: nowrap;
     }
 
-    /* [修復] 城池出征視窗改為全螢幕 fixed 居中，絕不再被地圖容器裁切！ */
+    /* 全螢幕出征城池情報彈窗 */
     .siege-popup-backdrop {
       position: fixed;
       inset: 0;
@@ -378,7 +394,7 @@
 
     .siege-panel {
       width: 100%;
-      max-width: 400px;
+      max-width: 410px;
       background: linear-gradient(180deg, #2b1c12 0%, #150d08 100%);
       color: #f4ead5;
       border: 2px solid var(--gold-bright);
@@ -485,7 +501,7 @@
     .trap-badge { background: #be185d; color: #fff; font-weight: 800; font-size: 0.68rem; padding: 1px 5px; border-radius: 10px; white-space: nowrap; }
 
     /* ==========================================
-       [手機一屏鎖定適配] 遊戲王 x 所羅門魔導決鬥盤戰場
+       遊戲王 x 所羅門魔導決鬥盤戰場（含天使光域與封印環主動技能）
        ========================================== */
     #battle-overlay {
       position: fixed;
@@ -505,6 +521,13 @@
       overflow: hidden;
     }
 
+    #battle-overlay.angel-domain {
+      background:
+        radial-gradient(ellipse at 50% 10%, rgba(254, 240, 138, 0.42) 0%, transparent 55%),
+        radial-gradient(ellipse at 50% 50%, rgba(250, 204, 21, 0.18) 0%, transparent 65%),
+        linear-gradient(180deg, #2d2208 0%, #141008 50%, #0b101d 100%);
+    }
+
     #battle-overlay.hidden { display: none; }
 
     #battle-screen-flash {
@@ -519,7 +542,7 @@
       animation: screen-flash-anim 0.38s ease-out;
     }
     #battle-screen-flash.flash-gold {
-      background: radial-gradient(circle, rgba(254, 240, 138, 0.45) 0%, rgba(234, 179, 8, 0.2) 80%);
+      background: radial-gradient(circle, rgba(254, 240, 138, 0.5) 0%, rgba(234, 179, 8, 0.22) 80%);
       animation: screen-flash-anim 0.32s ease-out;
     }
     #battle-screen-flash.flash-blue {
@@ -550,6 +573,11 @@
       justify-content: space-between;
       gap: 6px;
       flex-shrink: 0;
+    }
+
+    .duel-top-bar.angel-bar {
+      background: linear-gradient(90deg, #78350f 0%, #451a03 50%, #78350f 100%);
+      border-color: #fde047;
     }
 
     .boss-crest-frame {
@@ -591,7 +619,7 @@
     }
     .lp-bar-mini-fill { height: 100%; transition: width 0.25s ease; }
 
-    /* 2. 魔導法陣決鬥墊 (緊湊 5 排，絕對不溢出螢幕) */
+    /* 2. 魔導法陣決鬥墊 */
     .duel-board {
       position: relative;
       background:
@@ -641,7 +669,7 @@
       background: radial-gradient(circle at 50% 45%, rgba(45, 32, 22, 0.65) 0%, rgba(15, 11, 14, 0.85) 100%);
       border: 1.5px solid rgba(245, 158, 11, 0.42);
       border-radius: 7px;
-      height: 62px;
+      height: 60px;
       padding: 2px 4px;
       display: flex;
       flex-direction: column;
@@ -652,7 +680,7 @@
     }
 
     .zone-slot.backrow-slot {
-      height: 28px;
+      height: 26px;
       background: linear-gradient(180deg, rgba(24, 22, 38, 0.85) 0%, rgba(12, 11, 20, 0.95) 100%);
       border: 1px solid rgba(96, 165, 250, 0.4);
       justify-content: center;
@@ -672,6 +700,12 @@
     .zone-slot.enemy-occupied {
       border: 2px solid #fb7185;
       background: linear-gradient(165deg, #4c111b 0%, #24080d 65%, #140407 100%);
+    }
+
+    .zone-slot.angel-occupied {
+      border: 2px solid #fef08a;
+      background: linear-gradient(165deg, #78350f 0%, #451a03 65%, #1c0a00 100%);
+      box-shadow: 0 0 12px rgba(253, 224, 71, 0.55);
     }
 
     .zone-slot.def-stance {
@@ -705,7 +739,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.65rem;
+      font-size: 0.64rem;
       font-weight: 900;
       color: #fef08a;
       gap: 2px;
@@ -719,7 +753,7 @@
     }
 
     .stance-pill {
-      font-size: 0.56rem;
+      font-size: 0.55rem;
       font-weight: 900;
       padding: 0 3px;
       border-radius: 3px;
@@ -733,7 +767,7 @@
       border-radius: 3px;
       padding: 0 2px;
       text-align: center;
-      font-size: 0.65rem;
+      font-size: 0.64rem;
       font-weight: 900;
       font-variant-numeric: tabular-nums;
       white-space: nowrap;
@@ -756,7 +790,7 @@
     .phase-pills { display: flex; gap: 3px; }
 
     .phase-pill {
-      font-size: 0.64rem;
+      font-size: 0.62rem;
       font-weight: 800;
       padding: 2px 5px;
       border-radius: 4px;
@@ -764,12 +798,9 @@
       color: #cbd5e1;
       white-space: nowrap;
     }
-    .phase-pill.active {
-      background: #fde047;
-      color: #1a1006;
-    }
+    .phase-pill.active { background: #fde047; color: #1a1006; }
 
-    /* 3. 所羅門王計分與支配怨氣條 */
+    /* 3. 所羅門王計分、封印環主動技能列與支配怨氣條 */
     .player-duel-bar {
       background: linear-gradient(90deg, #0f1f3d 0%, #161829 50%, #0f1f3d 100%);
       border: 1.5px solid #60a5fa;
@@ -791,13 +822,43 @@
       40%, 60% { transform: translate3d(6px, 0, 0); }
     }
 
+    .seal-skill-strip {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 3px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .seal-skill-strip::-webkit-scrollbar { display: none; }
+
+    .seal-btn {
+      background: rgba(126, 34, 206, 0.45);
+      border: 1px solid #c084fc;
+      color: #f3e8ff;
+      font-size: 0.64rem;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 5px;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .seal-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+    .seal-btn:not(:disabled) {
+      background: linear-gradient(180deg, #9333ea, #6b21a8);
+      border-color: #fde047;
+      color: #fff;
+      box-shadow: 0 0 8px rgba(192, 132, 252, 0.65);
+    }
+
     .wrath-meter-track {
       height: 6px;
       background: #090d16;
       border-radius: 3px;
       overflow: hidden;
       border: 1px solid #92400e;
-      margin-top: 2px;
+      margin-top: 3px;
     }
 
     .wrath-meter-fill {
@@ -813,14 +874,14 @@
       color: #ffffff;
       border-radius: 7px;
       padding: 4px 8px;
-      font-size: 0.74rem;
+      font-size: 0.72rem;
       font-weight: 700;
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
       gap: 4px;
-      min-height: 32px;
+      min-height: 30px;
       flex-shrink: 0;
     }
 
@@ -830,14 +891,14 @@
       color: #fef08a;
     }
 
-    /* 5. [核心修復] 左起對齊手牌區，第一張牌永遠完整靠左絕不裁切！ */
+    /* 5. 左起對齊手牌區 */
     .hand-container {
       display: flex;
       justify-content: flex-start;
       align-items: flex-end;
       gap: 7px;
-      padding: 6px 8px 2px 2px;
-      height: 142px;
+      padding: 5px 8px 2px 2px;
+      height: 136px;
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
@@ -846,15 +907,12 @@
     .hand-container::-webkit-scrollbar { display: none; }
 
     @media (min-width: 680px) {
-      .hand-container {
-        justify-content: center;
-        height: 164px;
-      }
+      .hand-container { justify-content: center; height: 158px; }
     }
 
     .battle-card {
-      flex: 0 0 106px;
-      height: 132px;
+      flex: 0 0 104px;
+      height: 128px;
       background: linear-gradient(165deg, #d98a3c 0%, #b4621e 55%, #8a4310 100%);
       color: #1a1006;
       border: 2px solid #f59e0b;
@@ -871,32 +929,13 @@
     }
 
     @media (min-width: 680px) {
-      .battle-card {
-        flex: 0 0 128px;
-        height: 154px;
-        padding: 4px;
-      }
+      .battle-card { flex: 0 0 126px; height: 150px; padding: 4px; }
     }
 
-    .battle-card.rank-high {
-      background: linear-gradient(165deg, #8b5cf6 0%, #5b21b6 55%, #3b0764 100%);
-      border-color: #ddd6fe;
-    }
-
-    .battle-card.rank-king {
-      background: linear-gradient(165deg, #fde047 0%, #d97706 55%, #78350f 100%);
-      border-color: #ffffff;
-    }
-
-    .battle-card.is-spell {
-      background: linear-gradient(165deg, #10b981 0%, #047857 55%, #064e3b 100%);
-      border-color: #a7f3d0;
-    }
-
-    .battle-card.is-trap {
-      background: linear-gradient(165deg, #ec4899 0%, #be185d 55%, #831843 100%);
-      border-color: #fbcfe8;
-    }
+    .battle-card.rank-high { background: linear-gradient(165deg, #8b5cf6 0%, #5b21b6 55%, #3b0764 100%); border-color: #ddd6fe; }
+    .battle-card.rank-king { background: linear-gradient(165deg, #fde047 0%, #d97706 55%, #78350f 100%); border-color: #ffffff; }
+    .battle-card.is-spell { background: linear-gradient(165deg, #10b981 0%, #047857 55%, #064e3b 100%); border-color: #a7f3d0; }
+    .battle-card.is-trap { background: linear-gradient(165deg, #ec4899 0%, #be185d 55%, #831843 100%); border-color: #fbcfe8; }
 
     .battle-card.selected-hand {
       transform: translateY(-6px) !important;
@@ -913,7 +952,7 @@
       justify-content: space-between;
       align-items: center;
       font-weight: 900;
-      font-size: 0.68rem;
+      font-size: 0.67rem;
       color: #1c1008;
     }
 
@@ -921,7 +960,7 @@
       background: radial-gradient(circle, #2a1b12 0%, #0f0906 100%);
       border: 1px solid rgba(253, 224, 71, 0.65);
       border-radius: 4px;
-      height: 24px;
+      height: 22px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -934,7 +973,7 @@
       border: 1px solid #b45309;
       border-radius: 4px;
       padding: 2px 3px;
-      font-size: 0.61rem;
+      font-size: 0.6rem;
       font-weight: 700;
       line-height: 1.18;
       color: #1c1208;
@@ -948,13 +987,134 @@
       color: #fff;
       border-radius: 3px;
       padding: 1px 3px;
-      font-size: 0.61rem;
+      font-size: 0.6rem;
       font-weight: 900;
       display: flex;
       justify-content: space-between;
       align-items: center;
       font-variant-numeric: tabular-nums;
       white-space: nowrap;
+    }
+
+    /* ==========================================
+       [電影級過場動畫層] 天使降臨 & 聖殿金火黑焰炸裂
+       ========================================== */
+    #cutscene-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: #070403;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      text-align: center;
+      overflow: hidden;
+    }
+    #cutscene-overlay.hidden { display: none !important; }
+
+    /* 神聖光柱背景 */
+    .cutscene-divine-beam {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 280px;
+      height: 100%;
+      background: linear-gradient(180deg, rgba(254, 240, 138, 0.85) 0%, rgba(250, 204, 21, 0.25) 60%, transparent 100%);
+      filter: blur(12px);
+      pointer-events: none;
+      animation: beam-pulse 2.2s ease-in-out infinite alternate;
+    }
+    @keyframes beam-pulse {
+      0% { opacity: 0.65; transform: translateX(-50%) scaleX(0.85); }
+      100% { opacity: 1; transform: translateX(-50%) scaleX(1.2); }
+    }
+
+    /* 大天使長梅塔特隆六翼懸浮動畫 */
+    .metatron-avatar-wrap {
+      position: relative;
+      z-index: 5;
+      animation: angel-hover 2.8s ease-in-out infinite alternate;
+      filter: drop-shadow(0 0 24px rgba(253, 224, 71, 0.9));
+    }
+    @keyframes angel-hover {
+      0% { transform: translateY(0px) scale(1); }
+      100% { transform: translateY(-10px) scale(1.04); }
+    }
+
+    /* 金火與黑焰對撞爆炸特效 */
+    .clash-orb-gold {
+      position: absolute;
+      top: 18%;
+      left: 50%;
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #ffffff 0%, #fde047 50%, #f59e0b 85%, transparent 100%);
+      box-shadow: 0 0 50px 20px #fde047;
+      transform: translate(-50%, -50%);
+      animation: clash-drop 1.4s cubic-bezier(0.5, 0, 0.75, 0) forwards;
+    }
+    .clash-orb-dark {
+      position: absolute;
+      bottom: 18%;
+      left: 50%;
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #f43f5e 0%, #7e22ce 45%, #09030d 85%, transparent 100%);
+      box-shadow: 0 0 50px 20px #9333ea;
+      transform: translate(-50%, 50%);
+      animation: clash-rise 1.4s cubic-bezier(0.5, 0, 0.75, 0) forwards;
+    }
+    @keyframes clash-drop {
+      0% { top: 12%; transform: translate(-50%, -50%) scale(0.8); }
+      100% { top: 46%; transform: translate(-50%, -50%) scale(1.4); }
+    }
+    @keyframes clash-rise {
+      0% { bottom: 12%; transform: translate(-50%, 50%) scale(0.8); }
+      100% { bottom: 54%; transform: translate(-50%, 50%) scale(1.4); }
+    }
+
+    .supernova-flash {
+      position: fixed;
+      inset: 0;
+      background: #ffffff;
+      z-index: 250;
+      pointer-events: none;
+      animation: nova-fade 1.6s ease-out forwards;
+    }
+    @keyframes nova-fade {
+      0% { opacity: 1; }
+      30% { opacity: 0.95; background: #fef08a; }
+      70% { opacity: 0.5; background: #7f1d1d; }
+      100% { opacity: 0; }
+    }
+
+    .screen-quake {
+      animation: mega-quake 0.75s cubic-bezier(.36,.07,.19,.97) both;
+    }
+    @keyframes mega-quake {
+      10%, 90% { transform: translate3d(-6px, 4px, 0); }
+      20%, 80% { transform: translate3d(8px, -6px, 0); }
+      30%, 50%, 70% { transform: translate3d(-10px, 6px, 0); }
+      40%, 60% { transform: translate3d(10px, -4px, 0); }
+    }
+
+    .cutscene-dialogue-box {
+      position: relative;
+      z-index: 10;
+      max-width: 460px;
+      width: 100%;
+      background: rgba(18, 11, 7, 0.92);
+      border: 2px solid #fde047;
+      border-radius: 12px;
+      padding: 16px;
+      margin-top: 14px;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.9);
     }
 
     /* 彈道與浮動數字特效 */
@@ -1088,34 +1248,38 @@
 </head>
 <body>
 
-  <!-- 序章與遊戲王決鬥規則彈窗 -->
+  <!-- 全螢幕電影級劇情過場動畫層（天使降臨 / 聖殿爆炸廢墟） -->
+  <div id="cutscene-overlay" class="hidden"></div>
+
+  <!-- 序章與決鬥規則彈窗 -->
   <div id="prologue-modal" class="modal-overlay">
     <div class="modal-card">
-      <h2>✡ 所羅門的聖殿：魔神決鬥錄 ✡</h2>
+      <h2>✡ 所羅門的聖殿：全球征服與弑神終局 ✡</h2>
       <p style="font-size: 0.84rem; line-height: 1.5;">
-        以所羅門印戒統率<strong>七十二柱魔神怪獸</strong>與<strong>《所羅門秘儀》魔法陷阱</strong>！在決鬥盤上擊潰四方列國主將，掠奪物資構築全彩耶路撒冷第一聖殿！
+        統率<strong>七十二柱魔神怪獸</strong>與<strong>《所羅門秘儀》</strong>征戰全球十大都城！掠奪巨石、香柏木與黃金構築全彩第一聖殿，迎請約櫃降臨——並面對王權貪念的最終宿命！
       </p>
       <div class="rule-item holy">
-        <strong>⚔️ 1. 決鬥盤與祭品召喚（LP 4000 對決）</strong><br>
-        • <strong>3～4★ 魔神</strong>：每回合可直接「攻擊召喚」或「裏側守備蓋牌」。<br>
-        • <strong>5～6★ 魔神</strong>需解放 <strong>1 隻</strong>祭品；<strong>8★ 君王</strong>需解放 <strong>2 隻</strong>祭品（解放攻擊怪 +300 ATK；解放守備怪獲一次破壞免疫盾）。<br>
-        • <strong>✨ 真名降臨</strong>：擊破敵怪或獻祭可累積「印記」，集滿 <strong>3 枚</strong>可免祭品特召 8★ 君王！
-      </div>
-      <div class="rule-item danger">
-        <strong>🔥 2. 70% 地獄火暴走 vs. 100% 惡魔反噬</strong><br>
-        高星魔神進攻會推升怨氣。達 <strong>70%～99%</strong> 全軍團 ATK 暴增 <strong>+500</strong>（強制轉攻）；但衝破 <strong>100%</strong> 時最高星魔神將叛變扣減所羅門王一半 ATK 的 LP 並自毀！<strong>適時將高怨氣魔神當成祭品獻祭</strong>即可化解！
+        <strong>⚔️ 1. 決鬥盤與滿場獻祭召喚</strong><br>
+        • <strong>3～4★ 魔神</strong>直接召喚或裏側守備蓋牌；<strong>5～6★</strong> 需解放 1 隻祭品，<strong>8★ 君王</strong>需解放 2 隻祭品（<strong>即使台上放滿 3 隻也能直接點選獻祭騰出格子</strong>）。
       </div>
       <div class="rule-item">
-        <strong>🏛️ 3. 聖殿藍圖＝永久場地魔法卡</strong><br>
-        每建成 1 層聖殿，決鬥開場自動獲得強力場地增益，建成 <strong>6/6 全彩聖殿</strong>後擊敗最終首領<strong>【深淵利維坦】</strong>即破關！
+        <strong>✡️ 2. 所羅門封印環（3 種主動王權大招）</strong><br>
+        擊破敵怪或獻祭魔神可累積封印環（上限 3 枚），決鬥中隨時點擊發動：<br>
+        • <strong>1環【強制鎮壓】</strong>：瞬間降怒 30%（防反噬救命技）<br>
+        • <strong>2環【真名解放】</strong>：使我方最強魔神本回合 ATK 翻倍<br>
+        • <strong>3環【王權降臨】</strong>：免祭品從手牌直接特召 8★ 君王
+      </div>
+      <div class="rule-item danger">
+        <strong>🔥 3. 70% 地獄火暴走 vs. 100% 惡魔反噬</strong><br>
+        怨氣達 <strong>70%～99%</strong> 全軍 ATK 暴增（強制轉攻）；衝破 <strong>100%</strong> 最高星魔神將叛變扣血並自毀！
       </div>
       <button class="btn btn-gold" style="width: 100%; padding: 11px; font-size: 0.96rem;" onclick="startGame()">
-        💍 戴上所羅門之戒，開啟決鬥
+        💍 戴上所羅門之戒，開啟全球遠征
       </button>
     </div>
   </div>
 
-  <!-- 全螢幕出征城池情報彈窗（獨立置於外層，絕不裁切） -->
+  <!-- 全螢幕出征城池情報彈窗 -->
   <div id="siege-popup-backdrop" class="siege-popup-backdrop hidden" onclick="if(event.target===this) closeSiegePopup()">
     <div id="siege-command-panel" class="siege-panel"></div>
   </div>
@@ -1123,11 +1287,6 @@
   <!-- 戰後戰利品與選牌獎勵彈窗 -->
   <div id="reward-modal" class="modal-overlay hidden">
     <div class="modal-card" id="reward-modal-body"></div>
-  </div>
-
-  <!-- 破關加冕結算彈窗 -->
-  <div id="victory-modal" class="modal-overlay hidden">
-    <div class="modal-card" id="victory-modal-body"></div>
   </div>
 
   <!-- 卡牌詳情彈窗 -->
@@ -1138,7 +1297,7 @@
   <!-- 頂部資源列 -->
   <header>
     <div class="top-bar-row1">
-      <div class="app-title">✡ 所羅門的聖殿 <span style="background:#eab308;color:#1a1006;font-size:0.66rem;padding:1px 5px;border-radius:4px;font-weight:900;">v5 手機適配版</span></div>
+      <div class="app-title">✡ 所羅門的聖殿 <span style="background:#eab308;color:#1a1006;font-size:0.65rem;padding:1px 5px;border-radius:4px;font-weight:900;">v6 全球弑神版</span></div>
       <div class="top-actions">
         <button onclick="document.getElementById('prologue-modal').classList.remove('hidden')">📜 規則</button>
         <button onclick="resetGame()">🔄 重置</button>
@@ -1153,21 +1312,21 @@
     </div>
   </header>
 
-  <!-- 新手引導列 -->
+  <!-- 征戰敕令列 -->
   <div id="tutorial-banner">
-    <span class="tut-badge" id="tut-step-tag">敕令 1/3</span>
-    <span id="tut-text" style="line-height:1.3;">點下方「⚔️世界決鬥」，點擊城池開啟決鬥掠奪建材！</span>
+    <span class="tut-badge" id="tut-step-tag">敕令 1/4</span>
+    <span id="tut-text" style="line-height:1.3;">點下方「⚔️世界決鬥」，橫掃全球十大板塊掠奪建材！</span>
   </div>
 
   <div class="app-container">
-    <!-- 分頁 1：具象聖殿藍圖 -->
+    <!-- 分頁 1：具象聖殿藍圖（支援焦黑廢墟遺跡外觀） -->
     <section id="tab-temple" class="tab-pane active">
       <div class="section-head">
         <h2>🏛️ 場地魔法《耶路撒冷第一聖殿》</h2>
         <span style="font-size:0.75rem; color:var(--holy); font-weight:bold;" id="temple-tier-label">已完工 0/6</span>
       </div>
 
-      <div class="temple-canvas-wrap">
+      <div class="temple-canvas-wrap" id="temple-canvas-wrap">
         <svg class="temple-svg" viewBox="0 0 600 310" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <linearGradient id="goldGrad" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -1185,13 +1344,14 @@
               <stop offset="100%" stop-color="#78350f" />
             </linearGradient>
             <linearGradient id="skyBeam" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stop-color="#fef08a" stop-opacity="0.75" />
+              <stop offset="0%" stop-color="#fef08a" stop-opacity="0.8" />
               <stop offset="100%" stop-color="#fef08a" stop-opacity="0" />
             </linearGradient>
           </defs>
           <circle cx="80" cy="40" r="1.5" fill="#fef08a" opacity="0.6" />
           <circle cx="520" cy="35" r="2" fill="#fef08a" opacity="0.7" />
           <path d="M0 285 Q140 235 300 265 T600 275 L600 310 L0 310 Z" fill="#1c1613" />
+
           <g id="svg-stage-6" class="temple-part unbuilt">
             <polygon points="260,0 340,0 385,175 215,175" fill="url(#skyBeam)" />
             <polygon points="300,12 312,34 288,34" fill="none" stroke="#fde047" stroke-width="2" />
@@ -1221,9 +1381,19 @@
             <polygon points="105,270 165,270 158,238 112,238" fill="url(#bronzeGrad)" stroke="#451a03" stroke-width="1.5" />
             <path d="M432 232 Q465 262 498 232 Z" fill="url(#bronzeGrad)" stroke="#451a03" stroke-width="1.5" />
           </g>
+
+          <!-- 終局炸裂廢墟裂痕與餘燼層（預設隱藏，爆炸後顯示） -->
+          <g id="svg-ruins-overlay" style="display:none;">
+            <path d="M180,85 L235,140 L205,190 L260,250" fill="none" stroke="#ef4444" stroke-width="4" />
+            <path d="M390,95 L340,155 L375,210 L320,265" fill="none" stroke="#f97316" stroke-width="3.5" />
+            <polygon points="195,70 320,92 315,108 190,86" fill="#291509" stroke="#7f1d1d" stroke-width="2" />
+            <circle cx="240" cy="180" r="3" fill="#ef4444" opacity="0.85" />
+            <circle cx="350" cy="150" r="2.5" fill="#f59e0b" opacity="0.9" />
+            <circle cx="295" cy="120" r="3.5" fill="#fde047" opacity="0.8" />
+          </g>
         </svg>
         <div class="blueprint-legend">
-          <span>⬜ 黑白：未建成</span>
+          <span id="temple-left-legend">⬜ 黑白：未建成</span>
           <span style="color:var(--gold-bright);" id="temple-status-tag">✨ 彩色：已啟動場地魔法</span>
         </div>
       </div>
@@ -1239,40 +1409,38 @@
         <h3 id="temple-name">階段一：摩利亞山基石與白大理石階</h3>
         <p id="temple-desc">鋪設白大理石階梯與地基。完工後場地魔法永久提升：【決鬥初始 LP 4000 → 5000】！</p>
         <div class="prog-track"><div class="prog-fill" id="temple-progress"></div></div>
-        <div style="font-size: 0.78rem; font-weight: bold; margin-bottom: 8px;" id="temple-cost-text">
-          需求：🪨 80 巨石 | 🌲 40 香柏木 | 👷 10 人力
-        </div>
+        <div style="font-size: 0.78rem; font-weight: bold; margin-bottom: 8px; line-height: 1.45;" id="temple-cost-text"></div>
         <button class="btn btn-gold" style="width:100%;" id="btn-build-temple" onclick="buildTempleStage()">🔨 動工興建聖殿階段</button>
       </div>
     </section>
 
-    <!-- 分頁 2：世界征戰大地圖 -->
+    <!-- 分頁 2：全球十大板塊遠征大地圖 -->
     <section id="tab-campaign" class="tab-pane">
       <div class="section-head">
-        <h2>🗺️ 四方列國決鬥遠征</h2>
-        <span style="font-size:0.72rem; color:var(--crimson); font-weight:bold;">點擊地圖城池出征！</span>
+        <h2>🌍 全球十大板塊征服藍圖</h2>
+        <span style="font-size:0.72rem; color:var(--crimson); font-weight:bold;">左右滑動地圖，點擊城池出征！</span>
       </div>
 
-      <div class="world-map-stage" id="world-map-stage">
-        <svg class="world-map-svg" viewBox="0 0 800 500" preserveAspectRatio="none">
-          <defs>
-            <pattern id="gridPat" width="40" height="40" patternUnits="userSpaceOnUse">
-              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#856336" stroke-width="0.5" opacity="0.25"/>
-            </pattern>
-          </defs>
-          <rect width="800" height="500" fill="url(#gridPat)" />
-          <path d="M0,0 L210,0 Q190,110 155,210 Q130,300 60,360 L0,360 Z" fill="#7fa3b8" opacity="0.55" stroke="#476b80" stroke-width="2"/>
-          <path d="M160,500 L210,395 Q245,430 265,500 Z" fill="#7fa3b8" opacity="0.55" stroke="#476b80" stroke-width="2"/>
-          <text x="45" y="140" fill="#2c4c5e" font-size="18" font-weight="bold" opacity="0.65" letter-spacing="4">地中海</text>
-          <g id="map-routes-layer"></g>
-        </svg>
+      <div class="world-map-scroll-wrap" id="world-map-scroll-wrap">
+        <div class="world-map-stage" id="world-map-stage">
+          <svg class="world-map-svg" viewBox="0 0 820 440" preserveAspectRatio="none">
+            <defs>
+              <pattern id="gridPat" width="40" height="40" patternUnits="userSpaceOnUse">
+                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#856336" stroke-width="0.5" opacity="0.28"/>
+              </pattern>
+            </defs>
+            <rect width="820" height="440" fill="url(#gridPat)" />
+            <!-- 歐亞非大陸與海域古地圖輪廓 -->
+            <path d="M0,0 L165,0 Q150,90 125,180 Q95,260 40,310 L0,310 Z" fill="#7fa3b8" opacity="0.52" stroke="#476b80" stroke-width="2"/>
+            <path d="M140,440 L190,345 Q225,380 245,440 Z" fill="#7fa3b8" opacity="0.52" stroke="#476b80" stroke-width="2"/>
+            <path d="M680,310 Q740,290 820,330 L820,440 L650,440 Z" fill="#7fa3b8" opacity="0.48" stroke="#476b80" stroke-width="2"/>
+            <text x="28" y="130" fill="#2c4c5e" font-size="16" font-weight="bold" opacity="0.7" letter-spacing="3">西方大洋</text>
+            <text x="710" y="390" fill="#2c4c5e" font-size="16" font-weight="bold" opacity="0.7" letter-spacing="3">東海</text>
+            <g id="map-routes-layer"></g>
+          </svg>
 
-        <div class="castle-node" style="left:36%; top:50%; pointer-events:none;">
-          <div class="castle-icon-box" style="border-color:#38bdf8; background:#0c4a6e;">✡️</div>
-          <div class="castle-name-tag" style="background:#0c4a6e; color:#e0f2fe;">耶路撒冷</div>
+          <div id="map-castles-layer"></div>
         </div>
-
-        <div id="map-castles-layer"></div>
       </div>
     </section>
 
@@ -1300,19 +1468,19 @@
   </div>
 
   <!-- ==========================================
-       [一屏完整顯示] 遊戲王 x 所羅門魔導決鬥盤戰場
+       遊戲王 x 所羅門魔導決鬥盤戰場（含封印環主動技 & 天使光域）
        ========================================== -->
   <div id="battle-overlay" class="hidden">
     <div id="battle-screen-flash"></div>
 
     <div class="duel-inner">
       <!-- 1. 敵軍主將計分橫幅 -->
-      <div class="duel-top-bar">
+      <div class="duel-top-bar" id="duel-top-bar">
         <div style="display:flex; align-items:center; gap:6px; min-width:0; flex:1;">
           <div class="boss-crest-frame" id="boss-mini-avatar"></div>
           <div style="min-width:0;">
-            <div style="font-size:0.82rem; font-weight:900; color:#fde047; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" id="enemy-name">迦特巨人百夫長</div>
-            <div style="font-size:0.64rem; font-weight:700; color:#fecdd3; white-space:nowrap;">
+            <div style="font-size:0.82rem; font-weight:900; color:#fde047; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" id="enemy-name">迦南巨人百夫長</div>
+            <div style="font-size:0.64rem; font-weight:700; color:#fecdd3; white-space:nowrap;" id="enemy-sub-info">
               敵手:<strong style="color:#fff;" id="enemy-hand-cnt">4</strong> ｜ 牌庫:<strong style="color:#fff;" id="enemy-deck-cnt">8</strong>
             </div>
           </div>
@@ -1332,7 +1500,7 @@
         </div>
       </div>
 
-      <!-- 2. 魔導法陣決鬥墊 (共 5 排完整顯示) -->
+      <!-- 2. 魔導法陣決鬥墊 (5 排完整顯示) -->
       <div class="duel-board" id="duel-board">
         <svg class="duel-mat-watermark" viewBox="0 0 800 360" preserveAspectRatio="none">
           <circle cx="400" cy="180" r="165" fill="none" stroke="#f59e0b" stroke-width="2" stroke-dasharray="10 6" />
@@ -1341,13 +1509,9 @@
           <line x1="40" y1="180" x2="760" y2="180" stroke="#fde047" stroke-width="1.5" stroke-dasharray="6 4" />
         </svg>
 
-        <!-- 第 1 排：敵方後台魔陷區 -->
         <div class="board-row" id="enemy-backrow"></div>
-
-        <!-- 第 2 排：敵方前排怪獸區 -->
         <div class="board-row" id="enemy-monsters-row"></div>
 
-        <!-- 第 3 排：中央對決階段光帶 -->
         <div class="duel-mid-strip">
           <div style="font-size:0.72rem; font-weight:900; color:#fde047; white-space:nowrap;">
             T<span id="duel-turn-num">1</span>
@@ -1361,14 +1525,11 @@
           <div id="mid-phase-btns" style="display:flex; gap:4px; flex-shrink:0;"></div>
         </div>
 
-        <!-- 第 4 排：我方前排怪獸區 -->
         <div class="board-row" id="player-monsters-row"></div>
-
-        <!-- 第 5 排：我方後台 (聖殿場地格 + 2 個我方魔陷槽) -->
         <div class="board-row" id="player-backrow"></div>
       </div>
 
-      <!-- 3. 所羅門王計分與支配怨氣條 -->
+      <!-- 3. 所羅門王計分、封印環主動技能列與支配怨氣條 -->
       <div class="player-duel-bar" id="player-duel-bar">
         <div style="display:flex; justify-content:space-between; align-items:center; gap:6px;">
           <div style="display:flex; align-items:center; gap:6px;">
@@ -1376,13 +1537,21 @@
             <span class="lp-number-bright" style="color:#4ade80;">LP <span id="player-lp-text">4000</span></span>
           </div>
           <div style="display:flex; align-items:center; gap:6px;">
-            <span style="font-size:0.68rem; font-weight:900; color:#e9d5ff; background:rgba(126,34,206,0.5); padding:1px 6px; border-radius:8px; border:1px solid #c084fc; white-space:nowrap;" id="seals-status-text">
-              ✡️ 印記 0/3
+            <span style="font-size:0.68rem; font-weight:900; color:#e9d5ff; background:rgba(126,34,206,0.55); padding:1px 6px; border-radius:8px; border:1px solid #c084fc; white-space:nowrap;" id="seals-status-text">
+              ✡️ 封印環 0/3
             </span>
             <span style="font-size:0.66rem; color:#93c5fd; font-weight:700; white-space:nowrap;" id="player-deck-left">牌庫:8</span>
           </div>
         </div>
-        <div style="display:flex; justify-content:space-between; font-size:0.64rem; font-weight:700; margin-top:2px;">
+
+        <!-- 主動消耗封印環的三大王權技能 -->
+        <div class="seal-skill-strip">
+          <button class="seal-btn" id="btn-seal-1" onclick="useSealSkill(1)">✡️1環·鎮壓(-30%怒)</button>
+          <button class="seal-btn" id="btn-seal-2" onclick="useSealSkill(2)">✡️2環·真名(ATK翻倍)</button>
+          <button class="seal-btn" id="btn-seal-3" onclick="useSealSkill(3)">✡️3環·降臨(免祭特召)</button>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; font-size:0.63rem; font-weight:700; margin-top:2px;">
           <span id="wrath-status-label" style="color:#fde68a;">🔥 怨氣：0%（70% 暴走 +500 ATK）</span>
           <span style="color:#fca5a5; white-space:nowrap;">100% 叛變</span>
         </div>
@@ -1396,7 +1565,7 @@
         <span>💡 點擊下方手牌【召喚 / 蓋陷阱 / 發動魔法】，完成後按【結束】。</span>
       </div>
 
-      <!-- 5. 左起對齊手牌區（第一張牌永遠靠左完整可見！） -->
+      <!-- 5. 左起對齊手牌區 -->
       <div class="hand-container" id="hand-container"></div>
     </div>
   </div>
@@ -1408,8 +1577,8 @@
       <span>聖殿場地</span>
     </button>
     <button class="nav-btn" data-tab="campaign" onclick="switchTab('campaign')">
-      <span class="nav-icon">⚔️</span>
-      <span>世界決鬥</span>
+      <span class="nav-icon">🌍</span>
+      <span>全球遠征</span>
     </button>
     <button class="nav-btn" data-tab="grimoire" onclick="switchTab('grimoire')">
       <span class="nav-icon">📖</span>
@@ -1419,7 +1588,7 @@
 
   <script>
     // ==========================================
-    // 1. 完整 72 柱魔神怪獸卡資料庫
+    // 1. 完整 72 柱魔神怪獸卡資料庫 + 天使軍團終局 BOSS 卡
     // ==========================================
     const RAW_DEMONS = [
       { id: 1, name: "巴力 (Bael)", rank: "King", stars: 8, atk: 3000, def: 2500, agitate: 30, summonCost: 280, eff: "king_storm", effText: "【誘發】登場炸毀敵方全後台魔陷；70%狂暴時可連擊2次！", trait: "東方魔神之王，三首噴吐毀滅烈焰。" },
@@ -1427,7 +1596,7 @@
       { id: 3, name: "瓦沙克 (Vassago)", rank: "Prince", stars: 5, atk: 2000, def: 1800, agitate: -10, summonCost: 140, eff: "summon_draw2", effText: "【誘發】召喚成功時從牌組抽取 2 張卡牌。", trait: "預言親王，洞察戰局先機。" },
       { id: 4, name: "薩米基納 (Samigina)", rank: "Marquis", stars: 4, atk: 1750, def: 1200, agitate: 10, summonCost: 100, eff: "pierce", effText: "【永續】攻擊守備怪獸時給予差額貫穿傷害。", trait: "驅使亡靈軍團突擊的疾風侯爵。" },
       { id: 5, name: "馬爾巴士 (Marbas)", rank: "President", stars: 4, atk: 1700, def: 1400, agitate: 5, summonCost: 0, eff: "summon_debuff", effText: "【誘發】召喚成功時使敵方最強怪獸 ATK -400。", trait: "獅首統領，揮舞巨錘震懾敵軍。" },
-      { id: 6, name: "華利弗 (Valefor)", rank: "Duke", stars: 6, atk: 2450, def: 1700, agitate: 15, summonCost: 145, eff: "summon_draw1", effText: "【誘發】登場抽 1 張牌並獲得 1 枚真名印記。", trait: "暗影盜賊公爵，竊取敵陣氣運。" },
+      { id: 6, name: "華利弗 (Valefor)", rank: "Duke", stars: 6, atk: 2450, def: 1700, agitate: 15, summonCost: 145, eff: "summon_draw1", effText: "【誘發】登場抽 1 張牌並獲得 1 枚封印環。", trait: "暗影盜賊公爵，竊取敵陣氣運。" },
       { id: 7, name: "亞蒙 (Amon)", rank: "Marquis", stars: 4, atk: 1800, def: 1100, agitate: 20, summonCost: 0, eff: "berserk_boost", effText: "【永續】怨氣 70% 以上時此卡 ATK 額外 +400。", trait: "口吐烈焰急速點燃狂暴戰意。" },
       { id: 8, name: "巴巴妥司 (Barbatos)", rank: "Duke", stars: 6, atk: 2350, def: 2100, agitate: -15, summonCost: 155, eff: "summon_shield", effText: "【誘發】登場獲一次破壞免疫盾，怨氣 -15%。", trait: "召喚森林巨獸護衛所羅門王座。" },
       { id: 9, name: "派蒙 (Paimon)", rank: "King", stars: 8, atk: 2900, def: 2400, agitate: 30, summonCost: 300, eff: "king_rally", effText: "【誘發】登場我方全體 ATK +400 並抽 1 張牌。", trait: "西方之王吹響戰爭號角震撼天地。" },
@@ -1441,9 +1610,9 @@
       { id: 17, name: "布提斯 (Botis)", rank: "President", stars: 4, atk: 1300, def: 1950, agitate: -15, summonCost: 80, eff: "flip_calm", effText: "【反轉】被攻擊翻開時怨氣 -25% 並抽 1 張牌。", trait: "毒蛇統領構築銅牆鐵壁並平息怒火。" },
       { id: 18, name: "巴欽 (Bathin)", rank: "Duke", stars: 6, atk: 2350, def: 1800, agitate: 10, summonCost: 160, eff: "summon_draw2", effText: "【誘發】升級召喚成功時抽取 2 張卡牌。", trait: "蒼白駿馬公爵施展空間傳送補強手牌。" },
       { id: 19, name: "塞列歐斯 (Sallos)", rank: "Duke", stars: 6, atk: 2200, def: 2200, agitate: -20, summonCost: 145, eff: "summon_calm", effText: "【誘發】登場時怨氣 -20%，敵方全體 ATK -300。", trait: "和平騎士公爵，極度溫馴絕不輕易反噬。" },
-      { id: 20, name: "普爾森 (Purson)", rank: "King", stars: 8, atk: 2850, def: 2500, agitate: 25, summonCost: 285, eff: "summon_draw2", effText: "【誘發】召喚成功時抽取 2 張牌並獲得 1 枚印記。", trait: "獅首騎熊君王，通曉一切隱秘。" },
-      { id: 21, name: "馬拉克斯 (Marax)", rank: "Earl", stars: 3, atk: 1200, def: 1600, agitate: 0, summonCost: 0, eff: "flip_draw", effText: "【反轉】裏側被翻開時抽 1 張牌＋1 枚真名印記。", trait: "人面公牛伯爵，完全馴服不會累積怨氣。" },
-      { id: 22, name: "因波斯 (Ipos)", rank: "Earl", stars: 3, atk: 1400, def: 1100, agitate: 0, summonCost: 75, eff: "summon_seal", effText: "【誘發】登場額外獲得 1 枚真名印記（零怨氣）。", trait: "獅頭鵝足伯爵，忠誠奉獻真名之力。" },
+      { id: 20, name: "普爾森 (Purson)", rank: "King", stars: 8, atk: 2850, def: 2500, agitate: 25, summonCost: 285, eff: "summon_draw2", effText: "【誘發】召喚成功時抽取 2 張牌並獲得 1 枚封印環。", trait: "獅首騎熊君王，通曉一切隱秘。" },
+      { id: 21, name: "馬拉克斯 (Marax)", rank: "Earl", stars: 3, atk: 1200, def: 1600, agitate: 0, summonCost: 0, eff: "flip_draw", effText: "【反轉】裏側被翻開時抽 1 張牌＋1 枚封印環。", trait: "人面公牛伯爵，完全馴服不會累積怨氣。" },
+      { id: 22, name: "因波斯 (Ipos)", rank: "Earl", stars: 3, atk: 1400, def: 1100, agitate: 0, summonCost: 75, eff: "summon_seal", effText: "【誘發】登場額外獲得 1 枚封印環（零怨氣）。", trait: "獅頭鵝足伯爵，忠誠奉獻真名之力。" },
       { id: 23, name: "艾尼 (Aim)", rank: "Duke", stars: 6, atk: 2550, def: 1600, agitate: 20, summonCost: 160, eff: "burn", effText: "【誘發】登場直接給予敵方 500 LP 烈焰傷害。", trait: "三頭縱火公爵，烈焰焚燒敵方城池。" },
       { id: 24, name: "納貝流士 (Naberius)", rank: "Marquis", stars: 4, atk: 1500, def: 1850, agitate: -10, summonCost: 105, eff: "flip_draw", effText: "【反轉】翻開時抽 1 張牌並降低 15% 怨氣。", trait: "三頭黑鶴侯爵，重整秩序與防線。" },
       { id: 25, name: "格剌希亞拉波斯", rank: "President", stars: 4, atk: 1750, def: 1200, agitate: 15, summonCost: 120, eff: "berserk_boost", effText: "【永續】怨氣 70% 以上時 ATK 額外 +400。", trait: "帶翼惡犬統領，嗜血撕咬敵陣。" },
@@ -1461,29 +1630,29 @@
       { id: 37, name: "菲尼克斯 (Phenex)", rank: "Marquis", stars: 4, atk: 1400, def: 1750, agitate: -20, summonCost: 110, eff: "act_heal", effText: "【起動】每回合1次，唱響聖歌回 700 LP 降怒 20%。", trait: "不死鳥詩人，以美妙歌聲平息暴走。" },
       { id: 38, name: "哈帕斯 (Halphas)", rank: "Earl", stars: 3, atk: 1100, def: 1650, agitate: 0, summonCost: 80, eff: "summon_shield", effText: "【誘發】登場時自身獲得一次破壞免疫聖盾。", trait: "築塔伯爵，極佳的祭品跳板。" },
       { id: 39, name: "瑪帕斯 (Malphas)", rank: "President", stars: 4, atk: 1750, def: 1300, agitate: 10, summonCost: 100, eff: "summon_debuff", effText: "【誘發】登場時削弱敵方最強怪獸 ATK 400。", trait: "黑烏鴉統領專破敵方防線。" },
-      { id: 40, name: "勞姆 (Raum)", rank: "Earl", stars: 3, atk: 1400, def: 1000, agitate: 0, summonCost: 0, eff: "summon_seal", effText: "【誘發】登場獲得 1 枚真名印記，快速特召君王！", trait: "烏鴉伯爵，前期主力與印記生成器。" },
+      { id: 40, name: "勞姆 (Raum)", rank: "Earl", stars: 3, atk: 1400, def: 1000, agitate: 0, summonCost: 0, eff: "summon_seal", effText: "【誘發】登場獲得 1 枚封印環，快速發動王權技！", trait: "烏鴉伯爵，前期主力與封印生成器。" },
       { id: 41, name: "弗卡洛 (Focalor)", rank: "Duke", stars: 6, atk: 2450, def: 1700, agitate: 20, summonCost: 155, eff: "act_destroy", effText: "【起動】每回合1次，掀起海嘯破壞敵方最低攻怪。", trait: "獅鷲翼公爵掌控狂暴海嘯。" },
       { id: 42, name: "威沛 (Vepar)", rank: "Duke", stars: 6, atk: 2350, def: 2000, agitate: -10, summonCost: 150, eff: "summon_debuff", effText: "【誘發】登場使敵方最強怪獸 ATK 下降 400。", trait: "人魚公爵駕馭波濤削弱敵軍。" },
       { id: 43, name: "斯伯納克 (Sabnock)", rank: "Marquis", stars: 4, atk: 1000, def: 2100, agitate: -10, summonCost: 130, eff: "flip_freeze", effText: "【反轉】裏側被翻開時敵方全體強制轉守備表示！", trait: "2100 超高守備力的銅牆鐵壁侯爵。" },
       { id: 44, name: "沙克斯 (Shax)", rank: "Marquis", stars: 4, atk: 1650, def: 1400, agitate: 5, summonCost: 105, eff: "summon_draw1", effText: "【誘發】召喚成功時從牌組抽 1 張牌。", trait: "送子鳥侯爵剝奪敵軍視聽。" },
       { id: 45, name: "拜恩 (Vine)", rank: "King", stars: 8, atk: 2950, def: 2400, agitate: 25, summonCost: 280, eff: "summon_shield", effText: "【誘發】召喚成功獲破壞免疫聖盾，攻守兼備。", trait: "騎乘黑獅的建築之王。" },
       { id: 46, name: "畢弗隆斯 (Bifrons)", rank: "Earl", stars: 3, atk: 1150, def: 1550, agitate: 0, summonCost: 75, eff: "flip_draw", effText: "【反轉】裏側被翻開時抽取 1 張卡牌（零怨氣）。", trait: "星象幾何伯爵穩固防線。" },
-      { id: 47, name: "化勒 (Uvall)", rank: "Duke", stars: 6, atk: 2400, def: 1850, agitate: 10, summonCost: 145, eff: "summon_draw1", effText: "【誘發】登場時抽 1 張牌並獲得 1 枚印記。", trait: "單峰駱駝公爵橫越沙漠征戰。" },
+      { id: 47, name: "化勒 (Uvall)", rank: "Duke", stars: 6, atk: 2400, def: 1850, agitate: 10, summonCost: 145, eff: "summon_draw1", effText: "【誘發】登場時抽 1 張牌並獲得 1 枚封印環。", trait: "單峰駱駝公爵橫越沙漠征戰。" },
       { id: 48, name: "哈艮地 (Haagenti)", rank: "President", stars: 4, atk: 1750, def: 1350, agitate: 15, summonCost: 105, eff: "pierce", effText: "【永續】翼牛猛衝附帶守備貫穿傷害。", trait: "翼牛統領狂暴衝撞。" },
       { id: 49, name: "克羅賽爾 (Crocell)", rank: "Duke", stars: 6, atk: 2300, def: 2100, agitate: -15, summonCost: 145, eff: "act_heal", effText: "【起動】每回合1次，喚出聖泉回 700 LP 降怒 20%。", trait: "墮落天使公爵喚出療癒聖泉。" },
       { id: 50, name: "弗爾卡斯騎士", rank: "Earl", stars: 3, atk: 1350, def: 1200, agitate: 0, summonCost: 70, eff: "pierce", effText: "【永續】戰斧斬擊附帶守備貫穿（零怨氣）。", trait: "銀鬚老騎士穩健作戰。" },
-      { id: 51, name: "巴拉姆 (Balam)", rank: "King", stars: 8, atk: 2900, def: 2450, agitate: 25, summonCost: 285, eff: "summon_draw2", effText: "【誘發】召喚成功時抽取 2 張牌並獲得 1 印記。", trait: "三頭機智君王洞察戰場全局。" },
+      { id: 51, name: "巴拉姆 (Balam)", rank: "King", stars: 8, atk: 2900, def: 2450, agitate: 25, summonCost: 285, eff: "summon_draw2", effText: "【誘發】召喚成功時抽取 2 張牌並獲得 1 封印環。", trait: "三頭機智君王洞察戰場全局。" },
       { id: 52, name: "阿洛斯 (Alloces)", rank: "Duke", stars: 6, atk: 2550, def: 1700, agitate: 20, summonCost: 165, eff: "burn", effText: "【誘發】登場發出震天咆哮造成 500 LP 傷害。", trait: "獅頭火目公爵烈焰咆哮。" },
       { id: 53, name: "蓋因 (Camio)", rank: "President", stars: 4, atk: 1550, def: 1600, agitate: -10, summonCost: 95, eff: "summon_draw1", effText: "【誘發】登場時抽 1 張牌並降怒 10%。", trait: "畫眉鳥統領通曉鳥獸之語。" },
-      { id: 54, name: "毛莫 (Murmur)", rank: "Duke", stars: 6, atk: 2450, def: 1800, agitate: 15, summonCost: 160, eff: "summon_seal", effText: "【誘發】登場時獲得 1 枚真名印記。", trait: "騎鷲公爵吹響冥界號角。" },
+      { id: 54, name: "毛莫 (Murmur)", rank: "Duke", stars: 6, atk: 2450, def: 1800, agitate: 15, summonCost: 160, eff: "summon_seal", effText: "【誘發】登場時獲得 1 枚封印環。", trait: "騎鷲公爵吹響冥界號角。" },
       { id: 55, name: "歐若博司 (Orobas)", rank: "Prince", stars: 5, atk: 2050, def: 2200, agitate: -30, summonCost: 160, eff: "loyal", effText: "【永續・絕對忠誠】在場時怨氣達100%不會叛變扣血（改為此卡代為承受並重置怨氣）！", trait: "對所羅門王最忠誠的駿馬親王，反噬體系的定海神針。" },
-      { id: 56, name: "格莫瑞 (Gremory)", rank: "Duke", stars: 6, atk: 2400, def: 1900, agitate: 10, summonCost: 160, eff: "summon_draw1", effText: "【誘發】登場時抽 1 張牌並獲得 1 枚印記。", trait: "騎駱駝的公爵夫人，優雅而強大。" },
+      { id: 56, name: "格莫瑞 (Gremory)", rank: "Duke", stars: 6, atk: 2400, def: 1900, agitate: 10, summonCost: 160, eff: "summon_draw1", effText: "【誘發】登場時抽 1 張牌並獲得 1 枚封印環。", trait: "騎駱駝的公爵夫人，優雅而強大。" },
       { id: 57, name: "歐賽 (Ose)", rank: "President", stars: 4, atk: 1750, def: 1250, agitate: 15, summonCost: 95, eff: "berserk_boost", effText: "【永續】70% 狂暴時 ATK 額外 +400。", trait: "花豹統領製造狂亂幻象。" },
       { id: 58, name: "亞米 (Amy)", rank: "President", stars: 4, atk: 1600, def: 1550, agitate: -10, summonCost: 100, eff: "summon_draw1", effText: "【誘發】登場時從牌組抽 1 張牌。", trait: "烈焰占星統領指引星辰。" },
       { id: 59, name: "歐里亞斯 (Orias)", rank: "Marquis", stars: 4, atk: 1550, def: 1750, agitate: -10, summonCost: 105, eff: "summon_shield", effText: "【誘發】登場時自身獲得一次破壞免疫聖盾。", trait: "騎獅持蛇侯爵調整星位護佑。" },
       { id: 60, name: "瓦布拉 (Vapula)", rank: "Duke", stars: 6, atk: 2500, def: 1750, agitate: 15, summonCost: 175, eff: "pierce", effText: "【永續】操縱攻城器械造成守備貫穿傷害。", trait: "獅鷲翼獅子公爵精通工藝與攻城。" },
       { id: 61, name: "撒共 (Zagan)", rank: "King", stars: 8, atk: 2950, def: 2300, agitate: 30, summonCost: 275, eff: "king_storm", effText: "【誘發】召喚成功時摧毀敵方所有後台魔陷卡。", trait: "翼牛君王轉化戰場魔力。" },
-      { id: 62, name: "華劣克 (Valac)", rank: "President", stars: 4, atk: 1700, def: 1300, agitate: 10, summonCost: 115, eff: "summon_seal", effText: "【誘發】登場時額外獲得 1 枚真名印記。", trait: "騎雙頭龍的孩童統領。" },
+      { id: 62, name: "華劣克 (Valac)", rank: "President", stars: 4, atk: 1700, def: 1300, agitate: 10, summonCost: 115, eff: "summon_seal", effText: "【誘發】登場時額外獲得 1 枚封印環。", trait: "騎雙頭龍的孩童統領。" },
       { id: 63, name: "安德拉斯 (Andras)", rank: "Marquis", stars: 4, atk: 1850, def: 900, agitate: 25, summonCost: 130, eff: "berserk_boost", effText: "【永續】狂暴時 ATK 暴增至 2750+，雙面刃打手！", trait: "鴉首天使翼的極致挑撥者。" },
       { id: 64, name: "佛勞洛斯 (Flauros)", rank: "Duke", stars: 6, atk: 2550, def: 1650, agitate: 20, summonCost: 170, eff: "burn", effText: "【誘發】登場時焚燒敵軍造成 500 LP 傷害。", trait: "花豹公爵化作烈焰焚盡敵人。" },
       { id: 65, name: "安德雷斐斯", rank: "Marquis", stars: 4, atk: 1450, def: 1850, agitate: -10, summonCost: 105, eff: "flip_freeze", effText: "【反轉】翻開時敵方全體強制轉為守備表示。", trait: "孔雀侯爵以幾何結界困住敵陣。" },
@@ -1492,7 +1661,7 @@
       { id: 68, name: "彼列 (Belial)", rank: "King", stars: 8, atk: 3100, def: 2500, agitate: 30, summonCost: 330, eff: "king_burn", effText: "【永續】無主之王！擊破敵怪再給予 800 LP 灼燒！", trait: "駕馭火戰車的至高君王之一。" },
       { id: 69, name: "單卡拉比 (Decarabia)", rank: "Marquis", stars: 4, atk: 1500, def: 1700, agitate: -10, summonCost: 105, eff: "summon_draw1", effText: "【誘發】閃耀星光抽 1 張牌並降怒 10%。", trait: "五芒星侯爵。" },
       { id: 70, name: "系爾 (Seere)", rank: "Prince", stars: 5, atk: 2100, def: 1700, agitate: 5, summonCost: 180, eff: "self_special", effText: "【特召】怨氣 50% 以上可免祭品直接特召並抽 1 牌！", trait: "騎乘飛馬的俊美親王，神速降臨。" },
-      { id: 71, name: "但他林 (Dantalion)", rank: "Duke", stars: 6, atk: 2400, def: 1950, agitate: -10, summonCost: 165, eff: "summon_draw1", effText: "【誘發】操縱敵心抽 1 張牌並獲得 1 印記。", trait: "千面公爵洞察人心弱點。" },
+      { id: 71, name: "但他林 (Dantalion)", rank: "Duke", stars: 6, atk: 2400, def: 1950, agitate: -10, summonCost: 165, eff: "summon_draw1", effText: "【誘發】操縱敵心抽 1 張牌並獲得 1 封印環。", trait: "千面公爵洞察人心弱點。" },
       { id: 72, name: "安杜馬利烏士", rank: "Earl", stars: 3, atk: 1450, def: 1100, agitate: 0, summonCost: 115, eff: "summon_debuff", effText: "【誘發】持巨蛇執法，登場使敵方最強怪 ATK -400。", trait: "懲戒盜賊與叛徒的執法伯爵。" }
     ];
 
@@ -1507,76 +1676,57 @@
       { id: 103, name: "印戒緊箍咒", cardType: "spell", subType: "速攻魔法", summonCost: 100, eff: "ring_boost", effText: "【速攻魔法】我方最強魔神本回合 ATK +700，回合結束破壞。", trait: "榨乾魔神潛能的禁斷敕令。" },
       { id: 104, name: "大衛之星鎖鏈", cardType: "spell", subType: "裝備魔法", summonCost: 140, eff: "equip_lock", effText: "【裝備魔法】我方最高星魔神 ATK +300 且完全免疫 100% 叛變！", trait: "六芒星神聖鎖鏈牢牢鎖住君王級惡魔。" },
       { id: 105, name: "熾天使聖光療愈", cardType: "spell", subType: "通常魔法", summonCost: 85, eff: "heal_calm", effText: "【通常魔法】恢復所羅門王 1000 LP，並淨化 25% 支配怨氣。", trait: "聖殿祭壇升起的純淨香煙撫平惡魔暴戾。" },
-      { id: 106, name: "深淵獻祭儀式", cardType: "spell", subType: "通常魔法", summonCost: 110, eff: "gain_seals", effText: "【通常魔法】立即獲得 2 枚「所羅門真名印記」，助你降臨君王！", trait: "以聖油與星陣提前完成真名降臨儀式。" },
+      { id: 106, name: "深淵獻祭儀式", cardType: "spell", subType: "通常魔法", summonCost: 110, eff: "gain_seals", effText: "【通常魔法】立即獲得 2 枚「所羅門封印環」，助你發動王權大招！", trait: "以聖油與星陣提前完成封印充能。" },
       { id: 107, name: "聖殿銅海鏡反", cardType: "trap", subType: "通常陷阱", summonCost: 0, eff: "trap_mirror", effText: "【蓋牌陷阱】敵方宣告攻擊時自動發動，直接摧毀該攻擊怪獸！", trait: "聖殿外院巨大青銅水盆映照並反彈敵軍殺意。" },
       { id: 108, name: "所羅門銅瓶封印", cardType: "trap", subType: "通常陷阱", summonCost: 95, eff: "trap_bottle", effText: "【蓋牌陷阱】敵方宣告攻擊時發動，無效攻擊並使敵全體轉守備！", trait: "傳說中封印七十二柱魔神的青銅法器。" },
       { id: 109, name: "神聖真名剝奪", cardType: "trap", subType: "反擊陷阱", summonCost: 120, eff: "trap_negate", effText: "【蓋牌陷阱】敵方召喚 5★ 以上高星怪獸時自動發動並將其破壞！", trait: "呼喚真名瓦解敵軍王牌的召喚儀式。" },
       { id: 110, name: "煉獄業火反衝", cardType: "trap", subType: "通常陷阱", summonCost: 105, eff: "trap_burn", effText: "【蓋牌陷阱】敵方宣告攻擊時發動，給予敵方 800 LP 傷害並降攻 500。", trait: "將敵軍攻勢引導入聖殿燔祭壇化為烈焰。" }
     ];
 
+    // 終局 BOSS 專屬天界天使軍團卡牌（ID 201 ~ 206，僅供大天使長梅塔特隆使用）
+    const ANGEL_BOSS_CARDS = [
+      { id: 201, name: "智天使・奧法尼姆", rank: "Angel", stars: 4, atk: 1950, def: 1800, agitate: 0, cardType: "monster", eff: "summon_debuff", effText: "【天界】火焰戰車之輪，登場使魔神 ATK -400。" },
+      { id: 202, name: "座天使・神聖堡壘", rank: "Angel", stars: 4, atk: 1600, def: 2300, agitate: 0, cardType: "monster", eff: "summon_shield", effText: "【天界】高達 2300 守備力並自帶神聖護盾。" },
+      { id: 203, name: "主天使・聖光裁決者", rank: "Angel", stars: 6, atk: 2700, def: 2200, agitate: 0, cardType: "monster", eff: "pierce", effText: "【天界】手持審判長槍，附帶全額守備貫穿。" },
+      { id: 204, name: "熾天使・六翼炎劍", rank: "Angel", stars: 8, atk: 3400, def: 2800, agitate: 0, cardType: "monster", eff: "king_burn", effText: "【天界】燃燒淨化之火，擊破魔神再燒 800 LP。" },
+      { id: 205, name: "大天使長・梅塔特隆", rank: "Angel", stars: 8, atk: 3800, def: 3200, agitate: 0, cardType: "monster", eff: "king_storm", effText: "【天界書記官】登場摧毀敵方所有後台魔陷，至高神威！" },
+      { id: 206, name: "神罰之雷", cardType: "trap", subType: "天界陷阱", eff: "trap_mirror", effText: "【天界蓋牌】惡魔宣告攻擊時降下神罰將其徹底淨化！" }
+    ];
+
     const ALL_CARDS = [...GOETIA_CARDS, ...ARCANA_CARDS];
-    function getCardData(id) { return ALL_CARDS.find(c => c.id === id); }
+    function getCardData(id) {
+      return ALL_CARDS.find(c => c.id === id) || ANGEL_BOSS_CARDS.find(c => c.id === id);
+    }
 
     // ==========================================
-    // 3. 聖殿 6 階段場地魔法 & 六大城池敵軍牌組
+    // 3. 聖殿 6 階段升級難度提升 & 全球十大板塊遠征地圖
     // ==========================================
     const TEMPLE_STAGES = [
-      { name: "階段一：摩利亞山基石與白大理石階", desc: "場地效果進化：【決鬥初始 LP 4000 → 5000】！", stone: 80, wood: 40, gold: 0, labor: 10 },
-      { name: "階段二：外院青銅燔祭壇與銅海洗濯盆", desc: "場地效果進化：【每回合 1 次，5～6★ 魔神可免祭品直接通常召喚】！", stone: 160, wood: 100, gold: 80, labor: 20 },
-      { name: "階段三：黎巴嫩香柏木聖所主體", desc: "場地效果進化：【起始手牌 4 → 5 張，且我方所有魔神 DEF +400】！", stone: 280, wood: 240, gold: 160, labor: 35 },
-      { name: "階段四：雅斤與波阿斯雙巨型青銅柱", desc: "場地效果進化：【每回合結束階段，自動淨化我方 10% 支配怨氣】！", stone: 450, wood: 360, gold: 300, labor: 50 },
-      { name: "階段五：純金包覆至聖所與基路伯", desc: "場地效果進化：【真名降臨僅需 2 枚印記，且 70% 狂暴加成提升至 ATK +800】！", stone: 700, wood: 550, gold: 550, labor: 75 },
-      { name: "階段六：天降神光，約櫃降臨至聖所", desc: "場地效果完全覺醒：【每當我方召喚 8★ 君王，自動破壞敵方 ATK 最低的 1 隻怪獸】並解鎖最終決戰！", stone: 1100, wood: 900, gold: 950, labor: 100 }
+      { name: "階段一：摩利亞山基石與白大理石階", desc: "場地效果：【決鬥初始 LP 4000 → 5000】！", stone: 100, wood: 50, gold: 0, labor: 12, reqRank: null, reqCount: 0, reqLabel: "無爵位門檻" },
+      { name: "階段二：外院青銅燔祭壇與銅海洗濯盆", desc: "場地效果：【每回合 1 次，5～6★ 魔神可免祭品直接召喚】！", stone: 240, wood: 150, gold: 120, labor: 25, reqRank: "Marquis", reqCount: 2, reqLabel: "需契約至少 2 柱【侯爵】" },
+      { name: "階段三：黎巴嫩香柏木聖所主體", desc: "場地效果：【起始手牌 4 → 5 張，且我方所有魔神 DEF +400】！", stone: 480, wood: 380, gold: 280, labor: 45, reqRank: "Prince", reqCount: 2, reqLabel: "需契約至少 2 柱【親王】" },
+      { name: "階段四：雅斤與波阿斯雙巨型青銅柱", desc: "場地效果：【每回合結束階段，自動淨化我方 10% 支配怨氣】！", stone: 820, wood: 650, gold: 520, labor: 70, reqRank: "Duke", reqCount: 3, reqLabel: "需契約至少 3 柱【公爵】" },
+      { name: "階段五：純金包覆至聖所與基路伯", desc: "場地效果：【70% 狂暴加成暴增至 ATK +800，且 3 環降臨僅需 2 環】！", stone: 1350, wood: 1100, gold: 980, labor: 105, reqRank: "Duke", reqCount: 5, reqLabel: "需契約至少 5 柱【公爵】" },
+      { name: "階段六：舉行約櫃降臨大典（觸發終局反轉）", desc: "聖殿全彩落成！迎請約櫃降臨至聖所，迎接最終命運抉擇！", stone: 2100, wood: 1750, gold: 1600, labor: 150, reqRank: "King", reqCount: 2, reqLabel: "需契約至少 2 柱【君王】" }
     ];
 
     const WORLD_REGIONS = [
+      { id: "r1", name: "迦南採石要塞", icon: "🏰", x: 14, y: 32, diff: "★☆☆☆☆ 全球板塊 1/9", desc: "地中海東岸的巨人採石堡壘，盛產巨石與戰俘勞力。", bossName: "迦特巨人百夫長", bossLp: 3000, aiDeckIds: [22, 40, 50, 4, 14, 35, 48, 66, 15, 28, 105, 107], loot: { stone: 120, wood: 45, gold: 60, labor: 16 } },
+      { id: "r2", name: "腓尼基香柏林港", icon: "⚓", x: 16, y: 66, diff: "★★☆☆☆ 全球板塊 2/9", desc: "北方巨木造船港都，囤積海量千年黎巴嫩香柏木。", bossName: "推羅海港鐵甲督軍", bossLp: 3500, aiDeckIds: [17, 30, 43, 59, 65, 2, 8, 41, 42, 108, 108, 107], loot: { stone: 70, wood: 165, gold: 95, labor: 22 } },
+      { id: "r3", name: "尼羅河法老金字塔", icon: "🔺", x: 27, y: 80, diff: "★★★☆☆ 全球板塊 3/9", desc: "法老巨石神廟群，蘊藏完美巨石與黃金陪葬品。", bossName: "阿努比斯黑曜石守衛", bossLp: 4000, aiDeckIds: [21, 24, 46, 26, 29, 54, 64, 71, 20, 101, 107, 109], loot: { stone: 220, wood: 110, gold: 180, labor: 32 } },
+      { id: "r4", name: "巴比倫空中花園", icon: "🏛️", x: 38, y: 46, diff: "★★★☆☆ 全球板塊 4/9", desc: "兩河流域帝國首都，擁有均衡且豐厚的建殿四項物資。", bossName: "巴比倫星靈大祭司", bossLp: 4400, aiDeckIds: [3, 36, 55, 70, 29, 51, 9, 45, 68, 101, 109, 110], loot: { stone: 260, wood: 240, gold: 260, labor: 40 } },
+      { id: "r5", name: "波斯波利斯萬王城", icon: "🦁", x: 50, y: 64, diff: "★★★★☆ 全球板塊 5/9", desc: "橫跨高原的黃金帝國，重裝不死軍團守衛著無盡財富。", bossName: "波斯不死軍統帥", bossLp: 4800, aiDeckIds: [12, 33, 47, 56, 15, 28, 29, 60, 102, 102, 107, 109], loot: { stone: 320, wood: 280, gold: 380, labor: 48 } },
+      { id: "r6", name: "奧林帕斯眾神殿", icon: "⚡", x: 34, y: 20, diff: "★★★★☆ 全球板塊 6/9", desc: "西方愛琴海神山，雷霆泰坦牌組考驗你的防線韌性。", bossName: "奧林帕斯雷霆泰坦", bossLp: 5200, aiDeckIds: [1, 9, 13, 32, 41, 52, 64, 103, 107, 109, 110, 101], loot: { stone: 420, wood: 350, gold: 440, labor: 55 } },
+      { id: "r7", name: "羅馬萬神殿鬥技場", icon: "🛡️", x: 52, y: 24, diff: "★★★★★ 全球板塊 7/9", desc: "鋼鐵帝國角鬥士聖地，高攻貫穿戰車無情碾壓對手。", bossName: "帝國近衛軍團長", bossLp: 5600, aiDeckIds: [4, 14, 15, 28, 35, 45, 60, 66, 68, 102, 108, 109], loot: { stone: 520, wood: 440, gold: 520, labor: 68 } },
+      { id: "r8", name: "阿斯嘉特極北冰原", icon: "❄️", x: 68, y: 22, diff: "★★★★★ 全球板塊 8/9", desc: "極北霜巨人與狂戰士領地，一旦進入狂暴便毀天滅地。", bossName: "霜巨人之王・尤彌爾", bossLp: 6000, aiDeckIds: [7, 12, 16, 25, 32, 57, 61, 63, 103, 106, 107, 110], loot: { stone: 640, wood: 580, gold: 620, labor: 82 } },
+      { id: "r9", name: "崑崙天朝玉京城", icon: "🐉", x: 84, y: 44, diff: "★★★★★ 全球板塊 9/9", desc: "東方極境仙道帝都，攻克此城即可集齊興建至聖所的最終物資！", bossName: "崑崙鎮天仙帝", bossLp: 6500, aiDeckIds: [1, 9, 20, 36, 51, 55, 68, 70, 101, 104, 109, 110], loot: { stone: 800, wood: 720, gold: 780, labor: 95 } },
       {
-        id: "r1", name: "非利士採石要塞", icon: "🏰", x: 22, y: 66,
-        diff: "★☆☆☆☆ 推薦聖殿 0+",
-        desc: "盤踞海岸平原的巨人軍團，使用高攻低守的 3～4★ 猛攻牌組，適合練習站場交換與陷阱反擊。",
-        bossName: "迦特巨人百夫長", bossLp: 3000,
-        aiDeckIds: [22, 40, 50, 4, 14, 35, 48, 66, 15, 28, 105, 107],
-        loot: { stone: 95, wood: 35, gold: 45, labor: 14 }
-      },
-      {
-        id: "r2", name: "推羅港灣香柏林城", icon: "⚓", x: 30, y: 22,
-        diff: "★★☆☆☆ 推薦聖殿 1+",
-        desc: "北方海港巨城，擅長使用高守備怪獸與封鎖陷阱拖延戰局，務必善用貫穿效果破防！",
-        bossName: "推羅海港鐵甲督軍", bossLp: 3500,
-        aiDeckIds: [17, 30, 43, 59, 65, 2, 8, 41, 42, 108, 108, 107],
-        loot: { stone: 50, wood: 140, gold: 75, labor: 20 }
-      },
-      {
-        id: "r3", name: "示巴沙漠黃金王城", icon: "🐪", x: 56, y: 82,
-        diff: "★★★☆☆ 推薦聖殿 2+",
-        desc: "南方綠洲黃金王國，擅長快速特召 5～6★ 皇家公爵與戰象軍團進行重裝碾壓。",
-        bossName: "示巴烈日戰象統領", bossLp: 4000,
-        aiDeckIds: [12, 33, 47, 56, 15, 28, 29, 60, 102, 102, 107, 109],
-        loot: { stone: 80, wood: 80, gold: 210, labor: 25 }
-      },
-      {
-        id: "r4", name: "底比斯方尖碑神廟", icon: "🔺", x: 18, y: 86,
-        diff: "★★★★☆ 推薦聖殿 3+",
-        desc: "尼羅河畔的法老神廟守衛，牌組充滿冥界過牌與 6★ 破壞系公爵，攻勢極為兇猛。",
-        bossName: "阿努比斯黑曜石守衛", bossLp: 4500,
-        aiDeckIds: [21, 24, 46, 26, 29, 54, 64, 71, 20, 101, 107, 109],
-        loot: { stone: 280, wood: 160, gold: 240, labor: 45 }
-      },
-      {
-        id: "r5", name: "巴比倫空中花園都城", icon: "🏛️", x: 75, y: 34,
-        diff: "★★★★★ 推薦聖殿 4+",
-        desc: "兩河流域最強盛的帝國首都，擁有複數 8★ 君王級王牌與強力反擊陷阱！",
-        bossName: "巴比倫星靈大祭司", bossLp: 5000,
-        aiDeckIds: [3, 36, 55, 70, 29, 51, 9, 45, 68, 101, 109, 110],
-        loot: { stone: 420, wood: 380, gold: 450, labor: 60 }
-      },
-      {
-        id: "final", name: "深淵裂隙・萬魔要塞", icon: "🌋", x: 78, y: 72,
-        diff: "💀 最終破關決戰（需聖殿 6/6）",
-        desc: "約櫃降臨引來的混沌總反攻！唯有發揮 6/6 全彩聖殿場地威力並駕馭 8★ 君王方能取勝！",
-        bossName: "混沌深淵巨獸・利維坦", bossLp: 6000,
-        aiDeckIds: [12, 35, 63, 29, 64, 1, 13, 32, 68, 101, 107, 109],
-        loot: { stone: 1000, wood: 1000, gold: 1000, labor: 100 },
+        id: "final", name: "耶路撒冷・至聖所", icon: "👼", x: 78, y: 76,
+        diff: "💀 終局反轉決戰（需聖殿 6/6）",
+        desc: "約櫃降臨引來大天使長【梅塔特隆】！所羅門王為獨占神力，下令七十二魔神弑殺天使！",
+        bossName: "大天使長・梅塔特隆", bossLp: 6500,
+        aiDeckIds: [201, 201, 202, 202, 203, 203, 204, 204, 205, 206, 206, 206],
+        loot: { stone: 2000, wood: 2000, gold: 2000, labor: 200 },
         isFinalBoss: true
       }
     ];
@@ -1584,7 +1734,7 @@
     // ==========================================
     // 4. 遊戲狀態與自動存檔
     // ==========================================
-    const SAVE_KEY = "solomon_yugioh_save_v5";
+    const SAVE_KEY = "solomon_yugioh_save_v6";
     const STARTER_IDS = [5, 5, 10, 7, 40, 27, 29, 55, 1, 101, 107, 105];
 
     let state = {
@@ -1598,6 +1748,7 @@
       activeRankTab: "deck",
       battlesWon: 0,
       isGameCleared: false,
+      isTempleRuined: false, // 終局弑神後聖殿炸裂成廢墟
       selectedRegionId: "r1",
       conqueredRegions: {}
     };
@@ -1611,10 +1762,25 @@
       try { localStorage.setItem(SAVE_KEY, JSON.stringify(state)); } catch (e) {}
     }
 
+    function countUniqueRank(rankName) {
+      const uniq = [...new Set(state.unlockedCards)];
+      return uniq.filter(id => {
+        const c = getCardData(id);
+        return c && c.cardType === "monster" && c.rank === rankName;
+      }).length;
+    }
+
     // ==========================================
-    // 5. SVG 紋章與首領頭像生成器
+    // 5. SVG 紋章、六翼大天使長與首領頭像生成器
     // ==========================================
     function generateCardSigilSVG(card, size = 40) {
+      if (card.rank === "Angel") {
+        return `<svg width="${size}" height="${size}" viewBox="0 0 48 48">
+          <circle cx="24" cy="14" r="7" fill="none" stroke="#fef08a" stroke-width="2"/>
+          <path d="M24,22 L24,42 M14,28 L34,28" stroke="#fde047" stroke-width="2.5"/>
+          <path d="M22,24 Q6,14 4,30 Q14,32 22,28 M26,24 Q42,14 44,30 Q34,32 26,28" fill="none" stroke="#fffbeb" stroke-width="1.8"/>
+        </svg>`;
+      }
       if (card.cardType === "spell") {
         return `<svg width="${size}" height="${size}" viewBox="0 0 48 48">
           <circle cx="24" cy="24" r="19" fill="none" stroke="#4ade80" stroke-width="2.2"/>
@@ -1654,18 +1820,52 @@
       return `<svg width="${size}" height="${size}" viewBox="0 0 48 48">${frameSvg}${coreSvg}</svg>`;
     }
 
+    // 六翼大天使長【梅塔特隆】電影過場專用巨像 SVG
+    function generateMetatronHeroSVG() {
+      return `<svg width="190" height="190" viewBox="0 0 200 200">
+        <defs>
+          <radialGradient id="angelHalo" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#ffffff" />
+            <stop offset="50%" stop-color="#fde047" />
+            <stop offset="100%" stop-color="#f59e0b" stop-opacity="0" />
+          </radialGradient>
+        </defs>
+        <circle cx="100" cy="70" r="62" fill="url(#angelHalo)" opacity="0.55" />
+        <circle cx="100" cy="56" r="24" fill="none" stroke="#fef08a" stroke-width="3" />
+        <circle cx="100" cy="56" r="18" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="4 3" />
+        <!-- 上翼 -->
+        <path d="M88,78 Q22,18 10,66 Q45,76 86,88" fill="#fef08a" opacity="0.88" stroke="#fff" stroke-width="1.5" />
+        <path d="M112,78 Q178,18 190,66 Q155,76 114,88" fill="#fef08a" opacity="0.88" stroke="#fff" stroke-width="1.5" />
+        <!-- 中翼 -->
+        <path d="M86,92 Q12,74 16,122 Q54,116 88,104" fill="#fffbeb" opacity="0.92" stroke="#fde047" stroke-width="1.5" />
+        <path d="M114,92 Q188,74 184,122 Q146,116 112,104" fill="#fffbeb" opacity="0.92" stroke="#fde047" stroke-width="1.5" />
+        <!-- 下翼 -->
+        <path d="M90,108 Q36,126 48,166 Q76,144 94,118" fill="#fde047" opacity="0.82" stroke="#fff" stroke-width="1.5" />
+        <path d="M110,108 Q164,126 152,166 Q124,144 106,118" fill="#fde047" opacity="0.82" stroke="#fff" stroke-width="1.5" />
+        <!-- 神聖軀體與審判之眼 -->
+        <polygon points="100,48 114,96 100,178 86,96" fill="#ffffff" stroke="#f59e0b" stroke-width="2" />
+        <circle cx="100" cy="92" r="9" fill="#f59e0b" stroke="#fff" stroke-width="2" />
+        <circle cx="100" cy="92" r="4" fill="#ffffff" />
+      </svg>`;
+    }
+
     function generateBossMiniSVG(regionId) {
-      const colors = { r1: "#ff6b6b", r2: "#38bdf8", r3: "#fbbf24", r4: "#c084fc", r5: "#fde047", final: "#f43f5e" };
-      const c = colors[regionId] || "#ff6b6b";
+      if (regionId === "final") {
+        return `<svg width="24" height="24" viewBox="0 0 48 48">
+          <circle cx="24" cy="16" r="8" fill="none" stroke="#fde047" stroke-width="2.4"/>
+          <path d="M22,22 Q6,10 6,28 Q16,30 22,26 M26,22 Q42,10 42,28 Q32,30 26,26" fill="none" stroke="#fff" stroke-width="2"/>
+          <line x1="24" y1="24" x2="24" y2="44" stroke="#fde047" stroke-width="2.5"/>
+        </svg>`;
+      }
       return `<svg width="22" height="22" viewBox="0 0 48 48">
-        <polygon points="24,4 42,16 36,42 12,42 6,16" fill="none" stroke="${c}" stroke-width="2.6"/>
+        <polygon points="24,4 42,16 36,42 12,42 6,16" fill="none" stroke="#ff6b6b" stroke-width="2.6"/>
         <circle cx="18" cy="22" r="3.2" fill="#fde047"/><circle cx="30" cy="22" r="3.2" fill="#fde047"/>
-        <path d="M16,33 L24,29 L32,33" fill="none" stroke="${c}" stroke-width="2.6"/>
+        <path d="M16,33 L24,29 L32,33" fill="none" stroke="#ff6b6b" stroke-width="2.6"/>
       </svg>`;
     }
 
     // ==========================================
-    // 6. Web Audio 合成音效 & 視覺特效
+    // 6. Web Audio 合成音效 & 電影級過場動畫引擎
     // ==========================================
     let sfxEnabled = true;
     let audioCtx = null;
@@ -1696,24 +1896,152 @@
           osc.frequency.exponentialRampToValueAtTime(35, now + 0.28);
           gain.gain.setValueAtTime(0.28, now);
           gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
-        } else if (type === "trap") {
+        } else if (type === "angel") {
+          // 神聖管風琴和弦
+          [440, 554.37, 659.25, 880].forEach((f, idx) => {
+            const o = audioCtx.createOscillator();
+            const g = audioCtx.createGain();
+            o.type = "sine";
+            o.frequency.setValueAtTime(f, now + idx * 0.08);
+            g.gain.setValueAtTime(0.12, now + idx * 0.08);
+            g.gain.exponentialRampToValueAtTime(0.001, now + 1.4);
+            o.connect(g);
+            g.connect(audioCtx.destination);
+            o.start(now + idx * 0.08);
+            o.stop(now + 1.45);
+          });
+          return;
+        } else if (type === "explosion") {
+          // 聖殿爆炸超低頻震波
+          osc.type = "sawtooth";
+          osc.frequency.setValueAtTime(110, now);
+          osc.frequency.exponentialRampToValueAtTime(18, now + 1.2);
+          gain.gain.setValueAtTime(0.45, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 1.25);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + 1.3);
+          return;
+        } else {
           osc.type = "square";
           osc.frequency.setValueAtTime(740, now);
           osc.frequency.exponentialRampToValueAtTime(320, now + 0.25);
           gain.gain.setValueAtTime(0.16, now);
           gain.gain.exponentialRampToValueAtTime(0.001, now + 0.26);
-        } else {
-          osc.type = "sine";
-          osc.frequency.setValueAtTime(520, now);
-          osc.frequency.exponentialRampToValueAtTime(780, now + 0.2);
-          gain.gain.setValueAtTime(0.14, now);
-          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
         }
         osc.connect(gain);
         gain.connect(audioCtx.destination);
         osc.start(now);
         osc.stop(now + 0.31);
       } catch (e) {}
+    }
+
+    // 過場一：天降神光，大天使長【梅塔特隆】降臨至聖所！
+    function playAngelDescentCutscene() {
+      const box = document.getElementById("cutscene-overlay");
+      if (!box) return;
+      playSfx("angel");
+
+      box.innerHTML = `
+        <div class="cutscene-divine-beam"></div>
+        <div class="metatron-avatar-wrap">${generateMetatronHeroSVG()}</div>
+        <div class="cutscene-dialogue-box" id="cutscene-step-box">
+          <div style="font-size:0.78rem; font-weight:900; color:#fde047; letter-spacing:1px; margin-bottom:6px;">
+            ✨ 天降神光・大天使長【梅塔特隆】降臨至聖所 ✨
+          </div>
+          <p style="font-size:0.86rem; line-height:1.55; color:#fffbeb; margin:0 0 12px 0;">
+            「凡人君王所羅門，約櫃已然歸位，聖殿已成。交出所羅門之戒，封印七十二柱魔神，將神權歸還天界吧！」
+          </p>
+          <button class="btn btn-crimson" style="width:100%; font-size:0.94rem; padding:11px;" onclick="triggerSolomonBetrayalChoice()">
+            👑 「休想！約櫃的神力只屬於我！」
+          </button>
+        </div>
+      `;
+      box.classList.remove("hidden");
+    }
+
+    function triggerSolomonBetrayalChoice() {
+      const stepBox = document.getElementById("cutscene-step-box");
+      playSfx("attack");
+      if (stepBox) {
+        stepBox.style.borderColor = "#ef4444";
+        stepBox.style.background = "rgba(45, 8, 12, 0.96)";
+        stepBox.innerHTML = `
+          <div style="font-size:0.82rem; font-weight:900; color:#fca5a5; margin-bottom:6px;">
+            🔥 貪婪的王權敕令・弑神之戰開啟 🔥
+          </div>
+          <p style="font-size:0.88rem; line-height:1.55; color:#fff; margin:0 0 12px 0;">
+            「這座聖殿是我用無數白骨與黃金堆砌的！連神明也休想奪走我的王權——<strong>七十二柱魔神，給我撕碎天使！</strong>」
+          </p>
+          <button class="btn btn-gold" style="width:100%; font-size:0.96rem; padding:11px;" onclick="closeCutsceneAndFightAngel()">
+            ⚔️ 率領惡魔大軍・迎戰大天使長！
+          </button>
+        `;
+      }
+    }
+
+    function closeCutsceneAndFightAngel() {
+      document.getElementById("cutscene-overlay").classList.add("hidden");
+      startBattle("final");
+    }
+
+    // 過場二：弑殺天使後，金火與黑焰對撞，聖殿轟然炸裂化為廢墟！
+    function playTempleApocalypseCutscene() {
+      const box = document.getElementById("cutscene-overlay");
+      if (!box) return;
+
+      box.innerHTML = `
+        <div class="clash-orb-gold"></div>
+        <div class="clash-orb-dark"></div>
+        <div style="position:relative; z-index:10; font-size:1.15rem; font-weight:900; color:#fde047; text-shadow:0 2px 10px #000;">
+          ⚡ 大天使長隕落！天界神火與地獄黑焰失控對撞……
+        </div>
+      `;
+      box.classList.remove("hidden");
+
+      // 1.35 秒後雙能量球在中央對撞引爆！
+      setTimeout(() => {
+        playSfx("explosion");
+        const flash = document.createElement("div");
+        flash.className = "supernova-flash";
+        document.body.appendChild(flash);
+        setTimeout(() => flash.remove(), 1650);
+
+        document.body.classList.remove("screen-quake");
+        void document.body.offsetWidth;
+        document.body.classList.add("screen-quake");
+
+        state.isGameCleared = true;
+        state.isTempleRuined = true;
+        updateAllUI();
+
+        const uniqueCount = new Set(state.unlockedCards).size;
+        box.innerHTML = `
+          <div style="max-width:460px; width:100%; background:rgba(20,8,8,0.95); border:2.5px solid #ef4444; border-radius:12px; padding:18px; box-shadow:0 0 40px rgba(239,68,68,0.75);">
+            <div style="font-size:1.25rem; font-weight:900; color:#fca5a5; margin-bottom:8px;">
+              💥 印戒碎裂・聖殿在金火與黑焰中轟然炸裂！
+            </div>
+            <p style="font-size:0.84rem; line-height:1.6; color:#f4ead5; text-align:left; margin-bottom:12px;">
+              隨著大天使長【梅塔特隆】化為光塵，壓制地獄的最後一道神聖枷鎖徹底崩斷！<br><br>
+              失去制衡的七十二柱魔神發出震天狂笑，反過來吞噬了貪婪的所羅門王。璀璨的耶路撒冷第一聖殿在<strong>天界金色神火與地獄黑焰的對撞中轟然炸裂</strong>，化為焦黑廢墟與千古傳說……
+            </p>
+            <div style="background:rgba(0,0,0,0.55); border:1px solid #c89623; border-radius:8px; padding:10px; text-align:left; font-size:0.82rem; line-height:1.55; margin-bottom:14px;">
+              • <strong>終局史詩稱號</strong>：<span style="color:#fde047; font-weight:900;">💀 弑神墮落者・所羅門</span><br>
+              • <strong>全球征服進度</strong>：${Object.keys(state.conqueredRegions || {}).length} / 10 板塊<br>
+              • <strong>魔神契約圖鑑</strong>：${uniqueCount} / ${ALL_CARDS.length} 張
+            </div>
+            <button class="btn btn-gold" style="width:100%; padding:11px; font-size:0.95rem;" onclick="finishApocalypseToRuins()">
+              🏛️ 凝視聖殿廢墟遺跡（繼續收集全 72 魔神）
+            </button>
+          </div>
+        `;
+      }, 1350);
+    }
+
+    function finishApocalypseToRuins() {
+      document.getElementById("cutscene-overlay").classList.add("hidden");
+      switchTab("temple");
     }
 
     function flashScreen(cls) {
@@ -1764,7 +2092,7 @@
     }
 
     // ==========================================
-    // 7. 遊戲王決鬥盤核心引擎 (Duel Engine)
+    // 7. 遊戲王決鬥盤核心引擎（含滿場獻祭修復 & 封印環主動技）
     // ==========================================
     let duel = null;
 
@@ -1780,12 +2108,12 @@
     function getPlayerStartLp() { return state.templeStage >= 1 ? 5000 : 4000; }
     function getPlayerStartHand() { return state.templeStage >= 3 ? 5 : 4; }
     function getTempleDefBonus() { return state.templeStage >= 3 ? 400 : 0; }
-    function getSealRequired() { return state.templeStage >= 5 ? 2 : 3; }
     function getBerserkAtkBonus() { return state.templeStage >= 5 ? 800 : 500; }
 
     function getEffectiveAtk(unit, isPlayer) {
       if (!unit) return 0;
       let val = unit.card.atk + (unit.atkMod || 0);
+      if (unit.doubleAtkTurn === (duel && duel.turn)) val *= 2;
       if (isPlayer && duel && duel.wrath >= 70) {
         val += getBerserkAtkBonus();
         if (unit.card.eff === "berserk_boost") val += 400;
@@ -1836,9 +2164,14 @@
         busy: false
       };
 
+      const overlay = document.getElementById("battle-overlay");
+      const topBar = document.getElementById("duel-top-bar");
+      overlay.classList.toggle("angel-domain", !!region.isFinalBoss);
+      topBar.classList.toggle("angel-bar", !!region.isFinalBoss);
+
       document.getElementById("enemy-name").textContent = region.bossName;
       document.getElementById("boss-mini-avatar").innerHTML = generateBossMiniSVG(region.id);
-      document.getElementById("battle-overlay").classList.remove("hidden");
+      overlay.classList.remove("hidden");
 
       drawToHand("player", getPlayerStartHand());
       drawToHand("enemy", 4);
@@ -1878,6 +2211,7 @@
       updateDuelUI();
     }
 
+    // [修復滿場獻祭 Bug]：先判斷是否需要祭品，需要祭品時即使 3 格全滿也能直接進入獻祭選取模式！
     function executeHandAction(actionType) {
       if (!duel || duel.selectedHandIdx === null) return;
       const idx = duel.selectedHandIdx;
@@ -1892,23 +2226,26 @@
             showDuelBannerText("⚠️ 每回合只能進行 1 次通常召喚／蓋牌！", "#f87171");
             return;
           }
-          if (emptySlot === -1) {
-            showDuelBannerText("⚠️ 怪獸區已滿（最多 3 隻）！", "#f87171");
-            return;
-          }
           if (actionType === "set_def" && duel.wrath >= 70) {
             showDuelBannerText("🔥 70% 狂暴狀態下魔神拒絕守備蓋牌！", "#f87171");
             return;
           }
+
           const reqTrib = getRequiredTributes(card, true);
           if (reqTrib > 0) {
             if (countMonsters(duel.playerMonsters) < reqTrib) {
               showDuelBannerText(`⚠️ 祭品不足（需要解放場上 ${reqTrib} 隻魔神）！`, "#f87171");
               return;
             }
+            // 只要祭品足夠，無論場上是否滿 3 隻都能進入獻祭選擇模式！
             duel.tributeMode = { handIdx: idx, required: reqTrib, selected: [] };
             duel.selectedHandIdx = null;
             updateDuelUI();
+            return;
+          }
+
+          if (emptySlot === -1) {
+            showDuelBannerText("⚠️ 怪獸區已滿（最多 3 隻），請召喚 5★ 以上魔神進行獻祭！", "#f87171");
             return;
           }
 
@@ -1922,20 +2259,20 @@
           duel.selectedHandIdx = null;
           summonMonsterToSlot("player", emptySlot, card, actionType === "set_def" ? "DEF" : "ATK", actionType === "set_def", {});
         } else if (actionType === "seal_special") {
-          const reqSeals = getSealRequired();
+          const reqSeals = state.templeStage >= 5 ? 2 : 3;
           if (duel.seals < reqSeals) {
-            showDuelBannerText(`⚠️ 真名印記不足（需要 ${reqSeals} 枚）！`, "#f87171");
+            showDuelBannerText(`⚠️ 封印環不足（需要 ${reqSeals} 枚）！`, "#f87171");
             return;
           }
           if (emptySlot === -1) {
-            showDuelBannerText("⚠️ 怪獸區已滿！", "#f87171");
+            showDuelBannerText("⚠️ 怪獸區已滿（最多 3 隻）！", "#f87171");
             return;
           }
           duel.seals -= reqSeals;
           duel.playerHand.splice(idx, 1);
           duel.selectedHandIdx = null;
-          showDuelBannerText(`✡️ 真名降臨！【${card.name.split(" ")[0]}】免祭品特召！`, "#c084fc");
-          summonMonsterToSlot("player", emptySlot, card, "ATK", false, { noWrathCost: true });
+          showDuelBannerText(`✡️ 王權降臨！【${card.name.split(" ")[0]}】免祭品特召！`, "#c084fc");
+          summonMonsterToSlot("player", emptySlot, card, "ATK", false, {});
         }
       } else {
         if (card.cardType === "trap" || actionType === "set_trap") {
@@ -1958,6 +2295,56 @@
       }
     }
 
+    // 主動消耗封印環的三大王權技能
+    function useSealSkill(cost) {
+      if (!duel || !duel.isPlayerTurn || duel.busy || duel.phase !== "MP") return;
+      const actualCost = (cost === 3 && state.templeStage >= 5) ? 2 : cost;
+      if (duel.seals < actualCost) return;
+
+      if (cost === 1) {
+        // 1環：強制鎮壓 -30% 怨氣
+        duel.seals -= 1;
+        duel.wrath = Math.max(0, duel.wrath - 30);
+        playSfx("trap");
+        flashScreen("flash-blue");
+        showDuelBannerText("✡️【強制鎮壓】消耗 1 封印環，支配怨氣 -30%！", "#60a5fa");
+        updateDuelUI();
+      } else if (cost === 2) {
+        // 2環：真名解放，場上最強魔神本回合 ATK 翻倍
+        let best = null;
+        duel.playerMonsters.forEach(m => {
+          if (m && !m.faceDown && (!best || getEffectiveAtk(m, true) > getEffectiveAtk(best, true))) best = m;
+        });
+        if (!best) {
+          showDuelBannerText("⚠️ 場上必須有表側魔神才能發動【真名解放】！", "#f87171");
+          return;
+        }
+        duel.seals -= 2;
+        best.doubleAtkTurn = duel.turn;
+        playSfx("summon");
+        flashScreen("flash-gold");
+        showDuelBannerText(`✡️【真名解放】【${best.card.name.split(" ")[0]}】本回合 ATK 翻倍！`, "#fde047");
+        updateDuelUI();
+      } else if (cost === 3) {
+        // 3環（聖殿5層後2環）：王權降臨，直接從手牌特召 1 隻 8★ 君王
+        const kingIdx = duel.playerHand.findIndex(c => c.cardType === "monster" && c.stars >= 8);
+        const emptySlot = findEmptySlot(duel.playerMonsters);
+        if (kingIdx === -1) {
+          showDuelBannerText("⚠️ 手牌中沒有 8★ 君王魔神可供降臨！", "#f87171");
+          return;
+        }
+        if (emptySlot === -1) {
+          showDuelBannerText("⚠️ 怪獸區已滿（最多 3 隻）！", "#f87171");
+          return;
+        }
+        duel.seals -= actualCost;
+        const kCard = duel.playerHand.splice(kingIdx, 1)[0];
+        duel.selectedHandIdx = null;
+        showDuelBannerText(`👑【王權降臨】免祭品特殊召喚【${kCard.name.split(" ")[0]}】！`, "#fde047");
+        summonMonsterToSlot("player", emptySlot, kCard, "ATK", false, {});
+      }
+    }
+
     function cancelTributeMode() {
       if (!duel) return;
       duel.tributeMode = null;
@@ -1972,6 +2359,7 @@
         faceDown,
         atkMod: bonusOpts.atkMod || 0,
         defMod: 0,
+        doubleAtkTurn: 0,
         summonedTurn: duel.turn,
         changedPosTurn: duel.turn,
         attacksLeft: 1,
@@ -1984,12 +2372,7 @@
       if (side === "player") {
         duel.playerMonsters[slotIdx] = unit;
         playSfx("summon");
-        if (!faceDown) {
-          triggerMonsterSummonEffect("player", unit);
-          if (card.stars >= 8 && state.templeStage >= 6) {
-            destroyLowestAtkMonster("enemy", "🏛️ 約櫃神光降臨！摧毀敵陣弱小守軍！");
-          }
-        }
+        if (!faceDown) triggerMonsterSummonEffect("player", unit);
       } else {
         duel.enemyMonsters[slotIdx] = unit;
         playSfx("summon");
@@ -2013,8 +2396,8 @@
         drawToHand(side, 2);
         if (isP) showDuelBannerText(`🃏 ${unit.card.name.split(" ")[0]}：預言抽 2 張牌！`, "#60a5fa");
       } else if (eff === "summon_seal" && isP) {
-        duel.seals = Math.min(getSealRequired(), duel.seals + 1);
-        showDuelBannerText("✡️ 獲得 1 枚真名印記！", "#c084fc");
+        duel.seals = Math.min(3, duel.seals + 1);
+        showDuelBannerText("✡️ 獲得 1 枚所羅門封印環！", "#c084fc");
       } else if (eff === "summon_shield") {
         unit.shield = true;
         if (isP) showDuelBannerText("🛡️ 獲得一次破壞免疫聖盾！", "#38bdf8");
@@ -2036,7 +2419,7 @@
       } else if (eff === "king_storm") {
         for (let i = 0; i < oppSpells.length; i++) oppSpells[i] = null;
         flashScreen("flash-gold");
-        showDuelBannerText("⚡ 君王神威！摧毀對手所有後台魔陷！", "#fde047");
+        showDuelBannerText("⚡ 神威震場！摧毀對手所有後台魔陷！", "#fde047");
       } else if (eff === "king_rally" && isP) {
         duel.playerMonsters.forEach(m => { if (m && !m.faceDown) m.atkMod += 400; });
         drawToHand("player", 1);
@@ -2106,8 +2489,8 @@
         duel.wrath = Math.max(0, duel.wrath - 25);
         showDuelBannerText("💚 聖光療愈：+1000 LP 且怨氣 -25%！", "#4ade80");
       } else if (card.eff === "gain_seals" && isP) {
-        duel.seals = Math.min(getSealRequired(), duel.seals + 2);
-        showDuelBannerText("✡️ 深淵獻祭儀式：獲得 2 枚真名印記！", "#c084fc");
+        duel.seals = Math.min(3, duel.seals + 2);
+        showDuelBannerText("✡️ 深淵獻祭儀式：獲得 2 枚所羅門封印環！", "#c084fc");
       }
       updateDuelUI();
     }
@@ -2137,11 +2520,11 @@
           const card = duel.playerHand.splice(duel.tributeMode.handIdx, 1)[0];
           duel.tributeMode = null;
           duel.normalSummonedThisTurn = true;
-          duel.seals = Math.min(getSealRequired(), duel.seals + 1);
+          duel.seals = Math.min(3, duel.seals + 1);
 
-          let bonusMsg = "🔥 祭品解放完成！+1 真名印記";
-          if (inheritAtk > 0) bonusMsg += ` · 繼承攻勢 ATK +${inheritAtk}`;
-          if (inheritShield) bonusMsg += " · 繼承守備聖盾";
+          let bonusMsg = "🔥 祭品解放完成！+1 封印環";
+          if (inheritAtk > 0) bonusMsg += ` · 攻繼承 +${inheritAtk}`;
+          if (inheritShield) bonusMsg += " · 守繼承聖盾";
           showDuelBannerText(bonusMsg, "#fde047");
 
           summonMonsterToSlot("player", targetSlot, card, "ATK", false, { atkMod: inheritAtk, shield: inheritShield });
@@ -2302,9 +2685,9 @@
               showDuelBannerText("🛡️ 聖盾抵消了本次破壞！", "#38bdf8");
             } else {
               defArr[defSlotIdx] = null;
-              if (isPAtk) duel.seals = Math.min(getSealRequired(), duel.seals + 1);
+              if (isPAtk) duel.seals = Math.min(3, duel.seals + 1);
               if (attacker.card.eff === "king_burn") {
-                dealLpDamage(isPAtk ? "enemy" : "player", diff + 800, `🔥 君王業火！擊破並造成 ${diff + 800} LP 傷害！`);
+                dealLpDamage(isPAtk ? "enemy" : "player", diff + 800, `🔥 烈焰業火！擊破並造成 ${diff + 800} LP 傷害！`);
               } else {
                 dealLpDamage(isPAtk ? "enemy" : "player", diff, `⚔️ 擊破敵怪！造成 ${diff} 差額傷害！`);
               }
@@ -2326,7 +2709,7 @@
               showDuelBannerText("🛡️ 聖盾抵消了本次破壞！", "#38bdf8");
             } else {
               defArr[defSlotIdx] = null;
-              if (isPAtk) duel.seals = Math.min(getSealRequired(), duel.seals + 1);
+              if (isPAtk) duel.seals = Math.min(3, duel.seals + 1);
               if (attacker.card.eff === "pierce") {
                 const pierceDmg = atkVal - defVal;
                 dealLpDamage(isPAtk ? "enemy" : "player", pierceDmg, `🏹 貫穿防禦！造成 ${pierceDmg} 貫穿傷害！`);
@@ -2352,8 +2735,8 @@
       if (eff === "flip_draw") {
         drawToHand(side, 1);
         if (isP) {
-          duel.seals = Math.min(getSealRequired(), duel.seals + 1);
-          showDuelBannerText(`🔄 反轉效果【${unit.card.name.split(" ")[0]}】抽 1 牌＋1 印記！`, "#38bdf8");
+          duel.seals = Math.min(3, duel.seals + 1);
+          showDuelBannerText(`🔄 反轉效果【${unit.card.name.split(" ")[0]}】抽 1 牌＋1 封印環！`, "#38bdf8");
         }
       } else if (eff === "flip_calm" && isP) {
         duel.wrath = Math.max(0, duel.wrath - 25);
@@ -2466,6 +2849,12 @@
       duel.playerMonsters.forEach((m, i) => { if (m && m.destroyAtEnd) duel.playerMonsters[i] = null; });
       if (state.templeStage >= 4 && duel.wrath > 0) duel.wrath = Math.max(0, duel.wrath - 10);
 
+      // 最終 BOSS 大天使長專屬機制：神聖淨化領域每回合強制降我方 20% 怨氣！
+      if (duel.region.isFinalBoss && duel.wrath > 0) {
+        duel.wrath = Math.max(0, duel.wrath - 20);
+        showDuelBannerText("✨ 天界淨化領域：我方支配怨氣被強行淨化 -20%！", "#fde047");
+      }
+
       duel.isPlayerTurn = false;
       duel.turn++;
       updateDuelUI();
@@ -2502,7 +2891,7 @@
               }
             }
             duel.enemyHand.splice(highStarIdx, 1);
-            showDuelBannerText(`👹 敵軍解放祭品，升級召喚【${hCard.name.split(" ")[0]}】！`, "#f87171");
+            showDuelBannerText(`⚡ 敵軍解放祭品，降臨【${hCard.name.split(" ")[0]}】！`, "#fde047");
             summonMonsterToSlot("enemy", targetSlot, hCard, "ATK", false, {});
           }
         }
@@ -2594,7 +2983,7 @@
       if (duel.playerLp <= 0) {
         duel.busy = true;
         setTimeout(() => {
-          alert(`⚔️ 決鬥敗北！所羅門王基本分歸零，被【${duel.region.bossName}】擊退回耶路撒冷。`);
+          alert(`⚔️ 決鬥敗北！所羅門王基本分歸零，被【${duel.region.bossName}】擊退。`);
           closeBattleOverlay();
         }, 550);
         return true;
@@ -2629,12 +3018,20 @@
         ? `<strong style="color:#fca5a5;">🔥 暴走！全軍 +${getBerserkAtkBonus()} ATK（怨氣 ${duel.wrath}%）</strong>`
         : `🔥 怨氣：${duel.wrath}%（70% 暴走 +${getBerserkAtkBonus()} ATK）`;
 
-      const reqSeals = getSealRequired();
-      document.getElementById("seals-status-text").textContent = `✡️ 印記 ${duel.seals}/${reqSeals}`;
+      document.getElementById("seals-status-text").textContent = `✡️ 封印環 ${duel.seals}/3`;
+
+      // 更新 3 顆封印環主動技能按鈕狀態
+      const canUseSkill = duel.isPlayerTurn && !duel.busy && duel.phase === "MP";
+      const s3Cost = state.templeStage >= 5 ? 2 : 3;
+      document.getElementById("btn-seal-1").disabled = !(canUseSkill && duel.seals >= 1 && duel.wrath > 0);
+      document.getElementById("btn-seal-2").disabled = !(canUseSkill && duel.seals >= 2 && countMonsters(duel.playerMonsters) > 0);
+      const b3 = document.getElementById("btn-seal-3");
+      b3.textContent = `✡️${s3Cost}環·降臨(免祭特召)`;
+      b3.disabled = !(canUseSkill && duel.seals >= s3Cost && duel.playerHand.some(c => c.cardType === "monster" && c.stars >= 8));
 
       const midBtns = document.getElementById("mid-phase-btns");
       if (!duel.isPlayerTurn) {
-        midBtns.innerHTML = `<span style="font-size:0.68rem; color:#fda4af; font-weight:900;">👹 敵方行動中</span>`;
+        midBtns.innerHTML = `<span style="font-size:0.68rem; color:#fda4af; font-weight:900;">⚡ 敵方行動中</span>`;
       } else if (duel.phase === "MP") {
         midBtns.innerHTML = `
           ${duel.turn > 1 ? `<button class="btn btn-sm btn-crimson" onclick="advancePhase('BP')">⚔️ 戰鬥</button>` : ""}
@@ -2650,7 +3047,9 @@
 
       document.getElementById("enemy-backrow").innerHTML = `
         <div class="zone-slot backrow-slot" style="cursor:default; border-color:rgba(244,63,94,0.45);">
-          <span style="font-size:0.62rem; font-weight:800; color:#fda4af; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%;">🏰 ${duel.region.name.slice(0, 5)}</span>
+          <span style="font-size:0.62rem; font-weight:800; color:#fda4af; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%;">
+            ${duel.region.isFinalBoss ? "✨ 神聖淨化域" : `🏰 ${duel.region.name.slice(0, 5)}`}
+          </span>
         </div>
         ${duel.enemySpells.map(s => renderSpellSlotHTML(s, false)).join("")}
       `;
@@ -2719,9 +3118,10 @@
       const atk = getEffectiveAtk(unit, isPlayer);
       const def = getEffectiveDef(unit, isPlayer);
       const isDef = unit.pos === "DEF";
+      const isAngel = unit.card.rank === "Angel";
       const cls = [
         "zone-slot",
-        isPlayer ? "occupied" : "enemy-occupied",
+        isPlayer ? "occupied" : (isAngel ? "angel-occupied" : "enemy-occupied"),
         isDef ? "def-stance" : "",
         highlightTarget ? (duel.tributeMode ? "tribute-target" : "attack-target") : "",
         isTribSel ? "tribute-selected" : "",
@@ -2732,7 +3132,7 @@
         <div class="${cls}" id="${domId}" onclick="${clickFn}">
           <div class="field-card-header">
             <span class="field-card-name">${unit.card.name.split(" ")[0]}</span>
-            <span class="stance-pill" style="background:${isDef ? "#0284c7" : "#dc2626"}; color:#fff;">
+            <span class="stance-pill" style="background:${isDef ? "#0284c7" : (isAngel ? "#d97706" : "#dc2626")}; color:#fff;">
               ${unit.card.stars}★${isDef ? "守" : "攻"}${unit.shield ? "🛡️" : ""}
             </span>
           </div>
@@ -2749,7 +3149,7 @@
       banner.className = "duel-action-banner";
 
       if (!duel.isPlayerTurn) {
-        banner.innerHTML = `<span>👹 敵軍主將【${duel.region.bossName}】正在發動攻勢...</span>`;
+        banner.innerHTML = `<span>⚡ 敵軍主將【${duel.region.bossName}】正在發動攻勢...</span>`;
         return;
       }
 
@@ -2766,15 +3166,13 @@
         const c = duel.playerHand[duel.selectedHandIdx];
         if (c.cardType === "monster") {
           const reqTrib = getRequiredTributes(c, true);
-          const canSeal = c.stars >= 8 && duel.seals >= getSealRequired();
           banner.innerHTML = `
             <span style="color:#fde047;">🃏 ${c.name.split(" ")[0]} (${c.stars}★ ${c.atk}/${c.def})</span>
             <div style="display:flex; gap:4px; flex-wrap:wrap;">
               ${reqTrib === 0
                 ? `<button class="btn btn-sm btn-crimson" onclick="executeHandAction('normal_atk')">⚔️ 攻擊召喚</button>
                    <button class="btn btn-sm btn-holy" onclick="executeHandAction('set_def')">🛡️ 守備蓋牌</button>`
-                : `<button class="btn btn-sm btn-gold" onclick="executeHandAction('normal_atk')">🔥 升級召喚(${reqTrib}祭)</button>`}
-              ${canSeal ? `<button class="btn btn-sm btn-purple" onclick="executeHandAction('seal_special')">✡️ 真名特召</button>` : ""}
+                : `<button class="btn btn-sm btn-gold" onclick="executeHandAction('normal_atk')">🔥 獻祭召喚(${reqTrib}祭)</button>`}
               <button class="btn btn-sm" style="background:#334155;" onclick="openDemonDetail(${c.id})">📖 效果</button>
             </div>
           `;
@@ -2818,7 +3216,7 @@
           banner.innerHTML = `<span>⚔️ 戰鬥階段：點擊我方「攻擊表示」魔神進攻，或按【結束】。</span>`;
         }
       } else {
-        banner.innerHTML = `<span>💡 主要階段：點擊下方手牌【召喚 / 蓋陷阱 / 發動魔法】，完成後按【結束】。</span>`;
+        banner.innerHTML = `<span>💡 主要階段：點擊手牌【召喚 / 獻祭 / 蓋陷阱】，完成後按【結束】。</span>`;
       }
     }
 
@@ -2857,7 +3255,7 @@
     }
 
     // ==========================================
-    // 10. 戰後結算、聖殿建造、地圖與牌組構築
+    // 10. 戰後結算、聖殿建造（含爵位門檻）、全球地圖與牌組構築
     // ==========================================
     function handleBattleVictory() {
       if (!duel) return;
@@ -2875,9 +3273,8 @@
       updateAllUI();
 
       if (wasFinal) {
-        state.isGameCleared = true;
-        updateAllUI();
-        showVictoryModal();
+        // 擊敗大天使長梅塔特隆，觸發聖殿金火黑焰炸裂廢墟終局動畫！
+        playTempleApocalypseCutscene();
       } else {
         showPostBattleRewardModal(r);
       }
@@ -2912,13 +3309,13 @@
             </div>
           `).join("")}
         </div>
-        <button class="btn" style="width:100%;" onclick="claimRewardCard(0)">放棄選牌（改領 🪙 +60 黃金）</button>
+        <button class="btn" style="width:100%;" onclick="claimRewardCard(0)">放棄選牌（改領 🪙 +80 黃金）</button>
       `;
       document.getElementById("reward-modal").classList.remove("hidden");
     }
 
     function claimRewardCard(id) {
-      if (id === 0) state.gold += 60;
+      if (id === 0) state.gold += 80;
       else {
         state.unlockedCards.push(id);
         if (state.deckIds.length < 24) state.deckIds.push(id);
@@ -2927,28 +3324,8 @@
       updateAllUI();
     }
 
-    function showVictoryModal() {
-      const body = document.getElementById("victory-modal-body");
-      const uniqueCount = new Set(state.unlockedCards).size;
-      body.innerHTML = `
-        <h2>👑 榮耀破關：永恆賢王所羅門 👑</h2>
-        <div style="text-align:center; font-size:0.9rem; line-height:1.6; margin-bottom:12px;">
-          你以無上智慧駕馭七十二柱魔神與《所羅門秘儀》，將耶路撒冷第一聖殿構築為全彩神聖殿堂，並徹底擊潰了深淵利維坦！
-        </div>
-        <div class="rule-item" style="font-size:0.85rem;">
-          • <strong>聖殿場地完工度</strong>：6 / 6 全彩覺醒<br>
-          • <strong>累計決鬥勝場</strong>：${state.battlesWon} 場<br>
-          • <strong>收集決鬥圖鑑</strong>：${uniqueCount} / ${ALL_CARDS.length} 張
-        </div>
-        <button class="btn btn-gold" style="width:100%; padding:11px;" onclick="document.getElementById('victory-modal').classList.add('hidden')">
-          繼續留在聖殿收集全套牌組
-        </button>
-      `;
-      document.getElementById("victory-modal").classList.remove("hidden");
-    }
-
     function retreatBattle() {
-      if (!confirm("確定要投降撤軍回耶路撒冷嗎？")) return;
+      if (!confirm("確定要投降撤軍嗎？")) return;
       closeBattleOverlay();
     }
 
@@ -2961,18 +3338,35 @@
       if (state.templeStage >= TEMPLE_STAGES.length) return;
       const st = TEMPLE_STAGES[state.templeStage];
       if (state.stone < st.stone || state.wood < st.wood || state.gold < st.gold || state.labor < st.labor) return;
+      if (st.reqRank && countUniqueRank(st.reqRank) < st.reqCount) return;
+
       state.stone -= st.stone;
       state.wood -= st.wood;
       state.gold -= st.gold;
       state.labor -= st.labor;
       state.templeStage++;
       updateAllUI();
+
+      // 當聖殿建到第 6 層時，立即觸發「天降神光・大天使長梅塔特隆降臨」電影過場！
+      if (state.templeStage === 6) {
+        playAngelDescentCutscene();
+      }
     }
 
     function updateTempleUI() {
+      const wrap = document.getElementById("temple-canvas-wrap");
+      const ruinsG = document.getElementById("svg-ruins-overlay");
+      if (wrap) wrap.classList.toggle("ruined-canvas", !!state.isTempleRuined);
+      if (ruinsG) ruinsG.style.display = state.isTempleRuined ? "block" : "none";
+
       for (let i = 1; i <= 6; i++) {
         const el = document.getElementById(`svg-stage-${i}`);
-        if (el) {
+        if (!el) continue;
+        if (state.isTempleRuined) {
+          el.classList.remove("built", "unbuilt");
+          el.classList.add("ruined");
+        } else {
+          el.classList.remove("ruined");
           el.classList.toggle("built", state.templeStage >= i);
           el.classList.toggle("unbuilt", state.templeStage < i);
         }
@@ -2980,36 +3374,65 @@
 
       document.getElementById("stat-lp").textContent = `${getPlayerStartLp()} LP`;
       document.getElementById("stat-draw").textContent = `${getPlayerStartHand()} 張`;
-      const auraLabels = ["無", "5000 LP", "5-6★免祭", "手牌5/DEF+400", "回合降怒10%", "2印記特召", "君王登場炸場"];
-      document.getElementById("stat-aura").textContent = auraLabels[state.templeStage] || "完全覺醒";
+      const auraLabels = ["無", "5000 LP", "5-6★免祭", "手牌5/DEF+400", "回合降怒10%", "狂暴+800/2環降臨", "天界對峙覺醒"];
+      document.getElementById("stat-aura").textContent = state.isTempleRuined ? "廢墟餘燼" : (auraLabels[state.templeStage] || "覺醒");
       document.getElementById("stat-berserk").textContent = `ATK +${getBerserkAtkBonus()}`;
 
       const buildBtn = document.getElementById("btn-build-temple");
-      if (state.templeStage < TEMPLE_STAGES.length) {
+      if (state.isTempleRuined) {
+        document.getElementById("temple-tier-label").textContent = "💥 歷史廢墟遺跡";
+        document.getElementById("temple-status-tag").textContent = "🔥 金火與黑焰對撞後的焦黑廢墟";
+        document.getElementById("temple-name").textContent = "耶路撒冷第一聖殿（焦黑廢墟遺跡）";
+        document.getElementById("temple-desc").textContent = "你已親手弑殺大天使長並承受了惡魔反噬的宿命。可繼續留在遺跡中收集全 72 柱魔神，或點擊下方開啟新輪迴！";
+        document.getElementById("temple-cost-text").textContent = "史詩終局已達成：【弑神墮落者・所羅門】";
+        document.getElementById("temple-progress").style.width = "100%";
+        buildBtn.textContent = "🔄 開啟新輪迴（保留 72 魔神圖鑑）";
+        buildBtn.disabled = false;
+        buildBtn.onclick = () => startNewCycleKeepCards();
+      } else if (state.templeStage < TEMPLE_STAGES.length) {
         const st = TEMPLE_STAGES[state.templeStage];
+        const curRankCnt = st.reqRank ? countUniqueRank(st.reqRank) : 0;
+        const rankOk = !st.reqRank || curRankCnt >= st.reqCount;
+
         document.getElementById("temple-tier-label").textContent = `已完工 ${state.templeStage}/6`;
         document.getElementById("temple-status-tag").textContent = `✨ 已啟動 ${state.templeStage}/6 層場地魔法`;
         document.getElementById("temple-name").textContent = st.name;
         document.getElementById("temple-desc").textContent = st.desc;
-        document.getElementById("temple-cost-text").textContent =
-          `需求：🪨 ${st.stone} 巨石 | 🌲 ${st.wood} 香柏木 | 🪙 ${st.gold} | 👷 ${st.labor} 人力`;
+        document.getElementById("temple-cost-text").innerHTML =
+          `物資：🪨 ${st.stone} ｜ 🌲 ${st.wood} ｜ 🪙 ${st.gold} ｜ 👷 ${st.labor}<br>` +
+          `<span style="color:${rankOk ? "#15803d" : "#b91c1c"};">契約門檻：${st.reqLabel} ${st.reqRank ? `(目前 ${curRankCnt}/${st.reqCount})` : "✅"}</span>`;
 
         const p1 = Math.min(1, state.stone / st.stone);
         const p2 = Math.min(1, state.wood / st.wood);
         const p3 = st.gold > 0 ? Math.min(1, state.gold / st.gold) : 1;
         const p4 = Math.min(1, state.labor / st.labor);
         document.getElementById("temple-progress").style.width = `${Math.floor(((p1 + p2 + p3 + p4) / 4) * 100)}%`;
-        buildBtn.disabled = !(state.stone >= st.stone && state.wood >= st.wood && state.gold >= st.gold && state.labor >= st.labor);
+
+        const resOk = state.stone >= st.stone && state.wood >= st.wood && state.gold >= st.gold && state.labor >= st.labor;
+        buildBtn.disabled = !(resOk && rankOk);
+        buildBtn.textContent = state.templeStage === 5 ? "🏛️ 竣工並舉行約櫃降臨大典" : "🔨 動工興建聖殿階段";
+        buildBtn.onclick = () => buildTempleStage();
       } else {
-        document.getElementById("temple-tier-label").textContent = "👑 6/6 全彩覺醒";
-        document.getElementById("temple-status-tag").textContent = "👑 第一聖殿場地魔法完全覺醒！";
-        document.getElementById("temple-name").textContent = "耶路撒冷第一聖殿（榮耀竣工）";
-        document.getElementById("temple-desc").textContent = "聖殿已全數點亮！前往【⚔️ 世界決鬥】擊敗最終首領【深淵利維坦】完成加冕破關！";
+        document.getElementById("temple-tier-label").textContent = "✨ 6/6 約櫃降臨";
+        document.getElementById("temple-status-tag").textContent = "⚡ 大天使長梅塔特隆已降臨至聖所！";
+        document.getElementById("temple-name").textContent = "至聖所決戰・違逆天界神諭";
+        document.getElementById("temple-desc").textContent = "大天使長梅塔特隆正在至聖所等待你的抉擇！點擊下方迎戰最終 BOSS！";
         document.getElementById("temple-progress").style.width = "100%";
-        buildBtn.textContent = state.isGameCleared ? "✨ 已完成聖殿加冕破關" : "⚔️ 前往世界決鬥迎戰最終首領";
-        buildBtn.disabled = state.isGameCleared;
-        buildBtn.onclick = () => switchTab("campaign");
+        buildBtn.textContent = "⚔️ 迎戰大天使長【梅塔特隆】";
+        buildBtn.disabled = false;
+        buildBtn.onclick = () => playAngelDescentCutscene();
       }
+    }
+
+    function startNewCycleKeepCards() {
+      if (!confirm("確定要重塑聖殿開啟新輪迴嗎？（已契約的 72 魔神與卡牌將全數保留）")) return;
+      state.templeStage = 0;
+      state.isTempleRuined = false;
+      state.stone = 60;
+      state.wood = 40;
+      state.gold = 100;
+      state.labor = 10;
+      updateAllUI();
     }
 
     let isSiegePopupOpen = false;
@@ -3030,18 +3453,23 @@
       const backdrop = document.getElementById("siege-popup-backdrop");
       if (!castlesLayer || !panel || !backdrop) return;
 
-      const hqX = 288, hqY = 250;
-      routesLayer.innerHTML = WORLD_REGIONS.map(r => {
-        const tx = (r.x / 100) * 800, ty = (r.y / 100) * 500;
-        return `<line x1="${hqX}" y1="${hqY}" x2="${tx}" y2="${ty}" class="march-route ${state.selectedRegionId === r.id ? "unlocked" : ""}" />`;
-      }).join("");
+      // 繪製全球十大板塊征服進軍路線網
+      let linesHtml = "";
+      for (let i = 0; i < WORLD_REGIONS.length - 1; i++) {
+        const a = WORLD_REGIONS[i], b = WORLD_REGIONS[i + 1];
+        const x1 = (a.x / 100) * 820, y1 = (a.y / 100) * 440;
+        const x2 = (b.x / 100) * 820, y2 = (b.y / 100) * 440;
+        const activeRoute = state.selectedRegionId === a.id || state.selectedRegionId === b.id;
+        linesHtml += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" class="march-route ${activeRoute ? "unlocked" : ""}" />`;
+      }
+      routesLayer.innerHTML = linesHtml;
 
       castlesLayer.innerHTML = WORLD_REGIONS.map(r => {
         const wins = (state.conqueredRegions && state.conqueredRegions[r.id]) || 0;
         const isSelected = state.selectedRegionId === r.id && isSiegePopupOpen;
         const lockedFinal = r.isFinalBoss && state.templeStage < 6;
         return `
-          <div class="castle-node ${isSelected ? "selected" : ""} ${wins > 0 ? "conquered" : ""} ${lockedFinal ? "locked" : ""}"
+          <div class="castle-node ${isSelected ? "selected" : ""} ${wins > 0 ? "conquered" : ""} ${r.isFinalBoss ? "final-angel" : ""} ${lockedFinal ? "locked" : ""}"
                style="left:${r.x}%; top:${r.y}%;" onclick="selectCastleNode('${r.id}')">
             <div class="castle-icon-box">${lockedFinal ? "🔒" : r.icon}${wins > 0 ? `<span class="castle-flag">🚩x${wins}</span>` : ""}</div>
             <div class="castle-name-tag">${r.name}</div>
@@ -3066,8 +3494,8 @@
         </div>
         <div style="font-size:0.8rem; color:#e4d4b7; line-height:1.45; margin-bottom:10px;">${cur.desc}</div>
         <div style="background:rgba(0,0,0,0.42); border:1px solid rgba(200,150,35,0.28); padding:8px; border-radius:8px; margin-bottom:12px;">
-          <div style="font-size:0.78rem; font-weight:800; color:#fca5a5; margin-bottom:6px;">
-            👹 對手：${cur.bossName} <span style="color:#fff;">(LP ${cur.bossLp})</span>
+          <div style="font-size:0.78rem; font-weight:800; color:${cur.isFinalBoss ? "#fde047" : "#fca5a5"}; margin-bottom:6px;">
+            ${cur.isFinalBoss ? "👼 最終神敵" : "👹 守城主將"}：${cur.bossName} <span style="color:#fff;">(LP ${cur.bossLp})</span>
           </div>
           <div class="region-loot" style="color:#1c140e;">
             <span class="loot-tag">🪨 +${cur.loot.stone}</span>
@@ -3080,8 +3508,8 @@
         <div style="display:flex; gap:8px;">
           <button class="btn" style="flex:0 0 74px; background:#374151;" onclick="closeSiegePopup()">返回</button>
           <button class="btn ${cur.isFinalBoss ? "btn-crimson" : "btn-gold"}" style="flex:1; font-size:0.9rem; padding:10px;"
-                  onclick="closeSiegePopup(); startBattle('${cur.id}')" ${lockedFinal ? "disabled" : ""}>
-            ${lockedFinal ? "🔒 需聖殿 6/6 解鎖" : `⚔️ 開啟決鬥`}
+                  onclick="closeSiegePopup(); ${cur.isFinalBoss ? "playAngelDescentCutscene()" : `startBattle('${cur.id}')`}" ${lockedFinal ? "disabled" : ""}>
+            ${lockedFinal ? "🔒 需聖殿 6/6 解鎖" : (cur.isFinalBoss ? "⚔️ 違逆神諭・弑神決戰" : "⚔️ 開啟決鬥")}
           </button>
         </div>
       `;
@@ -3138,9 +3566,7 @@
         <div class="rule-item holy" style="margin-top:10px;">
           <strong>🃏 決鬥規則效果：</strong><br>${c.effText}
         </div>
-        <div class="rule-item">
-          <strong>📜 禁書神話典故：</strong><br>${c.trait}
-        </div>
+        ${c.trait ? `<div class="rule-item"><strong>📜 神話典故：</strong><br>${c.trait}</div>` : ""}
         <button class="btn" style="width:100%;" onclick="closeDemonDetail()">闔上卷軸</button>
       `;
       document.getElementById("demon-detail-modal").classList.remove("hidden");
@@ -3214,23 +3640,23 @@
     }
 
     function updateTutorialBanner() {
+      const banner = document.getElementById("tutorial-banner");
       const tag = document.getElementById("tut-step-tag");
       const text = document.getElementById("tut-text");
-      if (state.isGameCleared) {
-        tag.textContent = "👑 聖殿落成";
-        text.textContent = "已擊敗深淵利維坦，成為永恆賢王！可繼續收集全套牌組！";
+      banner.classList.toggle("ruined-mode", !!state.isTempleRuined);
+
+      if (state.isTempleRuined) {
+        tag.textContent = "💀 弑神終局";
+        text.textContent = "聖殿已炸為歷史廢墟！可繼續收集全 72 魔神或重塑輪迴！";
       } else if (state.battlesWon === 0) {
-        tag.textContent = "敕令 1/3";
-        text.textContent = "點下方「⚔️世界決鬥」，點擊城池開啟決鬥掠奪建材！";
-      } else if (state.templeStage === 0) {
-        tag.textContent = "敕令 2/3";
-        text.textContent = "物資充足！在「🏛️聖殿場地」興建階段一啟動場地魔法！";
+        tag.textContent = "敕令 1/4";
+        text.textContent = "點下方「🌍全球遠征」，征服十大板塊掠奪建材與契約魔神！";
       } else if (state.templeStage < 6) {
-        tag.textContent = "敕令 3/3";
-        text.textContent = `持續征戰並點亮聖殿（目前 ${state.templeStage}/6），竣工後開啟最終決戰！`;
+        tag.textContent = "敕令 2/4";
+        text.textContent = `累積物資與高階爵位契約，點亮 6 層聖殿（目前 ${state.templeStage}/6）！`;
       } else {
-        tag.textContent = "🔥 最終決戰";
-        text.textContent = "聖殿已完全覺醒！前往「⚔️世界決鬥」擊敗【深淵利維坦】！";
+        tag.textContent = "⚡ 終局降臨";
+        text.textContent = "大天使長梅塔特隆已降臨至聖所！前往決戰迎接最終反轉！";
       }
     }
 
@@ -3239,7 +3665,7 @@
       document.getElementById("res-wood").textContent = state.wood;
       document.getElementById("res-gold").textContent = state.gold;
       document.getElementById("res-labor").textContent = state.labor;
-      document.getElementById("res-temple").textContent = `${state.templeStage}/6`;
+      document.getElementById("res-temple").textContent = state.isTempleRuined ? "廢墟" : `${state.templeStage}/6`;
 
       updateTutorialBanner();
       updateTempleUI();
@@ -3249,7 +3675,7 @@
     }
 
     function resetGame() {
-      if (!confirm("確定要重置決鬥進度並重新開始嗎？")) return;
+      if (!confirm("確定要徹底重置所有進度並重新開始嗎？")) return;
       try { localStorage.removeItem(SAVE_KEY); } catch (e) {}
       location.reload();
     }
