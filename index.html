@@ -596,7 +596,8 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      gap: 4px;
+      gap: 3px;
+      perspective: 920px;
     }
 
     .duel-top-bar {
@@ -658,7 +659,7 @@
     .duel-board {
       position: relative;
       background:
-        linear-gradient(180deg, rgba(136, 19, 55, 0.24) 0%, rgba(15, 11, 20, 0.92) 48%, rgba(30, 58, 138, 0.24) 100%);
+        linear-gradient(180deg, rgba(136, 19, 55, 0.28) 0%, rgba(15, 11, 20, 0.94) 48%, rgba(30, 58, 138, 0.28) 100%);
       border: 1.5px solid #d97706;
       border-radius: 10px;
       padding: 5px 6px;
@@ -666,12 +667,25 @@
       flex-direction: column;
       gap: 4px;
       flex-shrink: 0;
-      box-shadow: inset 0 0 24px rgba(217, 119, 6, 0.2);
+      transform: rotateX(6deg);
+      transform-origin: center 62%;
+      transform-style: preserve-3d;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.85), inset 0 0 26px rgba(217, 119, 6, 0.24);
+    }
+
+    @keyframes hellfire-pulse {
+      0%, 100% { box-shadow: 0 10px 24px rgba(0,0,0,0.85), 0 0 16px rgba(239, 68, 68, 0.6), inset 0 0 26px rgba(220, 38, 38, 0.45); }
+      50% { box-shadow: 0 10px 24px rgba(0,0,0,0.85), 0 0 28px rgba(239, 68, 68, 0.95), inset 0 0 42px rgba(239, 68, 68, 0.7); }
     }
 
     .duel-board.hellfire-active {
       border-color: #ef4444;
-      box-shadow: 0 0 18px rgba(239, 68, 68, 0.65), inset 0 0 30px rgba(220, 38, 38, 0.45);
+      animation: hellfire-pulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes watermark-breathe {
+      0%, 100% { opacity: 0.20; transform: scale(1); }
+      50% { opacity: 0.34; transform: scale(1.03); }
     }
 
     .duel-mat-watermark {
@@ -680,8 +694,9 @@
       width: 100%;
       height: 100%;
       pointer-events: none;
-      opacity: 0.22;
+      opacity: 0.24;
       z-index: 0;
+      animation: watermark-breathe 5s ease-in-out infinite;
     }
 
     .board-row {
@@ -701,17 +716,72 @@
     }
 
     .zone-slot {
-      background: radial-gradient(circle at 50% 45%, rgba(45, 32, 22, 0.65) 0%, rgba(15, 11, 14, 0.85) 100%);
+      background: radial-gradient(circle at 50% 45%, rgba(45, 32, 22, 0.65) 0%, rgba(12, 9, 12, 0.92) 100%);
       border: 1.5px solid rgba(245, 158, 11, 0.42);
       border-radius: 7px;
-      height: 60px;
-      padding: 2px 4px;
+      height: 78px;
+      padding: 2px 3px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
       position: relative;
       cursor: pointer;
+      box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.88);
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .zone-slot.occupied, .zone-slot.enemy-occupied, .zone-slot.angel-occupied {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 0 #451a03, 0 7px 12px rgba(0, 0, 0, 0.85);
+    }
+
+    .zone-slot.king-unit {
+      box-shadow: 0 4px 0 #92400e, 0 0 16px rgba(253, 224, 71, 0.75);
+    }
+
+    .slot-art-bg {
+      position: absolute;
+      inset: 1px;
+      border-radius: 5px;
+      overflow: hidden;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+
+    .zone-slot.king-unit .slot-art-bg {
+      inset: -6px 1px 1px 1px;
+      border-radius: 6px;
+      box-shadow: 0 -2px 10px rgba(253, 224, 71, 0.45);
+    }
+
+    .slot-shield-fx {
+      position: absolute;
+      inset: 0;
+      border-radius: 6px;
+      border: 2px solid #38bdf8;
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.1) 40%, rgba(14, 165, 233, 0.36) 100%);
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .slot-seal-fx {
+      position: absolute;
+      inset: 0;
+      border-radius: 5px;
+      background: rgba(15, 23, 42, 0.62);
+      color: #fde047;
+      font-size: 0.72rem;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 4;
+      pointer-events: none;
+      text-shadow: 0 1px 4px #000;
     }
 
     .zone-slot.backrow-slot {
@@ -776,11 +846,16 @@
     }
 
     .field-card-header {
+      position: relative;
+      z-index: 3;
       width: 100%;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.88) 0%, rgba(0, 0, 0, 0.48) 100%);
+      border-radius: 4px;
+      padding: 1px 3px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.64rem;
+      font-size: 0.62rem;
       font-weight: 900;
       color: #fef08a;
       gap: 2px;
@@ -803,12 +878,15 @@
     }
 
     .monster-stats-bar {
+      position: relative;
+      z-index: 3;
       width: 100%;
-      background: rgba(0, 0, 0, 0.82);
-      border-radius: 3px;
+      background: rgba(0, 0, 0, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 4px;
       padding: 0 2px;
       text-align: center;
-      font-size: 0.64rem;
+      font-size: 0.65rem;
       font-weight: 900;
       font-variant-numeric: tabular-nums;
       white-space: nowrap;
@@ -995,9 +1073,10 @@
 
     .battle-card .card-art-well {
       background: radial-gradient(circle, #2a1b12 0%, #0f0906 100%);
-      border: 1px solid rgba(253, 224, 71, 0.65);
+      border: 1px solid rgba(253, 224, 71, 0.75);
       border-radius: 4px;
-      height: 22px;
+      height: 62px;
+      overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -1010,13 +1089,14 @@
       border: 1px solid #b45309;
       border-radius: 4px;
       padding: 2px 3px;
-      font-size: 0.6rem;
+      font-size: 0.55rem;
       font-weight: 700;
-      line-height: 1.18;
+      line-height: 1.12;
       color: #1c1208;
-      overflow-y: auto;
-      display: flex;
-      align-items: center;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
     }
 
     .bc-footer {
@@ -1962,7 +2042,31 @@
     // ==========================================
     // 5. SVG 紋章、六翼大天使長與首領頭像生成器
     // ==========================================
-    function generateCardSigilSVG(card, size = 40) {
+    function generateCardSigilSVG(card, size = 40, fullArt = false) {
+      // 1. 72 柱魔神怪獸（ID 1 ~ 72）使用兩張 6x6 精靈圖集精準裁切
+      if (card.cardType === "monster" && card.id >= 1 && card.id <= 72) {
+        const isSecondSheet = card.id > 36;
+        const sheetFile = isSecondSheet ? "demons_37_72.png" : "demons_1_36.png";
+        const indexInSheet = (card.id - 1) % 36; // 0 ~ 35
+        const col = indexInSheet % 6;            // 0 ~ 5
+        const row = Math.floor(indexInSheet / 6);// 0 ~ 5
+        const posX = (col / 5) * 100;
+        const posY = (row / 5) * 100;
+
+        return `<div style="
+          width:${fullArt ? "100%" : size + "px"};
+          height:${fullArt ? "100%" : size + "px"};
+          border-radius:4px;
+          background-color:#0b0705;
+          background-image:url('${sheetFile}');
+          background-size:${fullArt ? "615% 615%" : "600% 600%"};
+          background-position:${posX}% ${posY}%;
+          background-repeat:no-repeat;
+          flex-shrink:0;
+        "></div>`;
+      }
+
+      // 2. 魔法、陷阱與天使 BOSS 維持原本向量 SVG 紋章（保留後段原程式碼即可）
       if (card.rank === "Angel") {
         return `<svg width="${size}" height="${size}" viewBox="0 0 48 48">
           <circle cx="24" cy="14" r="7" fill="none" stroke="#fef08a" stroke-width="2"/>
@@ -1978,37 +2082,13 @@
           <circle cx="24" cy="24" r="5" fill="#bbf7d0"/>
         </svg>`;
       }
-      if (card.cardType === "trap") {
-        return `<svg width="${size}" height="${size}" viewBox="0 0 48 48">
-          <polygon points="24,5 43,24 24,43 5,24" fill="none" stroke="#f472b6" stroke-width="2.2"/>
-          <circle cx="24" cy="24" r="10" fill="none" stroke="#fbcfe8" stroke-width="2"/>
-          <path d="M24,14 L24,34 M14,24 L34,24" stroke="#f472b6" stroke-width="2.2"/>
-        </svg>`;
-      }
-
-      const rankColors = {
-        King: "#fde047", Duke: "#93c5fd", Prince: "#d8b4fe",
-        Marquis: "#fca5a5", President: "#6ee7b7", Earl: "#fdba74"
-      };
-      const color = rankColors[card.rank] || "#fde047";
-
-      let frameSvg = "";
-      if (card.rank === "King") {
-        frameSvg = `<circle cx="24" cy="24" r="20" fill="none" stroke="${color}" stroke-width="2"/><polygon points="24,2 28,8 20,8" fill="${color}"/><polygon points="14,5 19,10 13,11" fill="${color}"/><polygon points="34,5 35,11 29,10" fill="${color}"/>`;
-      } else if (card.rank === "Duke") {
-        frameSvg = `<path d="M8,6 L40,6 L40,24 Q40,38 24,44 Q8,38 8,24 Z" fill="none" stroke="${color}" stroke-width="2"/>`;
-      } else if (card.rank === "Prince") {
-        frameSvg = `<polygon points="24,4 41,34 7,34" fill="none" stroke="${color}" stroke-width="1.6"/><polygon points="24,44 41,14 7,14" fill="none" stroke="${color}" stroke-width="1.6"/>`;
-      } else if (card.rank === "Marquis") {
-        frameSvg = `<polygon points="24,4 44,24 24,44 4,24" fill="none" stroke="${color}" stroke-width="2"/>`;
-      } else {
-        frameSvg = `<circle cx="24" cy="24" r="18" fill="none" stroke="${color}" stroke-width="1.8"/>`;
-      }
-
-      const coreSvg = `<polygon points="24,12 29,21 38,24 29,27 24,36 19,27 10,24 19,21" fill="${color}" opacity="0.35" stroke="${color}" stroke-width="1.8"/>`;
-      return `<svg width="${size}" height="${size}" viewBox="0 0 48 48">${frameSvg}${coreSvg}</svg>`;
+      return `<svg width="${size}" height="${size}" viewBox="0 0 48 48">
+        <polygon points="24,5 43,24 24,43 5,24" fill="none" stroke="#f472b6" stroke-width="2.2"/>
+        <circle cx="24" cy="24" r="10" fill="none" stroke="#fbcfe8" stroke-width="2"/>
+        <path d="M24,14 L24,34 M14,24 L34,24" stroke="#f472b6" stroke-width="2.2"/>
+      </svg>`;
     }
-
+    
     function generateMetatronHeroSVG() {
       return `<svg width="190" height="190" viewBox="0 0 200 200">
         <defs>
@@ -2246,26 +2326,35 @@
       const r2 = toEl.getBoundingClientRect();
       const sx = r1.left + r1.width / 2, sy = r1.top + r1.height / 2;
       const tx = r2.left + r2.width / 2, ty = r2.top + r2.height / 2;
+      const dx = (tx - sx) * 0.78, dy = (ty - sy) * 0.78;
 
-      const proj = document.createElement("div");
-      proj.className = "vfx-projectile";
-      proj.style.left = `${sx}px`;
-      proj.style.top = `${sy}px`;
-      document.body.appendChild(proj);
+      fromEl.style.zIndex = "30";
+      const lungeAnim = fromEl.animate([
+        { transform: "translate(0, 0) scale(1)" },
+        { transform: `translate(${-dx * 0.14}px, ${-dy * 0.14}px) scale(0.92)`, offset: 0.25 },
+        { transform: `translate(${dx}px, ${dy}px) scale(1.18)`, offset: 0.65 },
+        { transform: "translate(0, 0) scale(1)" }
+      ], { duration: 300, easing: "cubic-bezier(0.22, 1, 0.36, 1)" });
 
-      const anim = proj.animate([
-        { left: `${sx}px`, top: `${sy}px`, transform: "translate(-50%,-50%) scale(0.8)" },
-        { left: `${tx}px`, top: `${ty}px`, transform: "translate(-50%,-50%) scale(1.45)" }
-      ], { duration: 220, easing: "ease-out" });
-
-      anim.onfinish = () => {
-        proj.remove();
+      setTimeout(() => {
         const wave = document.createElement("div");
         wave.className = "vfx-shockwave";
         wave.style.left = `${tx}px`;
         wave.style.top = `${ty}px`;
         document.body.appendChild(wave);
         setTimeout(() => wave.remove(), 420);
+
+        toEl.animate([
+          { transform: "translate(0, 0)", filter: "brightness(2.2)" },
+          { transform: "translate(-7px, 4px)" },
+          { transform: "translate(7px, -4px)" },
+          { transform: "translate(-5px, -2px)" },
+          { transform: "translate(0, 0)", filter: "brightness(1)" }
+        ], { duration: 240 });
+      }, 185);
+
+      lungeAnim.onfinish = () => {
+        fromEl.style.zIndex = "";
         callback();
       };
     }
@@ -2638,6 +2727,28 @@
 
       enforceBerserkStance();
       updateDuelUI();
+
+      const slotDom = document.getElementById(`${side === "player" ? "p" : "e"}-mon-${slotIdx}`);
+      if (slotDom) {
+        slotDom.animate([
+          { transform: "translateY(-18px) scale(1.36)", filter: "brightness(2)" },
+          { transform: "translateY(2px) scale(0.95)", filter: "brightness(1.3)", offset: 0.7 },
+          { transform: "translateY(-2px) scale(1)", filter: "brightness(1)" }
+        ], { duration: 280, easing: "cubic-bezier(0.22, 1, 0.36, 1)" });
+      }
+      if (!faceDown && card.stars >= 8) {
+        flashScreen("flash-gold");
+        const board = document.getElementById("duel-board");
+        if (board) {
+          board.animate([
+            { transform: "rotateX(6deg) translate(0, 0)" },
+            { transform: "rotateX(6deg) translate(-6px, 4px)" },
+            { transform: "rotateX(6deg) translate(6px, -4px)" },
+            { transform: "rotateX(6deg) translate(-4px, -2px)" },
+            { transform: "rotateX(6deg) translate(0, 0)" }
+          ], { duration: 320 });
+        }
+      }
     }
 
     function triggerMonsterSummonEffect(side, unit) {
@@ -3064,8 +3175,35 @@
       if (onComplete) onComplete();
     }
 
+    function spawnFloatingDamage(targetSide, amount) {
+      const anchor = document.getElementById(targetSide === "enemy" ? "enemy-lp-text" : "player-lp-text");
+      if (!anchor) return;
+      const rect = anchor.getBoundingClientRect();
+      const dmgEl = document.createElement("div");
+      dmgEl.textContent = `-${amount}`;
+      dmgEl.style.cssText = `
+        position: fixed;
+        left: ${rect.left + rect.width / 2}px;
+        top: ${rect.top}px;
+        transform: translate(-50%, 0);
+        font-size: 1.55rem;
+        font-weight: 900;
+        color: ${targetSide === "enemy" ? "#fde047" : "#ff4d4d"};
+        text-shadow: 0 2px 6px #000, 0 0 12px rgba(239,68,68,0.9);
+        pointer-events: none;
+        z-index: 9999;
+      `;
+      document.body.appendChild(dmgEl);
+      dmgEl.animate([
+        { opacity: 1, transform: "translate(-50%, 0) scale(0.6)" },
+        { opacity: 1, transform: "translate(-50%, -18px) scale(1.25)", offset: 0.3 },
+        { opacity: 0, transform: "translate(-50%, -44px) scale(1)" }
+      ], { duration: 750, easing: "ease-out" }).onfinish = () => dmgEl.remove();
+    }
+
     function dealLpDamage(targetSide, amount, bannerText) {
       if (!duel || amount <= 0) return;
+      spawnFloatingDamage(targetSide, amount);
       if (targetSide === "enemy") {
         duel.enemyLp = Math.max(0, duel.enemyLp - amount);
         flashScreen("flash-gold");
@@ -3525,10 +3663,12 @@
       const def = getEffectiveDef(unit, isPlayer);
       const isDef = unit.pos === "DEF";
       const isAngel = unit.card.rank === "Angel";
+      const isKing = unit.card.stars >= 8;
       const cls = [
         "zone-slot",
         isPlayer ? "occupied" : (isAngel ? "angel-occupied" : "enemy-occupied"),
         isDef ? "def-stance" : "",
+        isKing ? "king-unit" : "",
         unit.holySealed ? "sealed-unit" : "",
         highlightTarget ? (duel.tributeMode ? "tribute-target" : "attack-target") : "",
         isTribSel ? "tribute-selected" : "",
@@ -3537,13 +3677,15 @@
 
       return `
         <div class="${cls}" id="${domId}" onclick="${clickFn}">
+          <div class="slot-art-bg">${generateCardSigilSVG(unit.card, 56, true)}</div>
+          ${unit.shield ? `<div class="slot-shield-fx"></div>` : ""}
+          ${unit.holySealed ? `<div class="slot-seal-fx">✨ 神聖封印</div>` : ""}
           <div class="field-card-header">
             <span class="field-card-name">${unit.card.name.split(" ")[0]}</span>
             <span class="stance-pill" style="background:${isDef ? "#0284c7" : (isAngel ? "#d97706" : "#dc2626")}; color:#fff;">
-              ${unit.card.stars}★${isDef ? "守" : "攻"}${unit.shield ? "🛡️" : ""}${unit.holySealed ? "✨封" : ""}
+              ${unit.card.stars}★${isDef ? "守" : "攻"}
             </span>
           </div>
-          ${generateCardSigilSVG(unit.card, 20)}
           <div class="monster-stats-bar">
             <span style="color:${isDef ? "#94a3b8" : "#fde047"};">${atk}</span>/<span style="color:${isDef ? "#38bdf8" : "#94a3b8"};">${def}</span>
           </div>
@@ -3654,7 +3796,7 @@
               ${headerBadge}
             </div>
             <div class="card-art-well">
-              ${generateCardSigilSVG(c, 20)}
+              ${generateCardSigilSVG(c, 34, c.cardType === "monster")}
             </div>
             <div class="bc-desc">${c.effText}</div>
             <div class="bc-footer">${footerHtml}</div>
