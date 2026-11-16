@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -1676,6 +1675,259 @@
       100% { opacity: 0; transform: scaleY(0.1) translateX(40px); }
     }
 
+  
+    /* ==========================================
+       沉浸式 RPG 任務推進新手教學 & 軍師預警樣式（流式頂部推擠排版）
+       ========================================== */
+    #battle-overlay.tutorial-active .duel-inner {
+      overflow-y: auto;
+      justify-content: flex-start;
+      gap: 4px;
+    }
+    #battle-overlay.tutorial-expanded .zone-slot {
+      height: 62px;
+    }
+    #battle-overlay.tutorial-expanded .zone-slot.backrow-slot {
+      height: 22px;
+    }
+    #battle-overlay.tutorial-expanded .hand-container {
+      height: 114px;
+    }
+    #battle-overlay.tutorial-expanded .battle-card {
+      height: 108px;
+    }
+    #battle-overlay.tutorial-expanded .battle-card .card-art-well {
+      height: 46px;
+    }
+
+    #rpg-quest-card {
+      position: relative;
+      width: 100%;
+      flex-shrink: 0;
+      z-index: 25;
+      background: linear-gradient(165deg, #2b1a0e 0%, #160d07 100%);
+      border: 2px solid #fde047;
+      border-radius: 10px;
+      padding: 7px 10px;
+      color: #f4ead5;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.85), 0 0 14px rgba(250, 204, 21, 0.35);
+      transition: padding 0.2s ease, border-color 0.2s ease;
+    }
+    #rpg-quest-card.hidden { display: none !important; }
+    #rpg-quest-card.compact-mode {
+      padding: 5px 9px;
+      background: linear-gradient(90deg, #1e1b4b 0%, #31102f 50%, #1e1b4b 100%);
+      border-color: #38bdf8;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8), 0 0 12px rgba(56, 189, 248, 0.45);
+    }
+
+    .rpg-compact-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      min-height: 24px;
+    }
+    .rpg-compact-task {
+      flex: 1;
+      min-width: 0;
+      font-size: 0.74rem;
+      font-weight: 900;
+      color: #fde047;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .rpg-quest-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 6px;
+      padding-bottom: 5px;
+      border-bottom: 1px solid rgba(253, 224, 71, 0.35);
+      margin-bottom: 6px;
+    }
+    .rpg-quest-step-pill {
+      background: linear-gradient(90deg, #eab308, #b45309);
+      color: #1c1008;
+      font-size: 0.66rem;
+      font-weight: 900;
+      padding: 2px 7px;
+      border-radius: 8px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .rpg-quest-title {
+      font-size: 0.82rem;
+      font-weight: 900;
+      color: #fde047;
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .rpg-quest-ctrl-btn {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(253, 224, 71, 0.6);
+      color: #fef08a;
+      font-size: 0.64rem;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 6px;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rpg-quest-main {
+      display: flex;
+      gap: 8px;
+      align-items: stretch;
+      margin-bottom: 6px;
+    }
+    .rpg-sprite-stage {
+      display: flex;
+      gap: 5px;
+      flex-shrink: 0;
+    }
+    .rpg-scene-box {
+      width: 78px;
+      height: 62px;
+      border-radius: 7px;
+      overflow: hidden;
+      border: 1.5px solid #f59e0b;
+      background: #090503;
+      box-shadow: 0 0 10px rgba(245, 158, 11, 0.4);
+      position: relative;
+      flex-shrink: 0;
+    }
+    @media (max-width: 480px) {
+      .rpg-scene-box {
+        width: 64px;
+        height: 52px;
+      }
+    }
+    .rpg-scene-caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0, 0, 0, 0.8);
+      color: #fde047;
+      font-size: 0.52rem;
+      font-weight: 800;
+      text-align: center;
+      padding: 1px 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .rpg-dialogue-col {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .rpg-speaker-row {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-bottom: 2px;
+    }
+    .rpg-speaker-avatar {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 1px solid #fde047;
+      flex-shrink: 0;
+    }
+    .rpg-speaker-name {
+      font-size: 0.68rem;
+      font-weight: 900;
+      color: #fca5a5;
+    }
+    .rpg-story-text {
+      font-size: 0.72rem;
+      line-height: 1.36;
+      color: #fffbeb;
+      margin: 0;
+    }
+
+    .rpg-task-tracker {
+      background: rgba(15, 23, 42, 0.92);
+      border: 1.5px solid #38bdf8;
+      border-radius: 7px;
+      padding: 5px 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+    .rpg-task-tracker.task-done {
+      border-color: #4ade80;
+      background: rgba(20, 83, 45, 0.88);
+    }
+    .rpg-task-desc {
+      font-size: 0.72rem;
+      font-weight: 900;
+      color: #bae6fd;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      line-height: 1.3;
+    }
+
+    /* 戰場聚光燈脈衝高亮 */
+    @keyframes tut-spotlight-pulse {
+      0%, 100% {
+        box-shadow: 0 0 0 3px #fde047, 0 0 18px 4px rgba(250, 204, 21, 0.95) !important;
+        transform: translateY(-2px) scale(1.02);
+      }
+      50% {
+        box-shadow: 0 0 0 4px #ef4444, 0 0 26px 8px rgba(239, 68, 68, 0.95) !important;
+        transform: translateY(-4px) scale(1.04);
+      }
+    }
+    .tut-spotlight {
+      position: relative !important;
+      z-index: 20 !important;
+      border-color: #fde047 !important;
+      animation: tut-spotlight-pulse 1.15s ease-in-out infinite !important;
+    }
+    .tut-spotlight::after {
+      content: "👆 點此推進";
+      position: absolute;
+      top: -19px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #fde047;
+      color: #1c1008;
+      font-size: 0.58rem;
+      font-weight: 900;
+      padding: 1px 5px;
+      border-radius: 7px;
+      white-space: nowrap;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.85);
+      pointer-events: none;
+      z-index: 30;
+    }
+
+    /* 軍師預警氣泡 */
+    #advisor-warn-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 6, 4, 0.82);
+      z-index: 9700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    #advisor-warn-modal.hidden { display: none !important; }
+
   </style>
 </head>
 <body>
@@ -1718,9 +1970,18 @@
         <strong>✨ 3. 第三篇章・天界（神聖戒律 vs. 七宗罪權能）</strong><br>
         • 迎戰擁有「神聖戒律」的天使軍團，解鎖<strong>【😈 七宗罪權能（暴食／傲慢／憤怒）】</strong>並透過<strong>【戰術聖物鍛造】</strong>與<strong>【卡牌真名淬鍊】</strong>強化全軍，直抵至高神座！
       </div>
-      <button class="btn btn-gold" style="width: 100%; padding: 11px; font-size: 0.96rem;" onclick="startGame()">
-        💍 戴上所羅門之戒，開啟三界遠征
-      </button>
+      <div style="background:linear-gradient(90deg,#451a03,#78350f); border:1.5px solid #fde047; border-radius:8px; padding:9px 10px; margin-bottom:10px;">
+        <div style="font-size:0.84rem; font-weight:900; color:#fde047; margin-bottom:4px;">🎓 第一次玩？不知道怎麼贏第一關？</div>
+        <div style="font-size:0.75rem; color:#fef3c7; line-height:1.45; margin-bottom:8px;">
+          進入<strong>【5 幕式 RPG 任務實戰教學】</strong>，由所羅門王與精靈圖劇情圖卡一步步帶你親手體驗「4★召喚 ➔ 6★獻祭破盾 ➔ 魔陷反殺 ➔ 70%狂暴鎮壓」，通關再送<strong>【🗿 黑曜祭品石像】</strong>助你秒破第一關！
+        </div>
+        <button class="btn btn-gold" style="width:100%; padding:11px; font-size:0.95rem; margin-bottom:6px;" onclick="startInteractiveTutorial()">
+          ⚔️ 開啟沉浸式 RPG 新手實戰教學（強烈推薦！）
+        </button>
+        <button class="btn btn-sm" style="width:100%; background:#374151; color:#e5e7eb;" onclick="startGame()">
+          我是老手，直接進入三界遠征
+        </button>
+      </div>
     </div>
   </div>
 
@@ -1816,6 +2077,7 @@
     <div class="top-bar-row1">
       <div class="app-title">✡ 所羅門聖殿 <span id="header-realm-badge" style="background:#eab308;color:#1a1006;font-size:0.64rem;padding:1px 5px;border-radius:4px;font-weight:900;">🌍 人間篇</span></div>
       <div class="top-actions">
+        <button style="background:linear-gradient(180deg,#eab308,#b45309);color:#1a1006;font-weight:900;" onclick="startInteractiveTutorial()">🎓 教學</button>
         <button onclick="openGalleryModal()">🎬 回憶錄</button>
         <button onclick="openSaveModal()">💾 存檔</button>
         <button onclick="document.getElementById('prologue-modal').classList.remove('hidden')">📜 規則</button>
@@ -1927,7 +2189,15 @@
     <div id="battle-screen-flash"></div>
     <canvas id="battle-vfx-canvas"></canvas>
 
+    <!-- 戰場軍師反傷預警彈窗 -->
+    <div id="advisor-warn-modal" class="hidden">
+      <div class="siege-panel" style="max-width:390px; border-color:#ef4444;" id="advisor-warn-body"></div>
+    </div>
+
     <div class="duel-inner">
+      <!-- 沉浸式 RPG 任務推進圖卡（流式頂部推擠區塊，絕不遮擋下方戰場） -->
+      <div id="rpg-quest-card" class="hidden"></div>
+
       <div class="duel-top-bar" id="duel-top-bar">
         <div style="display:flex; align-items:center; gap:6px; min-width:0; flex:1;">
           <div class="boss-crest-frame" id="boss-mini-avatar"></div>
@@ -3566,6 +3836,524 @@
 
 
     // ==========================================
+    
+    // ==========================================
+    // 7.5 沉浸式 RPG 任務推進新手教學引擎（tutorial_scenes.png 4x3 精靈圖）
+    // ==========================================
+    function renderTutorialSceneSprite(sceneIdx1To12, caption = "") {
+      return `
+        <div class="rpg-scene-box">
+          ${renderSpriteFrame("tutorial_scenes.png", 4, 3, sceneIdx1To12, 96, true)}
+          ${caption ? `<div class="rpg-scene-caption">${caption}</div>` : ""}
+        </div>
+      `;
+    }
+
+    const TUTORIAL_QUEST_STEPS = [
+      {
+        id: 0,
+        act: "第一幕 1/5",
+        title: "【印戒覺醒】血肉與神殿的契約",
+        scenes: [
+          { idx: 1, label: "所羅門之戒" },
+          { idx: 3, label: "聖殿遠征藍圖" }
+        ],
+        speakerName: "所羅門王",
+        speakerAvatar: { sheet: "ac11653.png", cols: 6, rows: 5, idx: 25 },
+        story: "「我是所羅門。為興建宏偉的耶路撒冷聖殿，我必須戴上印戒支配魔神、征服世界掠奪建材！看上方<strong>敵方 LP（生命值）</strong>與下方<strong>我方 LP</strong>，誰先歸零就戰敗！」",
+        taskText: "點擊右側按鈕，開啟魔神召喚陣！",
+        actionBtnLabel: "💍 注入魔力・開啟召喚陣",
+        onActionClick: "advanceTutorialStep(1)"
+      },
+      {
+        id: 1,
+        act: "第二幕 2/5",
+        title: "【深淵列陣】4★ 下級魔神免祭品召喚",
+        scenes: [
+          { idx: 2, label: "六芒星召喚陣" },
+          { idx: 4, label: "4★獅首統領列陣" }
+        ],
+        speakerName: "所羅門王",
+        speakerAvatar: { sheet: "ac11653.png", cols: 6, rows: 5, idx: 25 },
+        story: "「<strong>4★ 以下的魔神每回合可直接召喚 1 次！</strong>先點下方手牌的<strong>【馬爾巴士 (4★ 1700攻)】</strong>，再按中間藍條的<strong>【⚔️ 攻擊召喚】</strong>！」",
+        taskText: "任務 1/2：點擊手牌【馬爾巴士】並選擇【⚔️ 攻擊召喚】"
+      },
+      {
+        id: 2,
+        act: "第二幕 2/5",
+        title: "【深淵列陣】先攻首回合規則與敵軍反擊",
+        scenes: [
+          { idx: 4, label: "馬爾巴士列陣" },
+          { idx: 7, label: "迦南巨石盾衛" }
+        ],
+        speakerName: "獅首統領・馬爾巴士",
+        speakerAvatar: { sheet: "demons_1_36.png", cols: 6, rows: 6, idx: 5 },
+        story: "「陛下，我已列陣！但決鬥法則規定<strong>『先攻第 1 回合不能攻擊』</strong>。請點擊中央的<strong>【⏳ 結束】</strong>按鈕，觀察敵軍如何出招！」",
+        taskText: "任務 2/2：點擊決鬥盤中央的【⏳ 結束】按鈕"
+      },
+      {
+        id: 3,
+        act: "第三幕 3/5",
+        title: "【獻祭破盾】破解第一關 2450 守備鐵壁！",
+        scenes: [
+          { idx: 7, label: "2450 鐵壁盾衛" },
+          { idx: 5, label: "獻祭下級魔神" },
+          { idx: 6, label: "6★公爵降臨" }
+        ],
+        speakerName: "所羅門王",
+        speakerAvatar: { sheet: "ac11653.png", cols: 6, rows: 5, idx: 25 },
+        story: "「看！敵方派出守備力高達 <strong>2450</strong> 的橫放《巨石盾衛》！若用 1700 攻硬撞會被反彈扣血！這就是第一關卡關原因——<strong>點手牌 6★【亞斯她錄】➔ 選【🔥 獻祭召喚】➔ 點場上的馬爾巴士當祭品！</strong>（攻擊表示祭品還能讓王牌額外 +300 攻！）」",
+        taskText: "任務：點手牌 6★【亞斯她錄】➔ 點【🔥獻祭召喚】➔ 點場上【馬爾巴士】"
+      },
+      {
+        id: 4,
+        act: "第四幕 4/5",
+        title: "【秘儀伏兵】發動魔法抽牌與蓋放陷阱",
+        scenes: [
+          { idx: 6, label: "2800攻公爵坐鎮" },
+          { idx: 8, label: "銅海鏡反陷阱" }
+        ],
+        speakerName: "大公爵・亞斯她錄",
+        speakerAvatar: { sheet: "demons_1_36.png", cols: 6, rows: 6, idx: 29 },
+        story: "「我已繼承祭品之力達到 <strong>2800 ATK</strong>！進攻前，請先點手牌綠色的<strong>《所羅門的小鑰匙》發動魔法抽牌</strong>，並將粉紅色的<strong>《聖殿銅海鏡反》蓋放到後排魔陷槽</strong>保護我們！」",
+        taskText: "任務：點手牌《小鑰匙》發動魔法，並將《聖殿銅海鏡反》蓋放至後排"
+      },
+      {
+        id: 5,
+        act: "第四幕 4/5",
+        title: "【正面擊破】切換戰鬥階段・粉碎巨石盾衛",
+        scenes: [
+          { idx: 6, label: "王牌公爵出擊" },
+          { idx: 7, label: "擊碎巨石防線" }
+        ],
+        speakerName: "大公爵・亞斯她錄",
+        speakerAvatar: { sheet: "demons_1_36.png", cols: 6, rows: 6, idx: 29 },
+        story: "「準備萬全！現在點擊中央紅色的<strong>【⚔️ 戰鬥】</strong>進入戰鬥階段，然後<strong>點擊上方的敵軍《迦南巨石盾衛》</strong>將它徹底擊碎！擊破後按<strong>【⏳ 結束】</strong>看我們剛蓋的陷阱如何反殺敵方援軍！」",
+        taskText: "任務：點中央【⚔️ 戰鬥】➔ 點上方【敵方盾衛】擊破它 ➔ 點【⏳ 結束】"
+      },
+      {
+        id: 6,
+        act: "第五幕 5/5",
+        title: "【狂暴與鎮壓】駕馭 70% 暴走與封印環終結敵將",
+        scenes: [
+          { idx: 10, label: "70%狂暴+500攻" },
+          { idx: 11, label: "100%叛變警告" },
+          { idx: 12, label: "印戒1環鎮壓" }
+        ],
+        speakerName: "所羅門王",
+        speakerAvatar: { sheet: "ac11653.png", cols: 6, rows: 5, idx: 25 },
+        story: "「漂亮！剛才《銅海鏡反》自動反殺了敵方刺客！注意下方<strong>🔥怨氣條已達 75%（超過 70% 全軍狂暴 +500 ATK，但滿 100% 魔神會叛變自爆！）</strong>。請先點<strong>【✡️1環·鎮壓】</strong>體驗降怒，或直接點<strong>【⚔️ 戰鬥】➔【💥 直接攻擊】</strong>斬殺敵將完成試煉！」",
+        taskText: "最終任務：點【✡️1環·鎮壓】體驗控怒，再點【⚔️戰鬥】➔【💥直接攻擊】獲勝！"
+      }
+    ];
+
+    function isTutorialCompactNeeded() {
+      if (!duel || !duel.isTutorial) return false;
+      if (duel.tutForceExpand) return false;
+      if (duel.tutManualMinimized) return true;
+      // 進入「選目標階段」（戰鬥階段 BP、獻祭選取 tributeMode、或點擊場上單位）自動精簡為單行提示條
+      if (duel.phase === "BP" || !!duel.tributeMode || duel.selectedFieldSlot !== null) return true;
+      return false;
+    }
+
+    function toggleMinimizeQuestCard() {
+      if (!duel || !duel.isTutorial) return;
+      const currentlyCompact = isTutorialCompactNeeded();
+      if (currentlyCompact) {
+        duel.tutManualMinimized = false;
+        duel.tutForceExpand = true;
+      } else {
+        duel.tutManualMinimized = true;
+        duel.tutForceExpand = false;
+      }
+      renderRpgQuestCard();
+    }
+
+    function advanceTutorialStep(nextStep) {
+      if (!duel || !duel.isTutorial) return;
+      duel.tutStep = nextStep;
+      duel.tutManualMinimized = false;
+      duel.tutForceExpand = false;
+      playSfx("summon");
+      updateDuelUI();
+    }
+
+    function startInteractiveTutorial() {
+      document.getElementById("prologue-modal").classList.add("hidden");
+      closeSiegePopup();
+
+      const startLp = 4000;
+      duel = {
+        region: {
+          id: "tutorial_r0",
+          realm: "mortal",
+          name: "序章試煉・摩利亞山前哨戰",
+          domainName: "🎓 王權契約試煉場",
+          domainRule: "【RPG 任務推進教學】跟隨上方圖卡指引操作，逐步掌握召喚、獻祭、魔陷與怨氣支配！",
+          bossName: "迦南巨石先遣隊長",
+          bossLp: 2500,
+          loot: { stone: 120, wood: 80, gold: 150, labor: 20 }
+        },
+        realm: "mortal",
+        isTutorial: true,
+        tutStep: 0,
+        tutManualMinimized: false,
+        tutForceExpand: false,
+        tutLastCompactTrigger: "",
+        tutUsedSpell: false,
+        tutSetTrap: false,
+        tutKilledShield: false,
+        turn: 1,
+        isPlayerTurn: true,
+        phase: "MP",
+        playerLp: startLp,
+        playerMaxLp: startLp,
+        enemyLp: 2500,
+        enemyMaxLp: 2500,
+        bossPhase2Triggered: false,
+        bossAwakenedTurn: 0,
+        bossBarrierUsedTurn: 0,
+        decreeDisabledTurn: 0,
+        playerMonsters: [null, null, null],
+        playerSpells: [null, null],
+        enemyMonsters: [null, null, null],
+        enemySpells: [null, null],
+        enemyGraveyard: [],
+        nileRevivedThisTurn: false,
+        playerDeck: [
+          { ...getCardData(14), uid: "tut_p_14" },
+          { ...getCardData(35), uid: "tut_p_35" },
+          { ...getCardData(1), uid: "tut_p_1" }
+        ],
+        playerHand: [
+          { ...getCardData(5), uid: "tut_p_5" },    // 4★ 馬爾巴士 (1700/1400)
+          { ...getCardData(29), uid: "tut_p_29" },  // 6★ 亞斯她錄 (2500/1800)
+          { ...getCardData(101), uid: "tut_p_101" },// 魔法：所羅門的小鑰匙
+          { ...getCardData(107), uid: "tut_p_107" } // 陷阱：聖殿銅海鏡反
+        ],
+        enemyDeck: [
+          { ...getCardData(402), uid: "tut_e_402" }
+        ],
+        enemyHand: [
+          { ...getCardData(401), uid: "tut_e_401" }
+        ],
+        wrath: 0,
+        seals: 1,
+        maxSeals: 3,
+        halfWrathRelic: false,
+        canRerollHand: false,
+        normalSummonedThisTurn: false,
+        bronzeGraceUsed: false,
+        spellTrapUsedThisTurn: 0,
+        selectedHandIdx: null,
+        selectedFieldSlot: null,
+        selectedAttackerSlot: null,
+        tributeMode: null,
+        busy: false
+      };
+
+      const overlay = document.getElementById("battle-overlay");
+      const topBar = document.getElementById("duel-top-bar");
+      overlay.classList.remove("seraph-awakened", "angel-domain");
+      overlay.classList.add("tutorial-active", "tutorial-expanded");
+      topBar.classList.remove("angel-bar");
+
+      document.getElementById("enemy-name").textContent = duel.region.bossName;
+      document.getElementById("boss-mini-avatar").innerHTML = generateBossMiniSVG("r1");
+      overlay.classList.remove("hidden");
+
+      playSfx("angel");
+      showDuelBannerText("🎓 歡迎來到沉浸式 RPG 實戰教學！", "#fde047");
+      updateDuelUI();
+    }
+
+    function syncTutorialProgress() {
+      const overlay = document.getElementById("battle-overlay");
+      if (!duel || !duel.isTutorial) {
+        const qCard = document.getElementById("rpg-quest-card");
+        if (qCard) qCard.classList.add("hidden");
+        if (overlay) overlay.classList.remove("tutorial-active", "tutorial-expanded");
+        return;
+      }
+
+      // 自動偵測玩家動作以推進 RPG 任務幕次（推進幕次時自動展開新一幕圖卡）
+      if (duel.tutStep === 1) {
+        const hasMarbasOnField = duel.playerMonsters.some(m => m && m.card.id === 5);
+        if (hasMarbasOnField) {
+          duel.tutStep = 2;
+          duel.tutManualMinimized = false;
+          duel.tutForceExpand = false;
+          showDuelBannerText("✅ 任務達成！4★ 馬爾巴士已列陣！", "#4ade80");
+        }
+      } else if (duel.tutStep === 3) {
+        const hasAstarothOnField = duel.playerMonsters.some(m => m && m.card.id === 29);
+        if (hasAstarothOnField) {
+          duel.tutStep = 4;
+          duel.tutManualMinimized = false;
+          duel.tutForceExpand = false;
+          showDuelBannerText("✅ 獻祭成功！6★ 亞斯她錄繼承 +300 攻（達 2800 ATK）！", "#fde047");
+        }
+      } else if (duel.tutStep === 4) {
+        const hasSetTrap = duel.playerSpells.some(s => s !== null);
+        const usedKey = !duel.playerHand.some(c => c.id === 101);
+        if (hasSetTrap && usedKey) {
+          duel.tutStep = 5;
+          duel.tutManualMinimized = false;
+          duel.tutForceExpand = false;
+          showDuelBannerText("✅ 秘儀整備完畢！請進入戰鬥階段擊碎敵軍盾衛！", "#4ade80");
+        }
+      }
+
+      // 每次剛進入選目標狀態（BP 或 tributeMode）時，清除手動強制展開旗標以確保自動縮成單行
+      const triggerKey = `${duel.tutStep}_${duel.phase}_${!!duel.tributeMode}`;
+      if (duel.tutLastCompactTrigger !== triggerKey) {
+        duel.tutLastCompactTrigger = triggerKey;
+        if (duel.phase === "BP" || !!duel.tributeMode) {
+          duel.tutForceExpand = false;
+        }
+      }
+
+      renderRpgQuestCard();
+      setTimeout(() => applyTutorialSpotlights(), 30);
+    }
+
+    function renderRpgQuestCard() {
+      const box = document.getElementById("rpg-quest-card");
+      const overlay = document.getElementById("battle-overlay");
+      if (!box) return;
+      if (!duel || !duel.isTutorial) {
+        box.classList.add("hidden");
+        if (overlay) overlay.classList.remove("tutorial-active", "tutorial-expanded");
+        return;
+      }
+
+      box.classList.remove("hidden");
+      const stepObj = TUTORIAL_QUEST_STEPS.find(s => s.id === duel.tutStep) || TUTORIAL_QUEST_STEPS[0];
+      const compact = isTutorialCompactNeeded();
+
+      box.classList.toggle("compact-mode", compact);
+      if (overlay) {
+        overlay.classList.add("tutorial-active");
+        overlay.classList.toggle("tutorial-expanded", !compact);
+      }
+
+      if (compact) {
+        let livePrompt = stepObj.taskText;
+        if (duel.tributeMode) {
+          livePrompt = `🔥 獻祭選取中：請點擊場上 ${duel.tributeMode.required} 隻魔神作為祭品（${duel.tributeMode.selected.length}/${duel.tributeMode.required}）`;
+        } else if (duel.phase === "BP") {
+          const eCnt = countMonsters(duel.enemyMonsters);
+          livePrompt = eCnt > 0
+            ? "⚔️ 戰鬥選目標：請直接點擊上方發光的【敵方怪獸】發動攻擊！"
+            : "💥 敵陣已空：點擊中央【💥 直接攻擊】或【⏳ 結束】！";
+        }
+        box.innerHTML = `
+          <div class="rpg-compact-bar">
+            <span class="rpg-quest-step-pill">${stepObj.act}</span>
+            <span class="rpg-compact-task">🎯 ${livePrompt}</span>
+            <button class="rpg-quest-ctrl-btn" onclick="toggleMinimizeQuestCard()">📖 展開圖卡</button>
+            <button class="rpg-quest-ctrl-btn" style="border-color:#fca5a5;color:#fca5a5;" onclick="skipTutorialToMainGame()">⏭ 結束</button>
+          </div>
+        `;
+        return;
+      }
+
+      const scenesHtml = stepObj.scenes.map(sc => renderTutorialSceneSprite(sc.idx, sc.label)).join("");
+      const av = stepObj.speakerAvatar;
+      const avatarHtml = renderSpriteFrame(av.sheet, av.cols, av.rows, av.idx, 20, true);
+
+      box.innerHTML = `
+        <div class="rpg-quest-header">
+          <span class="rpg-quest-step-pill">${stepObj.act}</span>
+          <span class="rpg-quest-title">${stepObj.title}</span>
+          <button class="rpg-quest-ctrl-btn" onclick="toggleMinimizeQuestCard()">🗕 單行精簡</button>
+          <button class="rpg-quest-ctrl-btn" style="border-color:#fca5a5;color:#fca5a5;" onclick="skipTutorialToMainGame()">⏭ 結束教學</button>
+        </div>
+        <div class="rpg-quest-main">
+          <div class="rpg-sprite-stage">${scenesHtml}</div>
+          <div class="rpg-dialogue-col">
+            <div class="rpg-speaker-row">
+              <div class="rpg-speaker-avatar">${avatarHtml}</div>
+              <span class="rpg-speaker-name">${stepObj.speakerName}</span>
+            </div>
+            <p class="rpg-story-text">${stepObj.story}</p>
+          </div>
+        </div>
+        <div class="rpg-task-tracker">
+          <div class="rpg-task-desc">
+            <span>🎯</span>
+            <span>${stepObj.taskText}</span>
+          </div>
+          ${stepObj.actionBtnLabel ? `
+            <button class="btn btn-sm btn-gold" onclick="${stepObj.onActionClick}">
+              ${stepObj.actionBtnLabel}
+            </button>
+          ` : ""}
+        </div>
+      `;
+    }
+
+    function applyTutorialSpotlights() {
+      document.querySelectorAll(".tut-spotlight").forEach(el => el.classList.remove("tut-spotlight"));
+      if (!duel || !duel.isTutorial || !duel.isPlayerTurn) return;
+
+      const s = duel.tutStep;
+      const highlightCardInHand = (cardId) => {
+        const idx = duel.playerHand.findIndex(c => c.id === cardId);
+        if (idx !== -1) {
+          const cards = document.querySelectorAll("#hand-container .battle-card");
+          if (cards[idx]) cards[idx].classList.add("tut-spotlight");
+        }
+      };
+
+      if (s === 1) {
+        if (duel.selectedHandIdx === null) {
+          highlightCardInHand(5);
+        } else {
+          const atkBtn = document.querySelector("#duel-action-banner .btn-crimson");
+          if (atkBtn) atkBtn.classList.add("tut-spotlight");
+        }
+      } else if (s === 2) {
+        const endBtn = document.querySelector("#mid-phase-btns .btn-gold");
+        if (endBtn) endBtn.classList.add("tut-spotlight");
+      } else if (s === 3) {
+        if (duel.tributeMode) {
+          duel.playerMonsters.forEach((m, idx) => {
+            if (m) {
+              const slotEl = document.getElementById(`p-mon-${idx}`);
+              if (slotEl) slotEl.classList.add("tut-spotlight");
+            }
+          });
+        } else if (duel.selectedHandIdx === null || duel.playerHand[duel.selectedHandIdx]?.id !== 29) {
+          highlightCardInHand(29);
+        } else {
+          const tribBtn = document.querySelector("#duel-action-banner .btn-gold");
+          if (tribBtn) tribBtn.classList.add("tut-spotlight");
+        }
+      } else if (s === 4) {
+        const hasKey = duel.playerHand.some(c => c.id === 101);
+        const hasTrap = duel.playerHand.some(c => c.id === 107);
+        if (duel.selectedHandIdx !== null) {
+          const actBtn = document.querySelector("#duel-action-banner .btn-teal, #duel-action-banner .btn-purple");
+          if (actBtn) actBtn.classList.add("tut-spotlight");
+        } else if (hasKey) {
+          highlightCardInHand(101);
+        } else if (hasTrap) {
+          highlightCardInHand(107);
+        }
+      } else if (s === 5) {
+        if (duel.phase === "MP") {
+          const bpBtn = document.querySelector("#mid-phase-btns .btn-crimson");
+          if (bpBtn) bpBtn.classList.add("tut-spotlight");
+        } else if (duel.phase === "BP") {
+          const eCnt = countMonsters(duel.enemyMonsters);
+          if (eCnt > 0) {
+            duel.enemyMonsters.forEach((m, idx) => {
+              if (m) {
+                const el = document.getElementById(`e-mon-${idx}`);
+                if (el) el.classList.add("tut-spotlight");
+              }
+            });
+          } else {
+            const epBtn = document.querySelector("#mid-phase-btns .btn-gold");
+            if (epBtn) epBtn.classList.add("tut-spotlight");
+          }
+        }
+      } else if (s === 6) {
+        if (duel.phase === "MP") {
+          const seal1 = document.querySelector("#seal-skill-strip .seal-btn");
+          if (seal1 && !seal1.disabled && duel.wrath >= 70) seal1.classList.add("tut-spotlight");
+          const bpBtn = document.querySelector("#mid-phase-btns .btn-crimson");
+          if (bpBtn) bpBtn.classList.add("tut-spotlight");
+        } else if (duel.phase === "BP") {
+          const directBtn = document.querySelector("#mid-phase-btns .btn-crimson");
+          if (directBtn) directBtn.classList.add("tut-spotlight");
+        }
+      }
+    }
+
+    function skipTutorialToMainGame() {
+      const qCard = document.getElementById("rpg-quest-card");
+      if (qCard) qCard.classList.add("hidden");
+      closeBattleOverlay();
+      updateAllUI();
+    }
+
+    function runTutorialEnemyTurn() {
+      if (!duel || !duel.isTutorial) return;
+      duel.busy = true;
+      duel.phase = "DP";
+      updateDuelUI();
+
+      setTimeout(() => {
+        if (!duel) return;
+        duel.phase = "MP";
+
+        // 第一回合敵人：派出表側守備 2450 DEF 的《迦南巨石盾衛》展示高防鐵壁
+        if (duel.tutStep === 2) {
+          const shieldCard = getCardData(401);
+          summonMonsterToSlot("enemy", 1, shieldCard, "DEF", false, {});
+          showDuelBannerText("🧱 敵軍派出【迦南巨石盾衛（守備 2450）】擋住去路！", "#38bdf8");
+          setTimeout(() => {
+            if (!duel) return;
+            duel.turn++;
+            duel.isPlayerTurn = true;
+            duel.phase = "MP";
+            duel.normalSummonedThisTurn = false;
+            duel.spellTrapUsedThisTurn = 0;
+            duel.busy = false;
+            duel.tutStep = 3;
+            duel.playerMonsters.forEach(m => { if (m) m.attacksLeft = 1; });
+            updateDuelUI();
+          }, 950);
+          return;
+        }
+
+        // 第二回合敵人：派出《推羅海蛇重裝兵》攻擊我方，觸發玩家蓋放的《聖殿銅海鏡反》！
+        const raiderCard = getCardData(402);
+        summonMonsterToSlot("enemy", 1, raiderCard, "ATK", false, {});
+        showDuelBannerText("⚔️ 敵方派出【推羅海蛇重裝兵 (1750攻)】發動突擊！", "#fca5a5");
+
+        setTimeout(() => {
+          if (!duel) return;
+          duel.phase = "BP";
+          const targetSlot = duel.playerMonsters.findIndex(m => m !== null);
+          resolveCombat("enemy", 1, targetSlot !== -1 ? targetSlot : -1, () => {
+            setTimeout(() => {
+              if (!duel) return;
+              duel.turn++;
+              duel.isPlayerTurn = true;
+              duel.phase = "MP";
+              duel.normalSummonedThisTurn = false;
+              duel.spellTrapUsedThisTurn = 0;
+              duel.busy = false;
+              // 讓玩家在第五幕直接體驗 75% 狂暴狀態與 1 環鎮壓
+              duel.wrath = Math.max(duel.wrath, 75);
+              duel.seals = Math.max(duel.seals, 2);
+              duel.tutStep = 6;
+              duel.playerMonsters.forEach(m => { if (m) m.attacksLeft = 1; });
+              showDuelBannerText("🔥 惡魔怨氣升至 75%（觸發狂暴 +500 ATK）！", "#fde047");
+              updateDuelUI();
+            }, 600);
+          });
+        }, 700);
+      }, 500);
+    }
+
+    // 戰場軍師反傷預警（防止新手拿低攻怪硬撞高守備怪自爆）
+    let pendingSuicideAttackSlot = null;
+    function confirmSuicideAttackAnyway() {
+      document.getElementById("advisor-warn-modal").classList.add("hidden");
+      if (!duel || pendingSuicideAttackSlot === null || duel.selectedAttackerSlot === null) return;
+      const targetSlot = pendingSuicideAttackSlot;
+      pendingSuicideAttackSlot = null;
+      resolveCombat("player", duel.selectedAttackerSlot, targetSlot);
+    }
+    function closeAdvisorWarnModal() {
+      pendingSuicideAttackSlot = null;
+      document.getElementById("advisor-warn-modal").classList.add("hidden");
+    }
+
     // 8. 遊戲王決鬥盤核心引擎（三界法則進化版）
     // ==========================================
     let duel = null;
@@ -3727,7 +4515,21 @@
       document.getElementById("boss-mini-avatar").innerHTML = generateBossMiniSVG(region.id);
       overlay.classList.remove("hidden");
 
-      drawToHand("player", getPlayerStartHand());
+      // 第一關《迦南採石要塞》首次實戰保底順手牌（確保100%能打出 4★召喚 ➔ 6★獻祭 ➔ 魔陷配合）
+      if (region.id === "r1" && !(state.conqueredRegions && state.conqueredRegions.r1)) {
+        const guaranteedIds = [5, 29, 101, 107];
+        guaranteedIds.forEach(gid => {
+          const idxInDeck = duel.playerDeck.findIndex(c => c.id === gid);
+          if (idxInDeck !== -1 && duel.playerHand.length < getPlayerStartHand()) {
+            duel.playerHand.push(duel.playerDeck.splice(idxInDeck, 1)[0]);
+          }
+        });
+        if (duel.playerHand.length < getPlayerStartHand()) {
+          drawToHand("player", getPlayerStartHand() - duel.playerHand.length);
+        }
+      } else {
+        drawToHand("player", getPlayerStartHand());
+      }
       drawToHand("enemy", 4);
 
       // 聖物開場效果
@@ -4463,6 +5265,41 @@
         return;
       }
 
+      // 戰場軍師反傷預警：若敵怪為表側且我方攻擊力低於敵方當前攻/守數值，跳出軍師提醒
+      const myAttacker = duel.playerMonsters[duel.selectedAttackerSlot];
+      if (myAttacker && !target.faceDown) {
+        const myAtk = getEffectiveAtk(myAttacker, true);
+        const enemyStat = target.pos === "ATK" ? getEffectiveAtk(target, false) : getEffectiveDef(target, false);
+        if (myAtk < enemyStat) {
+          pendingSuicideAttackSlot = enemySlotIdx;
+          const recoil = enemyStat - myAtk;
+          const warnBody = document.getElementById("advisor-warn-body");
+          if (warnBody) {
+            warnBody.innerHTML = `
+              <div style="display:flex; align-items:center; gap:10px; border-bottom:1px solid rgba(248,113,113,0.4); padding-bottom:8px; margin-bottom:8px;">
+                <div style="width:56px; height:46px; border-radius:6px; overflow:hidden; border:1.5px solid #fde047; flex-shrink:0;">
+                  ${renderSpriteFrame("tutorial_scenes.png", 4, 3, 7, 56, true)}
+                </div>
+                <div>
+                  <div style="font-size:0.9rem; font-weight:900; color:#fca5a5;">⚠️ 王室軍師戰術預警！</div>
+                  <div style="font-size:0.72rem; color:#fde047;">我方攻擊力 (${myAtk}) 低於敵軍${target.pos === "ATK" ? "攻擊力" : "守備力"} (${enemyStat})</div>
+                </div>
+              </div>
+              <p style="font-size:0.78rem; color:#f4ead5; line-height:1.5; margin:0 0 10px 0;">
+                陛下！強行用【${myAttacker.card.name.split(" ")[0]}】撞擊【${target.card.name.split(" ")[0]}】非但打不穿，還會受到 <strong style="color:#ef4444;">-${recoil} LP 反彈傷害</strong>！<br>
+                💡 <strong>破局建議：</strong>先按「結束」回合，下回合將場上魔神作為<strong>【🔥 祭品】</strong>召喚 5~8★ 高攻魔神，或累積 70% 怨氣暴走（+500 ATK）再進攻！
+              </p>
+              <div style="display:flex; gap:8px;">
+                <button class="btn btn-gold" style="flex:1;" onclick="closeAdvisorWarnModal()">🛡️ 聽從軍師（取消攻擊）</button>
+                <button class="btn btn-sm" style="background:#7f1d1d; color:#fecaca;" onclick="confirmSuicideAttackAnyway()">強行進攻</button>
+              </div>
+            `;
+            document.getElementById("advisor-warn-modal").classList.remove("hidden");
+            return;
+          }
+        }
+      }
+
       resolveCombat("player", duel.selectedAttackerSlot, enemySlotIdx);
     }
 
@@ -4900,7 +5737,7 @@
       duel.isPlayerTurn = false;
       duel.turn++;
       updateDuelUI();
-      setTimeout(() => runEnemyTurn(), 450);
+      setTimeout(() => { if (duel && duel.isTutorial) runTutorialEnemyTurn(); else runEnemyTurn(); }, 450);
     }
 
     // ==========================================
@@ -5338,6 +6175,7 @@
 
       renderDuelActionBanner();
       renderDuelHand();
+      syncTutorialProgress();
     }
 
     function renderSpellSlotHTML(slotObj, isPlayer) {
@@ -5536,6 +6374,35 @@
     // ==========================================
     function handleBattleVictory() {
       if (!duel) return;
+      if (duel.isTutorial) {
+        state.stone += 120;
+        state.wood += 80;
+        state.gold += 150;
+        state.labor += 20;
+        state.relicInventory.relic_golem = (state.relicInventory.relic_golem || 0) + 1;
+        if (!state.equippedRelics.includes("relic_golem")) state.equippedRelics.push("relic_golem");
+        closeBattleOverlay();
+        updateAllUI();
+        const body = document.getElementById("reward-modal-body");
+        body.innerHTML = `
+          <h2>🎓 序章試煉圓滿達成！王權契約覺醒</h2>
+          <div style="display:flex; justify-content:center; gap:8px; margin-bottom:10px;">
+            ${renderTutorialSceneSprite(6, "6★公爵獻祭")}
+            ${renderTutorialSceneSprite(8, "銅海鏡反")}
+            ${renderTutorialSceneSprite(12, "印戒鎮壓")}
+          </div>
+          <div class="rule-item holy" style="text-align:left;">
+            <strong>🏆 試煉通關特典（已自動入庫並攜帶）：</strong><br>
+            • <strong>🗿 戰術聖物【黑曜祭品石像】x1</strong>（下一場決鬥開場自動在場上召喚 1 隻 0/2200 祭品石像，第 1 回合即可直接獻祭召喚 6★ 王牌！）<br>
+            • <strong>📦 建殿啟動資金</strong>：🪨 +120 巨石 ｜ 🌲 +80 香柏木 ｜ 🪙 +150 黃金 ｜ 👷 +20 人力
+          </div>
+          <button class="btn btn-gold" style="width:100%; padding:11px; font-size:0.95rem;" onclick="document.getElementById('reward-modal').classList.add('hidden'); switchTab('campaign'); selectCastleNode('r1');">
+            ⚔️ 帶著祭品石像・立即出征第一關【迦南採石要塞】！
+          </button>
+        `;
+        document.getElementById("reward-modal").classList.remove("hidden");
+        return;
+      }
       const r = duel.region;
       state.stone += r.loot.stone;
       state.wood += r.loot.wood;
@@ -5621,7 +6488,15 @@
 
     function closeBattleOverlay() {
       duel = null;
-      document.getElementById("battle-overlay").classList.add("hidden");
+      const qCard = document.getElementById("rpg-quest-card");
+      if (qCard) qCard.classList.add("hidden");
+      const adv = document.getElementById("advisor-warn-modal");
+      if (adv) adv.classList.add("hidden");
+      const overlay = document.getElementById("battle-overlay");
+      if (overlay) {
+        overlay.classList.remove("tutorial-active", "tutorial-expanded");
+        overlay.classList.add("hidden");
+      }
     }
 
     // 戰術聖物鍛造與出戰切換
