@@ -1335,7 +1335,7 @@
       text-align: center;
       max-width: 92vw;
       text-shadow: 0 2px 8px #000, 0 0 16px rgba(0,0,0,0.95);
-      animation: float-up-fade 0.95s ease-out forwards;
+      animation: float-up-fade 1.35s ease-out forwards;
     }
 
     @keyframes float-up-fade {
@@ -1928,6 +1928,80 @@
     }
     #advisor-warn-modal.hidden { display: none !important; }
 
+    /* 四大流派徽章、牌組星數分布條與戰場戰報 */
+    .arch-pill {
+      font-size: 0.58rem;
+      font-weight: 900;
+      padding: 1px 5px;
+      border-radius: 6px;
+      white-space: nowrap;
+      display: inline-block;
+    }
+    .arch-calm { background: #dcfce7; color: #166534; border: 1px solid #86efac; }
+    .arch-berserk { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+    .arch-flip { background: #e0f2fe; color: #075985; border: 1px solid #7dd3fc; }
+    .arch-seal { background: #f3e8ff; color: #6b21a8; border: 1px solid #d8b4fe; }
+
+    .deck-curve-bar {
+      background: #fcf7ec;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 6px 8px;
+      margin-bottom: 8px;
+      font-size: 0.72rem;
+    }
+    .deck-curve-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 4px;
+    }
+    .curve-pill {
+      background: var(--parchment-dim);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 2px 6px;
+      font-weight: 800;
+      font-size: 0.68rem;
+    }
+    .curve-warn {
+      margin-top: 4px;
+      color: #b91c1c;
+      font-weight: 800;
+      font-size: 0.7rem;
+    }
+
+    #battle-log-drawer {
+      position: fixed;
+      top: calc(52px + env(safe-area-inset-top));
+      right: 10px;
+      width: min(320px, 90vw);
+      max-height: 55vh;
+      background: rgba(15, 11, 20, 0.96);
+      border: 1.5px solid #fde047;
+      border-radius: 10px;
+      z-index: 9800;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.9);
+      overflow: hidden;
+    }
+    #battle-log-drawer.hidden { display: none !important; }
+    .battle-log-list {
+      padding: 8px;
+      overflow-y: auto;
+      font-size: 0.72rem;
+      line-height: 1.45;
+      color: #f4ead5;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .battle-log-item {
+      border-bottom: 1px dashed rgba(253, 224, 71, 0.2);
+      padding-bottom: 3px;
+    }
+
   </style>
 </head>
 <body>
@@ -2072,6 +2146,11 @@
     <div class="modal-card" id="demon-detail-body"></div>
   </div>
 
+  <!-- 關卡專屬參考攻略彈窗 -->
+  <div id="guide-modal" class="modal-overlay hidden" style="z-index:135;" onclick="if(event.target===this) closeRegionGuide()">
+    <div class="modal-card" id="guide-modal-body"></div>
+  </div>
+
   <!-- 頂部資源列 -->
   <header>
     <div class="top-bar-row1">
@@ -2166,16 +2245,22 @@
         <span style="font-size:0.74rem; color:var(--holy); font-weight:bold;" id="deck-count-label">出戰牌組：12 張 (10~24張)</span>
       </div>
 
+      <div class="deck-curve-bar" id="deck-curve-bar"></div>
+
       <div class="rank-tabs" id="rank-tabs">
         <button class="rank-tab-btn active" data-rank="deck" onclick="selectRankTab('deck')">🃏 出戰 (<span id="cnt-deck">12</span>)</button>
         <button class="rank-tab-btn" data-rank="unlocked" onclick="selectRankTab('unlocked')">💍 已契約 (<span id="cnt-unlocked">12</span>)</button>
+        <button class="rank-tab-btn" data-rank="arch_calm" onclick="selectRankTab('arch_calm')">🕊️ 控怒流</button>
+        <button class="rank-tab-btn" data-rank="arch_berserk" onclick="selectRankTab('arch_berserk')">🔥 狂暴流</button>
+        <button class="rank-tab-btn" data-rank="arch_flip" onclick="selectRankTab('arch_flip')">🏺 反轉流</button>
+        <button class="rank-tab-btn" data-rank="arch_seal" onclick="selectRankTab('arch_seal')">✡️ 充能流</button>
         <button class="rank-tab-btn" data-rank="arcana" onclick="selectRankTab('arcana')">🔮 秘儀魔陷 (10)</button>
-        <button class="rank-tab-btn" data-rank="King" onclick="selectRankTab('King')">👑 君王 8★ (10)</button>
-        <button class="rank-tab-btn" data-rank="Duke" onclick="selectRankTab('Duke')">🛡️ 公爵 6★ (23)</button>
-        <button class="rank-tab-btn" data-rank="Prince" onclick="selectRankTab('Prince')">⚡ 親王 5★ (7)</button>
-        <button class="rank-tab-btn" data-rank="Marquis" onclick="selectRankTab('Marquis')">⚔️ 侯爵 4★ (15)</button>
-        <button class="rank-tab-btn" data-rank="President" onclick="selectRankTab('President')">⚖️ 統領 4★ (14)</button>
-        <button class="rank-tab-btn" data-rank="Earl" onclick="selectRankTab('Earl')">🐎 伯爵 3★ (4)</button>
+        <button class="rank-tab-btn" data-rank="King" onclick="selectRankTab('King')">👑 君王 8★</button>
+        <button class="rank-tab-btn" data-rank="Duke" onclick="selectRankTab('Duke')">🛡️ 公爵 6★</button>
+        <button class="rank-tab-btn" data-rank="Prince" onclick="selectRankTab('Prince')">⚡ 親王 5★</button>
+        <button class="rank-tab-btn" data-rank="Marquis" onclick="selectRankTab('Marquis')">⚔️ 侯爵 4★</button>
+        <button class="rank-tab-btn" data-rank="President" onclick="selectRankTab('President')">⚖️ 統領 4★</button>
+        <button class="rank-tab-btn" data-rank="Earl" onclick="selectRankTab('Earl')">🐎 伯爵 3★</button>
       </div>
 
       <div class="demon-grid" id="demons-pool"></div>
@@ -2188,6 +2273,15 @@
   <div id="battle-overlay" class="hidden">
     <div id="battle-screen-flash"></div>
     <canvas id="battle-vfx-canvas"></canvas>
+
+    <!-- 決鬥戰報紀錄抽屜 -->
+    <div id="battle-log-drawer" class="hidden">
+      <div style="display:flex; justify-content:space-between; align-items:center; padding:6px 10px; background:#1c140e; border-bottom:1px solid #c89623;">
+        <strong style="font-size:0.78rem; color:#fde047;">📜 決鬥戰報紀錄</strong>
+        <button class="btn btn-sm" style="padding:2px 7px; background:#374151;" onclick="toggleBattleLog()">✕</button>
+      </div>
+      <div class="battle-log-list" id="battle-log-list"></div>
+    </div>
 
     <!-- 戰場軍師反傷預警彈窗 -->
     <div id="advisor-warn-modal" class="hidden">
@@ -2218,6 +2312,7 @@
         </div>
 
         <div style="display:flex; gap:4px; flex-shrink:0;">
+          <button class="btn btn-sm" style="background:#1e293b; border:1px solid #93c5fd; padding:4px 6px;" onclick="toggleBattleLog()" title="查看戰報紀錄">📜</button>
           <button class="btn btn-sm" id="btn-sfx-toggle" style="background:#1e293b; border:1px solid var(--gold); padding:4px 6px;" onclick="toggleSfx()">🔊</button>
           <button class="btn btn-sm" style="background:#374151; border:1px solid #6b7280; padding:4px 6px;" onclick="retreatBattle()">🏳️</button>
         </div>
@@ -2267,7 +2362,7 @@
 
         <div class="seal-skill-strip" id="seal-skill-strip">
           <button class="seal-btn" id="btn-seal-1" onclick="useSealSkill(1)">✡️1環·鎮壓(-30%怒)</button>
-          <button class="seal-btn" id="btn-seal-2" onclick="useSealSkill(2)">✡️2環·真名(ATK翻倍)</button>
+          <button class="seal-btn" id="btn-seal-2" onclick="useSealSkill(2)">✡️2環·真名(+1200貫穿)</button>
           <button class="seal-btn" id="btn-seal-3" onclick="useSealSkill(3)">✡️3環·降臨(免祭特召)</button>
         </div>
 
@@ -2438,8 +2533,8 @@
       { id: 305, name: "大天使・拉斐爾", rank: "Angel", stars: 6, atk: 2650, def: 2800, agitate: 0, cardType: "monster", eff: "summon_shield", effText: "【天界】治癒之光，登場獲得神聖護盾。" },
       { id: 306, name: "大天使・加百列", rank: "Angel", stars: 8, atk: 3350, def: 2800, agitate: 0, cardType: "monster", eff: "summon_debuff", effText: "【天界】審判號角，登場使敵方最強魔神 ATK -400。" },
       { id: 307, name: "熾天使長・米迦勒", rank: "Angel", stars: 8, atk: 3750, def: 3200, agitate: 0, cardType: "monster", eff: "king_burn", effText: "【天界統帥】天火聖劍，擊破魔神再燒 800 LP。" },
-      { id: 308, name: "至高神座・無上造物主", rank: "Angel", stars: 8, atk: 4100, def: 3600, agitate: 0, cardType: "monster", eff: "king_storm", effText: "【創世法則】萬物起源之光，登場清空敵方後台。" },
-      { id: 309, name: "創世終焉・原初之光", rank: "Angel", stars: 8, atk: 4400, def: 3900, agitate: 0, cardType: "monster", eff: "king_burn", effText: "【終局神威】審判三界的終極光輝，擊破再燒 800 LP。" },
+      { id: 308, name: "至高神座・無上造物主", rank: "Angel", stars: 8, atk: 3700, def: 3300, agitate: 0, cardType: "monster", eff: "king_storm", effText: "【創世法則】萬物起源之光，登場清空敵方後台。" },
+      { id: 309, name: "創世終焉・原初之光", rank: "Angel", stars: 8, atk: 4000, def: 3600, agitate: 0, cardType: "monster", eff: "king_burn", effText: "【終局神威】審判三界的終極光輝，擊破再燒 800 LP。" },
       { id: 401, name: "迦南巨石盾衛", rank: "Mortal", stars: 4, atk: 1350, def: 2050, agitate: 0, cardType: "monster", eff: "summon_shield", effText: "【凡間】迦南重裝巨盾兵，登場自帶聖盾並掩護友軍。" },
       { id: 402, name: "推羅海蛇重裝兵", rank: "Mortal", stars: 4, atk: 1750, def: 1350, agitate: 0, cardType: "monster", eff: "pierce", effText: "【凡間】駕馭海蛇巨艦的腓尼基精銳，附帶守備貫穿。" },
       { id: 403, name: "阿努比斯神廟祭司", rank: "Mortal", stars: 4, atk: 1550, def: 1750, agitate: 0, cardType: "monster", eff: "summon_debuff", effText: "【凡間】冥神祭司，在場時散發威壓使我方全軍 ATK -250。" },
@@ -2460,6 +2555,20 @@
       return (state && state.cardLevels && state.cardLevels[id]) || 1;
     }
 
+    function getDemonArchetype(card) {
+      if (!card || card.cardType !== "monster") return null;
+      if (["flip_draw", "flip_calm", "flip_freeze"].includes(card.eff)) {
+        return { key: "flip", label: "🏺 反轉", cls: "arch-flip", bonus: "裏側翻開額外 +1 封印環" };
+      }
+      if (["summon_calm", "act_heal", "loyal", "summon_shield"].includes(card.eff) || card.agitate <= -10) {
+        return { key: "calm", label: "🕊️ 控怒", cls: "arch-calm", bonus: "降怒時若怨氣<30%，額外回300LP並抽1牌" };
+      }
+      if (["summon_seal", "summon_draw1", "summon_draw2", "summon_debuff"].includes(card.eff) && card.agitate <= 10) {
+        return { key: "seal", label: "✡️ 充能", cls: "arch-seal", bonus: "封印環滿時溢出的充能轉化為全軍ATK+150" };
+      }
+      return { key: "berserk", label: "🔥 狂暴", cls: "arch-berserk", bonus: "70%狂暴下擊破敵怪額外+1封印環" };
+    }
+
     function getCardData(id) {
       const base = ALL_CARDS.find(c => c.id === id) || ANGEL_BOSS_CARDS.find(c => c.id === id);
       if (!base) return null;
@@ -2468,11 +2577,11 @@
 
       const clone = { ...base, awakenLv: lv };
       if (clone.cardType === "monster") {
-        const statBonus = lv === 2 ? 350 : 750;
+        const statBonus = lv === 2 ? 200 : 450;
         clone.atk += statBonus;
         clone.def += statBonus;
         if (clone.agitate > 0) clone.agitate = Math.max(5, clone.agitate - (lv === 2 ? 5 : 10));
-        clone.effText = (lv === 2 ? "【煉獄覺醒】" : "【弑神覺醒・免陷阱】") + clone.effText;
+        clone.effText = (lv === 2 ? "【煉獄覺醒】" : "【弑神覺醒・免攻陷】") + clone.effText;
       } else {
         clone.effText = (lv === 2 ? "【煉獄增幅+50%】" : "【弑神增幅+100%+1環】") + clone.effText;
       }
@@ -2556,13 +2665,13 @@
     const WORLD_REGIONS = [
       { id: "r1", name: "迦南採石要塞", icon: "🏰", x: 14, y: 32, diff: "★☆☆☆☆ 全球板塊 1/9", domainName: "🧱 巨石壁壘", domainRule: "【專屬規則】敵方所有守備表示怪獸 DEF 永久 +400，擅長龜縮反擊。", desc: "地中海東岸的巨人採石堡壘，善用貫穿傷害或高攻魔神擊碎其重裝防線。", bossName: "迦特巨人百夫長", bossLp: 3200, startTraps: [107], aiDeckIds: [401, 401, 401, 402, 402, 404, 404, 409, 105, 107, 107, 108], loot: { stone: 105, wood: 40, gold: 55, labor: 15 } },
       { id: "r2", name: "腓尼基香柏林港", icon: "⚓", x: 16, y: 66, diff: "★★☆☆☆ 全球板塊 2/9", domainName: "🌊 海潮鎖鏈", domainRule: "【專屬規則】我方怪獸每次發動攻擊後，其 ATK 永久下降 200 點。", desc: "北方巨木造船港都，海潮會不斷侵蝕前線魔神的攻擊力，需適時獻祭換新血！", bossName: "推羅海港鐵甲督軍", bossLp: 3800, startTraps: [108], aiDeckIds: [401, 401, 402, 402, 402, 404, 406, 409, 107, 108, 108, 105], loot: { stone: 65, wood: 150, gold: 85, labor: 20 } },
-      { id: "r3", name: "尼羅河法老金字塔", icon: "🔺", x: 27, y: 80, diff: "★★★☆☆ 全球板塊 3/9", domainName: "⚰️ 冥界輪迴陣", domainRule: "【專屬規則】敵方怪獸被破壞時，每回合 1 次在結束階段以守備表示滿血復活！", desc: "法老不死神廟！必須善用「貫穿傷害」或單回合爆發斬殺突破不死輪迴！", bossName: "阿努比斯冥界守衛", bossLp: 4200, startTraps: [208], aiDeckIds: [403, 403, 403, 404, 404, 404, 405, 406, 101, 107, 108, 109], loot: { stone: 200, wood: 100, gold: 165, labor: 30 } },
-      { id: "r4", name: "巴比倫空中花園", icon: "🏛️", x: 38, y: 46, diff: "★★★☆☆ 全球板塊 4/9", domainName: "🔮 星象逆轉結界", domainRule: "【專屬規則】我方 4★ 以下下級怪獸無法直接攻擊，且敵方發動魔法全軍 ATK +200。", desc: "兩河流域魔導帝都，必須依靠 5★ 以上高階魔神才能對主將造成直接傷害！", bossName: "巴比倫星靈大祭司", bossLp: 4600, startTraps: [208, 107], aiDeckIds: [403, 405, 405, 405, 406, 406, 406, 408, 101, 105, 107, 110], loot: { stone: 240, wood: 220, gold: 240, labor: 36 } },
-      { id: "r5", name: "波斯波利斯萬王城", icon: "🦁", x: 50, y: 64, diff: "★★★★☆ 全球板塊 5/9", domainName: "⚖️ 黃金王室稅賦", domainRule: "【專屬規則】我方每回合合計最多只能發動／蓋放 1 張魔法或陷阱卡！", desc: "波斯萬王之王的黃金宮殿，嚴格限制魔陷連鎖，考驗純粹怪獸對撞實力。", bossName: "波斯不死軍統帥", bossLp: 5000, startTraps: [207], aiDeckIds: [401, 404, 406, 407, 407, 407, 409, 409, 102, 107, 109, 110], loot: { stone: 300, wood: 260, gold: 350, labor: 44 } },
-      { id: "r6", name: "奧林帕斯眾神殿", icon: "⚡", x: 34, y: 20, diff: "★★★★☆ 全球板塊 6/9", domainName: "⚡ 神罰雷域", domainRule: "【專屬規則】我方場上只要同時存在 3 隻怪獸，回合結束天雷會劈死我方最強的 1 隻！", desc: "西方神山雷域！切忌貪心鋪滿三格，維持 2 隻精兵陣型才是致勝之道。", bossName: "奧林帕斯雷霆泰坦", bossLp: 5400, startTraps: [207, 110], aiDeckIds: [401, 404, 406, 408, 408, 408, 409, 410, 101, 103, 107, 110], loot: { stone: 390, wood: 320, gold: 410, labor: 52 } },
-      { id: "r7", name: "羅馬萬神殿鬥技場", icon: "🛡️", x: 52, y: 24, diff: "★★★★★ 全球板塊 7/9", domainName: "🩸 血戰角鬥場", domainRule: "【專屬規則】雙方所有怪獸強制表側攻擊表示（禁止蓋牌），且戰鬥差額傷害 1.5 倍！", desc: "沒有防守與退路的血腥鬥技場！高攻打手與陷阱反殺將決定生死。", bossName: "帝國近衛軍團長", bossLp: 5800, startTraps: [107, 110], aiDeckIds: [402, 407, 408, 409, 409, 409, 410, 410, 102, 107, 108, 110], loot: { stone: 480, wood: 410, gold: 480, labor: 62 } },
-      { id: "r8", name: "阿斯嘉特極北冰原", icon: "❄️", x: 68, y: 22, diff: "★★★★★ 全球板塊 8/9", domainName: "❄️ 極寒凍土", domainRule: "【專屬規則】魔神每次攻擊支配怨氣額外 +15%，極易觸發 100% 惡魔反噬！", desc: "極北狂戰士冰原！務必攜帶歐若博司或大衛之星鎖鏈防止麾下惡魔集體叛變。", bossName: "霜巨人之王・尤彌爾", bossLp: 6200, startTraps: [207, 208], aiDeckIds: [404, 405, 407, 408, 410, 410, 410, 412, 103, 106, 107, 110], loot: { stone: 600, wood: 540, gold: 580, labor: 75 } },
-      { id: "r9", name: "崑崙天朝玉京城", icon: "🐉", x: 84, y: 44, diff: "★★★★★ 全球板塊 9/9", domainName: "☯️ 八卦封印陣", domainRule: "【專屬規則】敵方怪獸在場時，我方【所羅門封印環】主動技能全數被封鎖！", desc: "東方仙道帝都！在封印環失效的情況下，必須靠純粹的祭品召喚與魔陷配合破陣。", bossName: "崑崙鎮天仙帝", bossLp: 6600, startTraps: [207, 208], aiDeckIds: [404, 405, 408, 411, 411, 411, 412, 412, 101, 104, 109, 110], loot: { stone: 750, wood: 680, gold: 740, labor: 88 } },
+      { id: "r3", name: "尼羅河法老金字塔", icon: "🔺", x: 27, y: 80, diff: "★★★☆☆ 全球板塊 3/9", domainName: "⚰️ 冥界輪迴陣", domainRule: "【專屬規則】敵方怪獸被破壞時，每回合 1 次在結束階段以守備表示滿血復活！", desc: "法老不死神廟！必須善用「貫穿傷害」或單回合爆發斬殺突破不死輪迴！", bossName: "阿努比斯冥界守衛", bossLp: 4200, startTraps: [208], aiDeckIds: [403, 403, 403, 404, 404, 405, 405, 406, 101, 107, 108, 109], loot: { stone: 200, wood: 100, gold: 165, labor: 30 } },
+      { id: "r4", name: "巴比倫空中花園", icon: "🏛️", x: 38, y: 46, diff: "★★★☆☆ 全球板塊 4/9", domainName: "🔮 星象逆轉結界", domainRule: "【專屬規則】我方 4★ 以下下級怪獸無法直接攻擊，且敵方發動魔法全軍 ATK +250。", desc: "兩河流域魔導帝都，必須依靠 5★ 以上高階魔神才能對主將造成直接傷害！", bossName: "巴比倫星靈大祭司", bossLp: 4600, startTraps: [208, 107], aiDeckIds: [403, 403, 405, 405, 405, 406, 406, 408, 101, 105, 107, 110], loot: { stone: 240, wood: 220, gold: 240, labor: 36 } },
+      { id: "r5", name: "波斯波利斯萬王城", icon: "🦁", x: 50, y: 64, diff: "★★★★☆ 全球板塊 5/9", domainName: "⚖️ 黃金王室稅賦", domainRule: "【專屬規則】我方每回合合計最多只能發動／蓋放 1 張魔法或陷阱卡！", desc: "波斯萬王之王的黃金宮殿，嚴格限制魔陷連鎖，考驗純粹怪獸對撞實力。", bossName: "波斯不死軍統帥", bossLp: 5000, startTraps: [207], aiDeckIds: [401, 401, 402, 404, 406, 407, 407, 409, 409, 102, 107, 109], loot: { stone: 300, wood: 260, gold: 350, labor: 44 } },
+      { id: "r6", name: "奧林帕斯眾神殿", icon: "⚡", x: 34, y: 20, diff: "★★★★☆ 全球板塊 6/9", domainName: "⚡ 神罰雷域", domainRule: "【專屬規則】我方場上只要同時存在 3 隻怪獸，回合結束天雷會劈死我方最強的 1 隻！", desc: "西方神山雷域！切忌貪心鋪滿三格，維持 2 隻精兵陣型才是致勝之道。", bossName: "奧林帕斯雷霆泰坦", bossLp: 5400, startTraps: [207, 110], aiDeckIds: [401, 401, 402, 409, 409, 404, 406, 408, 408, 101, 103, 107], loot: { stone: 390, wood: 320, gold: 410, labor: 52 } },
+      { id: "r7", name: "羅馬萬神殿鬥技場", icon: "🛡️", x: 52, y: 24, diff: "★★★★★ 全球板塊 7/9", domainName: "🩸 血戰角鬥場", domainRule: "【專屬規則】雙方所有怪獸強制表側攻擊表示（禁止蓋牌），且戰鬥差額傷害 1.5 倍！", desc: "沒有防守與退路的血腥鬥技場！高攻打手與陷阱反殺將決定生死。", bossName: "帝國近衛軍團長", bossLp: 5800, startTraps: [107, 110], aiDeckIds: [402, 402, 409, 409, 409, 407, 408, 410, 102, 107, 108, 110], loot: { stone: 480, wood: 410, gold: 480, labor: 62 } },
+      { id: "r8", name: "阿斯嘉特極北冰原", icon: "❄️", x: 68, y: 22, diff: "★★★★★ 全球板塊 8/9", domainName: "❄️ 極寒凍土", domainRule: "【專屬規則】魔神每次攻擊支配怨氣額外 +15%，且 8★ 以下魔神登場效果會被冰封無效！", desc: "極北狂戰士冰原！務必攜帶歐若博司、大衛之星鎖鏈或 8★ 君王破冰！", bossName: "霜巨人之王・尤彌爾", bossLp: 6200, startTraps: [207, 208], aiDeckIds: [401, 402, 405, 405, 409, 407, 410, 410, 412, 103, 105, 107], loot: { stone: 600, wood: 540, gold: 580, labor: 75 } },
+      { id: "r9", name: "崑崙天朝玉京城", icon: "🐉", x: 84, y: 44, diff: "★★★★★ 全球板塊 9/9", domainName: "☯️ 八卦封印陣", domainRule: "【專屬規則】敵方怪獸在場時封鎖我方【所羅門封印環】技能，且敵軍免疫效果破壞！", desc: "東方仙道帝都！在封印環失效的情況下，必須靠純粹的祭品召喚與戰鬥對決破陣。", bossName: "崑崙鎮天仙帝", bossLp: 6600, startTraps: [207, 208], aiDeckIds: [401, 403, 403, 405, 405, 411, 411, 412, 412, 101, 104, 109], loot: { stone: 750, wood: 680, gold: 740, labor: 88 } },
       {
         id: "final", name: "耶路撒冷・至聖所", icon: "👼", x: 78, y: 76,
         diff: "💀 終局弑神決戰（雙階段覺醒）",
@@ -2571,7 +2680,7 @@
         desc: "約櫃降臨引來大天使長【梅塔特隆】！善用聖殿約櫃共鳴與封印環擊碎神聖審判！",
         bossName: "大天使長・梅塔特隆", bossLp: 6000,
         startTraps: [206],
-        aiDeckIds: [201, 201, 202, 202, 203, 203, 204, 204, 205, 206, 206, 108],
+        aiDeckIds: [201, 201, 201, 202, 202, 203, 203, 204, 205, 206, 206, 108],
         loot: { stone: 2000, wood: 2000, gold: 2000, labor: 200 },
         isFinalBoss: true
       }
@@ -2579,40 +2688,40 @@
 
 
     const INFERNO_REGIONS = [
-      { id: "h1", realm: "inferno", name: "邊獄焦土・失控先鋒", icon: "🔥", x: 15, y: 74, diff: "★☆☆☆☆ 地獄深淵 1/6", domainName: "🔥 焦土餘燼", domainRule: "【地獄規則】取消100%自爆，改為150%煉獄暴走(全軍貫穿+吸血)！本關每次召喚怨氣+15%。", desc: "墜入地獄後的第一道防線，失控的叛逃侯爵正率領焦土魔獸圍攻你。", bossName: "叛逃侯爵・安德拉斯", bossLp: 7200, startTraps: [107, 110], aiDeckIds: [7, 25, 57, 63, 16, 23, 52, 64, 103, 107, 110, 101], loot: { stone: 380, wood: 280, gold: 360, labor: 45 } },
-      { id: "h2", realm: "inferno", name: "貪婪熔金庫・瑪門之門", icon: "💰", x: 30, y: 42, diff: "★★☆☆☆ 地獄深淵 2/6", domainName: "🪙 熔金貪婪 curse", domainRule: "【地獄規則】雙方每回合多抽 1 張牌，但結束階段手牌超過 5 張每張扣 400 LP！", desc: "黃金熔岩奔流的貪婪地獄，善用血祭召喚快速傾瀉手牌！", bossName: "貪婪君王・派蒙", bossLp: 8000, startTraps: [208, 107], aiDeckIds: [6, 11, 18, 33, 47, 9, 20, 51, 101, 102, 107, 109], loot: { stone: 460, wood: 350, gold: 580, labor: 55 } },
-      { id: "h3", realm: "inferno", name: "暴怒血海・阿斯莫德殿", icon: "🩸", x: 48, y: 72, diff: "★★★☆☆ 地獄深淵 3/6", domainName: "🩸 沸騰血海", domainRule: "【地獄規則】全場怪獸強制表側攻擊表示，且戰鬥差額傷害 1.5 倍！", desc: "狂怒之王阿斯莫德盤踞的血海競技場，唯有比他更狂暴的煉獄攻勢才能勝出。", bossName: "狂怒君王・阿斯莫德", bossLp: 8800, startTraps: [110, 107], aiDeckIds: [12, 16, 28, 32, 32, 64, 68, 103, 106, 107, 110, 101], loot: { stone: 580, wood: 460, gold: 650, labor: 68 } },
-      { id: "h4", realm: "inferno", name: "永夜迷宮・彼列黑塔", icon: "🗼", x: 62, y: 34, diff: "★★★★☆ 地獄深淵 4/6", domainName: "🌑 永夜不滅結界", domainRule: "【地獄規則】敵方怪獸免疫效果破壞，且每次發動魔法敵方全軍 ATK +250。", desc: "無主之王彼列的黑曜石迷宮，必須靠純粹的戰鬥力與雙柱聯攜奧義正面擊潰！", bossName: "無主君王・彼列", bossLp: 9600, startTraps: [207, 208], aiDeckIds: [8, 15, 29, 45, 55, 68, 68, 104, 107, 108, 109, 110], loot: { stone: 720, wood: 580, gold: 780, labor: 82 } },
-      { id: "h5", realm: "inferno", name: "叛逆雙王殿・巴力王座", icon: "👑", x: 78, y: 58, diff: "★★★★★ 地獄深淵 5/6", domainName: "⚡ 霸王雷獄", domainRule: "【地獄規則】每回合結束階段，炸毀雙方場上攻擊力最低的 1 隻怪獸！", desc: "昔日首席魔神王巴力在此阻攔，保住你的高星主力並祭出聯攜奧義！", bossName: "東方魔神王・巴力", bossLp: 10500, startTraps: [207, 110], aiDeckIds: [1, 1, 9, 13, 20, 45, 61, 101, 103, 106, 109, 110], loot: { stone: 900, wood: 750, gold: 960, labor: 100 } },
+      { id: "h1", realm: "inferno", name: "邊獄焦土・失控先鋒", icon: "🔥", x: 15, y: 74, diff: "★☆☆☆☆ 地獄深淵 1/6", domainName: "🔥 焦土餘燼", domainRule: "【地獄規則】取消100%自爆，改為150%煉獄暴走(全軍貫穿+吸血)！本關每次召喚怨氣+15%。", desc: "墜入地獄後的第一道防線，失控的叛逃侯爵正率領焦土魔獸圍攻你。", bossName: "叛逃侯爵・安德拉斯", bossLp: 6800, startTraps: [107, 110], aiDeckIds: [7, 7, 25, 57, 63, 16, 23, 52, 64, 103, 107, 101], loot: { stone: 380, wood: 280, gold: 360, labor: 45 } },
+      { id: "h2", realm: "inferno", name: "貪婪熔金庫・瑪門之門", icon: "💰", x: 30, y: 42, diff: "★★☆☆☆ 地獄深淵 2/6", domainName: "🪙 熔金貪婪結界", domainRule: "【地獄規則】雙方每回合多抽 1 張牌，但結束階段手牌超過 5 張每張扣 400 LP！", desc: "黃金熔岩奔流的貪婪地獄，善用血祭召喚快速傾瀉手牌！", bossName: "貪婪君王・派蒙", bossLp: 7400, startTraps: [208, 107], aiDeckIds: [5, 27, 35, 44, 58, 6, 18, 9, 20, 101, 102, 107], loot: { stone: 460, wood: 350, gold: 580, labor: 55 } },
+      { id: "h3", realm: "inferno", name: "暴怒血海・阿斯莫德殿", icon: "🩸", x: 48, y: 72, diff: "★★★☆☆ 地獄深淵 3/6", domainName: "🩸 沸騰血海", domainRule: "【地獄規則】全場怪獸強制表側攻擊表示，且戰鬥差額傷害 1.5 倍！", desc: "狂怒之王阿斯莫德盤踞的血海競技場，唯有比他更狂暴的煉獄攻勢才能勝出。", bossName: "狂怒君王・阿斯莫德", bossLp: 8000, startTraps: [110, 107], aiDeckIds: [7, 14, 35, 48, 63, 16, 28, 32, 32, 103, 107, 101], loot: { stone: 580, wood: 460, gold: 650, labor: 68 } },
+      { id: "h4", realm: "inferno", name: "永夜迷宮・彼列黑塔", icon: "🗼", x: 62, y: 34, diff: "★★★★☆ 地獄深淵 4/6", domainName: "🌑 永夜不滅結界", domainRule: "【地獄規則】敵方怪獸免疫效果破壞，且每次發動魔法敵方全軍 ATK +250。", desc: "無主之王彼列的黑曜石迷宮，必須靠純粹的戰鬥力與雙柱聯攜奧義正面擊潰！", bossName: "無主君王・彼列", bossLp: 8600, startTraps: [207, 208], aiDeckIds: [17, 24, 43, 59, 65, 8, 29, 68, 68, 104, 107, 109], loot: { stone: 720, wood: 580, gold: 780, labor: 82 } },
+      { id: "h5", realm: "inferno", name: "叛逆雙王殿・巴力王座", icon: "👑", x: 78, y: 58, diff: "★★★★★ 地獄深淵 5/6", domainName: "⚡ 霸王雷獄", domainRule: "【地獄規則】每回合結束階段，炸毀雙方場上攻擊力最低的 1 隻怪獸！", desc: "昔日首席魔神王巴力在此阻攔，保住你的高星主力並祭出聯攜奧義！", bossName: "東方魔神王・巴力", bossLp: 9200, startTraps: [207, 110], aiDeckIds: [4, 7, 35, 39, 66, 15, 1, 1, 13, 101, 103, 109], loot: { stone: 900, wood: 750, gold: 960, labor: 100 } },
       {
         id: "h_boss", realm: "inferno", name: "第九層寒冰獄・撒旦王座", icon: "😈", x: 86, y: 24,
         diff: "💀 地獄終局（雙階段晨星覺醒）",
         domainName: "❄️ 絕對零度與晨星黑焰",
         domainRule: "【撒旦領域】每回合凍結我方 1 隻非君王怪獸；擊破第一形態後覺醒為【墮天晨星・路西法撒旦】！",
         desc: "地獄最深處的寒冰王座！擊敗大惡魔撒旦，奪取煉獄王冠並收服撒旦加入牌組！",
-        bossName: "大惡魔・撒旦", bossLp: 12000,
+        bossName: "大惡魔・撒旦", bossLp: 10000,
         startTraps: [207, 208],
-        aiDeckIds: [1, 9, 13, 32, 68, 301, 301, 101, 103, 106, 109, 110],
+        aiDeckIds: [7, 25, 35, 43, 63, 29, 32, 68, 301, 101, 103, 109],
         loot: { stone: 1800, wood: 1500, gold: 2000, labor: 180 },
         isHellBoss: true
       }
     ];
 
     const CELESTIA_REGIONS = [
-      { id: "c1", realm: "celestia", name: "第一重天・雲海星門", icon: "☁️", x: 16, y: 72, diff: "★★★★★ 天界聖域 1/5", domainName: "⚖️ 戒律一：沉默聖域", decreeType: "odd_no_spell", domainRule: "【神聖戒律】奇數回合（T1, T3, T5...）禁止發動任何魔法卡！可用【2環·傲慢】破除戒律。", desc: "通天塔刺破雲海的第一道天門，能天使卡麥爾以沉默戒律封鎖咒法。", bossName: "能天使・卡麥爾", bossLp: 11500, startTraps: [206, 208], aiDeckIds: [201, 202, 203, 304, 304, 305, 107, 108, 206, 208, 101, 105], loot: { stone: 1100, wood: 900, gold: 1200, labor: 110 } },
-      { id: "c2", realm: "celestia", name: "第三重天・治癒聖泉殿", icon: "⛲", x: 34, y: 46, diff: "★★★★★ 天界聖域 2/5", domainName: "⚖️ 戒律二：不滅聖光", decreeType: "heal_and_cap", domainRule: "【神聖戒律】敵方每回合結束恢復 1000 LP，且我方單次戰鬥傷害上限為 2200！", desc: "大天使拉斐爾鎮守的聖泉神殿，善用【1環·暴食】直接吞噬天使打破持久戰！", bossName: "大天使・拉斐爾", bossLp: 12800, startTraps: [206, 108], aiDeckIds: [202, 202, 203, 305, 305, 306, 105, 107, 108, 206, 208, 101], loot: { stone: 1350, wood: 1150, gold: 1450, labor: 130 } },
-      { id: "c3", realm: "celestia", name: "第五重天・神諭審判庭", icon: "📯", x: 54, y: 66, diff: "★★★★★★ 天界聖域 3/5", domainName: "⚖️ 戒律三：威壓審判", decreeType: "king_sick", domainRule: "【神聖戒律】我方 8★ 君王級魔神在召喚登場的當回合無法發動攻擊！", desc: "吹響末日號角的大天使加百列，利用時間差戒律限制我方君王爆發。", bossName: "大天使・加百列", bossLp: 14000, startTraps: [207, 206], aiDeckIds: [203, 203, 304, 306, 306, 307, 101, 107, 206, 207, 208, 109], loot: { stone: 1650, wood: 1400, gold: 1750, labor: 155 } },
-      { id: "c4", realm: "celestia", name: "第七重天・天軍統帥府", icon: "🗡️", x: 70, y: 34, diff: "★★★★★★ 天界聖域 4/5", domainName: "⚖️ 戒律四：不屈聖盾", decreeType: "first_shield", domainRule: "【神聖戒律】敵方所有天使登場時自動獲得一次「破壞免疫聖盾」！", desc: "天界最強戰神米迦勒親自率軍迎戰，熾熱炎劍足以斬斷一切魔神！", bossName: "熾天使長・米迦勒", bossLp: 15500, startTraps: [206, 207], aiDeckIds: [204, 204, 205, 306, 307, 307, 103, 107, 206, 207, 208, 110], loot: { stone: 2000, wood: 1750, gold: 2200, labor: 185 } },
+      { id: "c1", realm: "celestia", name: "第一重天・雲海星門", icon: "☁️", x: 16, y: 72, diff: "★★★★★ 天界聖域 1/5", domainName: "⚖️ 戒律一：沉默聖域", decreeType: "odd_no_spell", domainRule: "【神聖戒律】奇數回合（T1, T3, T5...）禁止發動任何魔法卡！天界怨氣滿100%觸發天罰淨化。", desc: "通天塔刺破雲海的第一道天門，能天使卡麥爾以沉默戒律封鎖咒法。", bossName: "能天使・卡麥爾", bossLp: 9500, startTraps: [206, 208], aiDeckIds: [201, 201, 202, 202, 202, 203, 304, 304, 305, 105, 107, 206], loot: { stone: 1100, wood: 900, gold: 1200, labor: 110 } },
+      { id: "c2", realm: "celestia", name: "第三重天・治癒聖泉殿", icon: "⛲", x: 34, y: 46, diff: "★★★★★ 天界聖域 2/5", domainName: "⚖️ 戒律二：不滅聖光", decreeType: "heal_and_cap", domainRule: "【神聖戒律】敵方每回合結束恢復 800 LP，且我方單次戰鬥傷害上限為 2400！", desc: "大天使拉斐爾鎮守的聖泉神殿，善用【1環·暴食】直接吞噬天使打破持久戰！", bossName: "大天使・拉斐爾", bossLp: 10500, startTraps: [206, 108], aiDeckIds: [201, 201, 202, 202, 202, 203, 305, 305, 306, 105, 108, 206], loot: { stone: 1350, wood: 1150, gold: 1450, labor: 130 } },
+      { id: "c3", realm: "celestia", name: "第五重天・神諭審判庭", icon: "📯", x: 54, y: 66, diff: "★★★★★★ 天界聖域 3/5", domainName: "⚖️ 戒律三：威壓審判", decreeType: "king_sick", domainRule: "【神聖戒律】我方 8★ 君王級魔神在召喚登場的當回合無法發動攻擊！可用【2環·傲慢】破除。", desc: "吹響末日號角的大天使加百列，利用時間差戒律限制我方君王爆發。", bossName: "大天使・加百列", bossLp: 11500, startTraps: [207, 206], aiDeckIds: [201, 201, 201, 202, 202, 203, 304, 306, 306, 101, 107, 206], loot: { stone: 1650, wood: 1400, gold: 1750, labor: 155 } },
+      { id: "c4", realm: "celestia", name: "第七重天・天軍統帥府", icon: "🗡️", x: 70, y: 34, diff: "★★★★★★ 天界聖域 4/5", domainName: "⚖️ 戒律四：不屈聖盾", decreeType: "first_shield", domainRule: "【神聖戒律】敵方所有天使登場時自動獲得一次「破壞免疫聖盾」！", desc: "天界最強戰神米迦勒親自率軍迎戰，熾熱炎劍足以斬斷一切魔神！", bossName: "熾天使長・米迦勒", bossLp: 12500, startTraps: [206, 207], aiDeckIds: [201, 201, 202, 202, 202, 204, 205, 307, 307, 103, 107, 206], loot: { stone: 2000, wood: 1750, gold: 2200, labor: 185 } },
       {
         id: "c_boss", realm: "celestia", name: "至高天・神之王座", icon: "👁️", x: 84, y: 18,
         diff: "💀 創世終局（雙階段弑神最終戰）",
         domainName: "⚖️ 至高戒律：創世絕對法則",
         decreeType: "supreme_law",
-        domainRule: "【至高戒律】奇數回合禁魔法＋敵方回合結束回 1000 LP！擊破第一形態將覺醒【創世終焉・原初之光】！",
+        domainRule: "【至高戒律】奇數回合禁魔法＋敵方回合結束回 800 LP！擊破第一形態將覺醒【創世終焉・原初之光】！",
         desc: "三界征途的最終終點！在無上造物主的王座前，以七宗罪與七十二柱魔神改寫宇宙命運！",
-        bossName: "至高神座・無上造物主", bossLp: 17500,
+        bossName: "至高神座・無上造物主", bossLp: 13500,
         startTraps: [206, 207],
-        aiDeckIds: [204, 205, 306, 307, 308, 308, 101, 107, 206, 207, 208, 110],
+        aiDeckIds: [201, 201, 202, 202, 202, 204, 306, 307, 308, 101, 206, 207],
         loot: { stone: 5000, wood: 5000, gold: 5000, labor: 500 },
         isHeavenBoss: true
       }
@@ -2621,6 +2730,247 @@
     function getAllRegionsList() {
       return [...WORLD_REGIONS, ...INFERNO_REGIONS, ...CELESTIA_REGIONS];
     }
+
+    // ==========================================
+    // 4.5 全三界 21 關專屬新手參考攻略資料庫
+    // ==========================================
+    const REGION_GUIDES = {
+      // --- 第一篇章：人間界 (10 關) ---
+      r1: {
+        traps: "開場蓋有【聖殿銅海鏡反】（攻擊時直接摧毀我方攻擊怪）。敵方主力《迦南巨石盾衛》橫放時 DEF 高達 2450 且帶護衛嘲諷。",
+        cards: "推薦【亞斯她錄 (6★)】（起動技直接炸盾衛不吃反傷）、【馬爾巴士 (4★)】、貫穿打手【勒萊耶／馬可西亞斯】；蓋上【聖殿銅海鏡反】防守。",
+        relics: "🗿 黑曜祭品石像（教學通關贈送，第 1 回合直接獻祭叫 6★ 亞斯她錄秒破防）。",
+        tips: [
+          "千萬別用 1700 攻的 4★ 怪直接撞 2450 守備的《巨石盾衛》，會吃反彈傷害！",
+          "第 1 回合先出 4★ 魔神（攻擊表示），第 2 回合獻祭召喚 6★ 亞斯她錄（繼承 +300 攻達 2800），先用次要怪踩掉或用起動技炸掉敵方盾衛即可輕鬆獲勝。"
+        ]
+      },
+      r2: {
+        traps: "開場蓋有【所羅門銅瓶封印】（攻擊時無效並使我方全體轉守備）。每次攻擊後我方怪獸 ATK 永久 -200。",
+        cards: "推薦高基礎攻 4★ 打手＋【亞斯她錄 (6★)】、【巴力 (8★)】與【所羅門的小鑰匙】過牌。",
+        relics: "🗿 黑曜祭品石像（快速換上高星新血）或 ☄️ 煉獄爆裂火油（開場炸掉銅瓶封印）。",
+        tips: [
+          "別讓同一隻 4★ 怪一直攻擊到攻擊力歸零！打完 1~2 次變弱後，直接把牠當作「祭品」獻祭召喚 6★／8★ 魔神，就能重置出滿攻主力。",
+          "善用【2 環・真名解放（+1200 攻＋貫穿）】一波打穿血線，減少拉鋸次數。"
+        ]
+      },
+      r3: {
+        traps: "開場蓋有【咒法反制結界】（你發動魔法會被無效並扣 500 LP）！敵方牌組內還藏有【神聖真名剝奪】（召喚 5★ 以上怪獸時直接炸毀）。場上《阿努比斯祭司》會讓我方全軍 -250 攻。",
+        cards: "推薦【巴力 (8★)】（登場優先炸光敵後台，反擊陷阱來不及發動）、【貫穿流（貝雷特／埃力格／馬可西亞斯）】與【亞斯她錄】。",
+        relics: "☄️ 煉獄爆裂火油（強烈推薦！開場直接拆掉敵方反制結界，徹底防範踩雷）。",
+        tips: [
+          "這關每回合敵方墓地會復活 1 隻守備怪，單純慢慢磨很難打死；務必用「貫穿傷害」直接隔著復活的守備怪削血，或一回合內擊破多怪。",
+          "看到敵方後台有蓋牌時，別急著發動重要魔法或直接獻祭叫 6★ 怪，先用次要魔法／5★ 怪踩雷，或直接拍出 8★ 巴力清場。"
+        ]
+      },
+      r4: {
+        traps: "開場蓋有【咒法反制結界】＋【聖殿銅海鏡反】雙後台！敵方《巴比倫星靈術士》每回合結束會幫敵方回 450 LP 並補聖盾，且敵方開魔法會全軍 +250 攻。",
+        cards: "必帶 5★ 以上主力（如【亞斯她錄】、【歐若博司】、【巴力】），因為 4★ 以下怪無法直接攻擊主將！",
+        relics: "☄️ 煉獄爆裂火油（一次炸光開場雙陷阱＋先扣 1000 LP，性價比最高）。",
+        tips: [
+          "優先擊殺敵方的《巴比倫星靈術士（💚治癒）》，別讓牠每回合幫敵人回血補盾。",
+          "4★ 怪在這關只負責解場與當祭品，真正收頭必須靠 5★～8★ 魔神直接攻擊主將。"
+        ]
+      },
+      r5: {
+        traps: "開場蓋有【次元放逐陣】（你召喚 8★ 君王會被彈回牌組，但 8★ 巴力／撒共會先炸後台而免疫！）。本關每回合合計最多只能用 1 張魔法或陷阱。",
+        cards: "減少魔陷佔比，改放高體質 6★ 公爵（【埃力格】、【比利士】、【亞斯她錄】）與【巴力 (8★)】；敵方《波斯金面不死軍》戰死會反傷 450 LP，帶 1 張【布耶爾】補血。",
+        relics: "☄️ 煉獄爆裂火油（拆掉次元放逐陣）或 🗿 黑曜祭品石像。",
+        tips: [
+          "因為每回合限用 1 張魔陷，把扣打留給最關鍵的抽牌或鏡反陷阱，靠高攻魔神正面硬拚。",
+          "敵方《波斯金面不死軍（🔥餘燼）》用戰鬥擊破會反傷 450 LP，改用【亞斯她錄／弗卡洛】的起動技效果破壞就不會觸發反傷！"
+        ]
+      },
+      r6: {
+        traps: "開場蓋有【次元放逐陣】＋【煉獄業火反衝】。場域規則：我方場上只要同時有 3 隻怪，回合結束天雷會直接劈死我方最強的 1 隻！",
+        cards: "推薦精兵體系：【巴力 (8★)】、【亞斯她錄 (6★)】、【歐若博司 (5★)】＋【馬爾巴士 (4★)】。",
+        relics: "☄️ 煉獄爆裂火油（清掉雙蓋牌）＋ 🪔 鎮魂龍涎神香（開場 2 環直接發動真名解放）。",
+        tips: [
+          "這關絕對不要貪心鋪滿 3 格！隨時保持場上只有「1~2 隻」主力怪獸，就能完全無視神罰雷域。",
+          "若場上已有 2 隻怪，下回合想出大怪時請直接獻祭場上怪獸，不要特召第 3 隻出來送頭。"
+        ]
+      },
+      r7: {
+        traps: "開場蓋有【聖殿銅海鏡反】＋【煉獄業火反衝】雙致命陷阱！本關禁止任何守備蓋牌，且所有戰鬥差額傷害變為 1.5 倍！",
+        cards: "⚠️ 務必暫時移出低攻功能怪（如布耶爾、勞姆、斯伯納克）！全換成高攻 4★（【馬可西亞斯 1900】、【勒萊耶 1850】、【安德拉斯 1850】、【馬爾巴士 -400 攻】）並淬鍊到 Lv.2；帶滿我方鏡反與業火反衝。",
+        relics: "☄️ 煉獄爆裂火油（必帶！拆光開場雙陷阱）。⚠️ 千萬別帶【🗿 黑曜祭品石像】，0 攻被迫轉攻擊表示會被敵人一腳踢掉近 3000 血！",
+        tips: [
+          "敵方 4★ 角鬥士有 1950 攻，用【馬爾巴士】降牠 400 攻或將我方 4★ 淬鍊至 Lv.2 就能正面反殺。",
+          "反過來利用 1.5 倍差額傷害：湊齊 70% 狂暴＋【2 環・真名解放（+1200）】一拳就能打出破 4000 傷害直接秒殺！"
+        ]
+      },
+      r8: {
+        traps: "開場蓋有【次元放逐陣】＋【咒法反制結界】。每次攻擊怨氣額外 +15% 極易爆怒叛變，且 8★ 以下魔神登場效果會被冰封無效！",
+        cards: "必帶【歐若博司 (5★)】（擋 100% 叛變）與【大衛之星鎖鏈】（鎖住主力不叛變），搭配【8★ 君王（巴力／阿斯莫德／彼列）】——8★ 君王不受冰封影響！",
+        relics: "🪔 鎮魂龍涎神香（本關神物！怨氣累積直接減半，再也不怕隨便爆 100% 自爆）。",
+        tips: [
+          "這關 4★～6★ 靠「登場抽牌／降攻」吃飯的魔神效果會被冰封，改帶純高攻或【永續效果】打手（如貫穿、狂暴增傷）最划算。",
+          "利用額外 +15% 怨氣快速衝上 70% 狂暴增傷，接近 90% 時立刻用【1 環・鎮壓】或【歐若博司】控住。"
+        ]
+      },
+      r9: {
+        traps: "開場蓋有【次元放逐陣】＋【咒法反制結界】。敵方怪獸在場時我方「封印環技能全被封鎖」，且敵怪完全免疫效果破壞！",
+        cards: "拔掉靠效果破壞吃飯的卡（如亞斯她錄起動炸怪無效），改帶【高攻打手（貝雷特／阿斯莫德／巴力）】、【馬爾巴士／威沛（降攻依然有效）】與【大衛之星鎖鏈】。",
+        relics: "☄️ 煉獄爆裂火油（炸光開場雙反擊陷阱）＋ 🗿 黑曜祭品石像（快速跳大怪硬拚）。",
+        tips: [
+          "既然敵怪免疫效果破壞，就靠「降攻＋高攻戰鬥擊破」正面輾壓；只要把敵場清空的瞬間，我方封印環就會立刻解鎖，趁空檔發動 2 環真名灌爆主將！",
+          "小心敵方《崑崙御劍仙兵（🔮威壓 -250 攻）》與 8★《青龍神獸》，優先用我方陷阱反殺或降攻處理。"
+        ]
+      },
+      final: {
+        traps: "開場蓋有【神罰之雷（攻擊直接破壞）】。每回合降 15% 怨氣並封印我方 1 隻 8★ 以下怪獸；擊破第一階段 6000 LP 後會覺醒第二形態（4500 LP＋三天使護陣），但覺醒當回合不會攻擊！",
+        cards: "核心必帶至少 2~3 張【8★ 君王（巴力／彼列／阿斯莫德／拜恩）】——聖殿 6/6 讓 8★ 君王完全免疫神聖封印！搭配【勞姆／因波斯】快刷封印環。",
+        relics: "☄️ 煉獄爆裂火油（拆神罰之雷）＋ 🪔 鎮魂龍涎神香（開場 2 環立刻觸發約櫃吸取 600 LP）。",
+        tips: [
+          "聖殿 6/6 覺醒後，你每發動 1 次封印環都會額外吸取梅塔特隆 600 LP！善用 1 環／2 環／3 環邊打邊回血。",
+          "快打空第一階段血量前，先留好【巴力】或【2 環・真名解放】在手上，等牠進第二形態不會攻擊的那一回合直接一波灌穿！"
+        ]
+      },
+
+      // --- 第二篇章：地獄界 (6 關) ---
+      h1: {
+        traps: "開場蓋有【聖殿銅海鏡反】＋【煉獄業火反衝】。地獄界取消 100% 自爆，改為 150% 煉獄暴走（全軍貫穿＋30%~40% 吸血，回合結束僅燒 350 LP），本關每次召喚額外 +15% 怨氣。",
+        cards: "推薦【狂暴流（巴力／亞蒙／安德拉斯／阿斯莫德）】＋【8★ 高星主力】，善用地獄專屬的【🩸 血祭特召】直接拍大怪。",
+        relics: "☄️ 煉獄爆裂火油（炸光開場雙陷阱）或 🔮 王室星象占卜（防起手卡手）。",
+        tips: [
+          "地獄界不用怕 100% 怨氣！放心把怨氣疊破 100% 開啟吸血＋全軍貫穿，打一拳吸回來的血遠超回合結束燒的 350 LP。",
+          "場上湊齊 2 隻表側魔神＋2 封印環即可發動地獄專屬【🔥 雙柱聯攜奧義】炸怪兼轟臉！"
+        ]
+      },
+      h2: {
+        traps: "開場蓋有【咒法反制結界】＋【聖殿銅海鏡反】。雙方每回合多抽 1 張牌，但結束階段手牌超過 5 張每張會扣 400 LP！",
+        cards: "多放可立即出手的【速攻／通常魔法】、【陷阱卡】與 5~8★ 魔神（透過血祭特召快速把多餘手牌傾瀉到場上）。",
+        relics: "☄️ 煉獄爆裂火油（拆掉反制結界，避免手牌魔法發不出去被扣血）。",
+        tips: [
+          "每回合結束前務必確認手牌 ≤ 5 張！有多的陷阱就先蓋到後台，有大怪就用【🩸 血祭特召】拍上場，絕不白白吃 400 LP 溢出傷害。",
+          "儘快把萬魔殿蓋到 2 階，讓血祭召喚消耗減半，手牌轉場優會順非常多。"
+        ]
+      },
+      h3: {
+        traps: "開場蓋有【煉獄業火反衝】＋【聖殿銅海鏡反】。全場強制表側攻擊表示且戰鬥差額傷害 1.5 倍（地獄版血戰角鬥場）。",
+        cards: "拔掉低攻功能怪！全上高攻 4★、6★ 與 8★ 君王（特別是【巴力】70% 狂暴連擊 2 次），並將主力淬鍊至 Lv.2 以上。",
+        relics: "☄️ 煉獄爆裂火油（必帶拆雙陷阱）。⚠️ 同樣切記不要帶 0 攻【黑曜祭品石像】！",
+        tips: [
+          "進入 100% 煉獄暴走後，配合 1.5 倍傷害打一拳不僅傷害爆表，還能吸回上千 LP，血祭召喚的扣血瞬間補滿。",
+          "小心敵方 8★《阿斯莫德（3200 攻＋擊破燒 800）》，用我方陷阱反殺或【雙柱聯攜奧義】直接炸掉牠！"
+        ]
+      },
+      h4: {
+        traps: "開場蓋有【次元放逐陣】＋【咒法反制結界】，且敵方若無蓋牌會自動補蓋鏡反！敵方怪獸免疫效果破壞，且每次發動魔法敵軍 ATK +250。",
+        cards: "必帶【巴力 (8★)】或【撒共 (8★)】清敵方後台，搭配【貝雷特／埃力格】高攻硬打與【雙柱聯攜奧義】直接燒血。",
+        relics: "☄️ 煉獄爆裂火油（清開場雙反擊陷阱）＋ 🪔 鎮魂龍涎神香（開場 2 環直接開大）。",
+        tips: [
+          "這關別帶亞斯她錄這類靠效果炸怪的卡，專心疊高我方攻擊力（萬魔殿 5 階＋100% 煉獄暴走＋2 環真名解放）靠戰鬥正面輾過去。",
+          "敵方沒後台時會補蓋鏡反，因此用【巴力】清後台或讓【Lv.3 弑神覺醒魔神（免疫攻擊陷阱）】先打頭陣最穩！"
+        ]
+      },
+      h5: {
+        traps: "開場蓋有【次元放逐陣】＋【煉獄業火反衝】。每回合結束階段會炸毀「雙方場上攻擊力最低的 1 隻怪獸」！",
+        cards: "帶上【帶聖盾魔神（拜恩／巴巴妥司／哈帕斯）】或純高攻大怪陣容，避免留下 4★ 弱怪；多利用【雙柱聯攜奧義】與【血祭特召】。",
+        relics: "☄️ 煉獄爆裂火油（拆放逐陣）＋ 🔮 王室星象占卜。",
+        tips: [
+          "這個場域規則其實能幫你清掉敵方小怪！只要你只放 1 隻高攻 8★ 怪（或帶聖盾的怪），結束階段雷擊會劈死對面小怪，若我方只有 1 隻則要小心別被劈掉，建議場上擺「1 主力＋1 廉價炮灰」當避雷針。"
+        ]
+      },
+      h_boss: {
+        traps: "開場蓋有【次元放逐陣】＋【咒法反制結界】。每回合凍結 1 隻非君王魔神；擊破第一形態 10000 LP 後覺醒【墮天晨星・路西法撒旦（8500 LP＋3900 攻真身）】，覺醒當回合不會攻擊！",
+        cards: "核心為【8★ 君王群（巴力／阿斯莫德／彼列／拜恩）】全面免疫凍結，並將主力淬鍊至 Lv.2～Lv.3，萬魔殿建議蓋到 4~6 階。",
+        relics: "☄️ 煉獄爆裂火油（拆開場雙反擊）＋ 🪔 鎮魂龍涎神香（開場 2 環快速啟動雙柱聯攜）。",
+        tips: [
+          "這關靠「萬魔殿 4 階（1 環聯攜奧義）」＋「100% 煉獄吸血」最穩：用血祭特召維持 2 隻 8★ 君王站場，每回合狂轟雙柱聯攜奧義。",
+          "進第二形態前先存好 2~3 枚封印環，趁撒旦覺醒當回合不進攻，直接用 2 環真名解放（+1200 貫穿）＋巴力連擊一波帶走！"
+        ]
+      },
+
+      // --- 第三篇章：天界 (5 關) ---
+      c1: {
+        traps: "開場蓋有【神罰之雷】＋【咒法反制結界】。神聖戒律：奇數回合（T1/T3/T5...）禁止發動任何魔法！⚠️ 天界怨氣滿 100% 會觸發【⚡ 天罰淨化（最強魔神 -800 攻並扣 800 LP）】。",
+        cards: "必帶剛收服的【大惡魔・撒旦 (8★ 3600 攻)】、【巴力】、【歐若博司 (5★)】（擋天罰淨化）與【充能流（勞姆／因波斯）】快刷原罪能量。",
+        relics: "☄️ 煉獄爆裂火油（拆神罰與反制）＋ 🪔 鎮魂龍涎神香（怨氣減半＋開場 2 環）。",
+        tips: [
+          "奇數回合不能開魔法，就把抽牌與補血魔法留到偶數回合（T2/T4/T6）放，或直接用【👑 2 環・傲慢】破除本回合戒律並 +1200 攻！",
+          "天界重新恢復控怒的重要性：怨氣快破 85% 時別硬衝，或用【歐若博司／大衛之星鎖鏈】扛下天罰淨化。"
+        ]
+      },
+      c2: {
+        traps: "開場蓋有【神罰之雷】＋【所羅門銅瓶封印】。神聖戒律：敵方每回合結束回 800 LP，且我方單次戰鬥傷害上限被鎖在 2400（通天塔 4 階可放寬至 4000）！",
+        cards: "推薦【連擊與多段傷害（巴力 70% 連擊 2 次、撒旦登場燒 1000、阿斯莫德／彼列擊破燒 800）】＋【充能流】狂開【😈 1 環・暴食】。",
+        relics: "☄️ 煉獄爆裂火油 ＋ 🪔 鎮魂龍涎神香（開場直接開暴食吞掉高防天使）。",
+        tips: [
+          "單次戰鬥傷害有上限，所以不要把全部 Buff 灌在 1 隻怪身上打一拳！改用「多隻怪分開打＋巴力連擊＋燒血效果」才能繞過單次上限。",
+          "每回合用【😈 1 環・暴食】直接吞噬敵方《大天使拉斐爾（💚治癒）》，既能阻止敵方疊血又能幫自己回上千 LP！"
+        ]
+      },
+      c3: {
+        traps: "開場蓋有【次元放逐陣】＋【神罰之雷】。神聖戒律：我方 8★ 君王登場當回合無法攻擊！敵方《大天使加百列》登場降攻且帶威壓光環。",
+        cards: "必帶【大惡魔・撒旦】、【巴力】、【6★ 強力公爵（不吃君王禁攻戒律，如埃力格／亞斯她錄）】與【聖殿銅海鏡反】保護剛登場的君王撐過 1 回合。",
+        relics: "☄️ 煉獄爆裂火油（必帶拆放逐陣）＋ 🗿 黑曜祭品石像。",
+        tips: [
+          "若通天塔蓋到 2 階，我方全軍會完全免疫加百列的減攻與威壓光環，難度大幅下降！",
+          "8★ 君王剛登場不能打沒關係，蓋好鏡反保牠活到下回合，或是直接發動【👑 2 環・傲慢】就能立刻無視戒律當回合進攻！"
+        ]
+      },
+      c4: {
+        traps: "開場蓋有【神罰之雷】＋【次元放逐陣】。神聖戒律：敵方所有天使登場自帶一層「破壞免疫聖盾」！敵方《米迦勒》高達 3750 攻且戰死反傷 450 LP。",
+        cards: "必帶【充能流（勞姆／華利弗／普爾森）】＋【大惡魔・撒旦】＋【Lv.3 淬鍊主力（免疫神罰之雷）】。利用【😈 1 環・暴食】直接吞掉帶聖盾的天使！",
+        relics: "☄️ 煉獄爆裂火油 ＋ 🪔 鎮魂龍涎神香（開場 2 環破局）。",
+        tips: [
+          "【😈 1 環・暴食】是直接吞噬移除敵怪，完全無視天使的「聖盾」也不會觸發米迦勒的「餘燼反傷」！是這關的最強殺手鐧。",
+          "若要用戰鬥破盾，先讓攻擊力較低的小怪輕點一下把聖盾打碎，再用【撒旦】或【2 環・傲慢】的主力一拳灌穿！"
+        ]
+      },
+      c_boss: {
+        traps: "開場蓋有【神罰之雷】＋【次元放逐陣】。至高戒律：奇數回合禁魔法＋敵方每回合回 800 LP；終局神座自帶【👁️ 創世減傷膜（每回合第 1 次戰鬥傷害減半 50%）】，擊破 13500 LP 後覺醒二階段【創世終焉・原初之光（9500 LP＋4000 攻）】！",
+        cards: "最終完全體配置：建議通天塔至少 4~6 階、主力【撒旦／巴力／阿斯莫德／彼列】淬鍊至 Lv.3，必帶【歐若博司】防天罰淨化，以及【所羅門的小鑰匙】與【深淵獻祭儀式】補滿原罪能量。",
+        relics: "☄️ 煉獄爆裂火油（拆開場雙致命陷阱）＋ 🪔 鎮魂龍涎神香（開場 2 環＋控怒減半）。",
+        tips: [
+          "破【👁️ 創世減傷膜】訣竅：每回合一定要先用「攻擊力較低的怪獸」打第一下把 50% 減傷膜破掉，再讓【撒旦】或【巴力】打第二下吃滿 100% 傷害！",
+          "善用【😈 1 環・暴食】吞掉護衛與米迦勒補血，【👑 2 環・傲慢】破除奇數回合禁魔法並 +1200 貫穿；進第二形態前務必留好原罪能量，趁原初之光覺醒首回合不進攻全力斬殺！"
+        ]
+      }
+    };
+
+    function openRegionGuide(regionId) {
+      const region = getAllRegionsList().find(r => r.id === regionId);
+      const g = REGION_GUIDES[regionId];
+      if (!region || !g) return;
+      const body = document.getElementById("guide-modal-body");
+      if (!body) return;
+
+      body.innerHTML = `
+        <h2>📖 破關攻略：${region.icon} ${region.name}</h2>
+        <div class="rule-item danger">
+          <strong>⚠️ 敵軍伏兵與核心威脅：</strong><br>
+          ${g.traps}
+        </div>
+        <div class="rule-item holy">
+          <strong>🃏 推薦牌組與魔神對策：</strong><br>
+          ${g.cards}
+        </div>
+        <div class="rule-item" style="background:#fef3c7; border-left-color:#d97706;">
+          <strong>🎒 推薦攜帶戰術聖物：</strong><br>
+          ${g.relics}
+        </div>
+        <div class="rule-item" style="background:#f0fdf4; border-left-color:#15803d;">
+          <strong>⚔️ 實戰破局操作步驟：</strong>
+          <ul style="margin:5px 0 0 0; padding-left:18px; line-height:1.5;">
+            ${g.tips.map(t => `<li style="margin-bottom:4px;">${t}</li>`).join("")}
+          </ul>
+        </div>
+        <div style="display:flex; gap:6px; margin-bottom:8px;">
+          <button class="btn btn-sm btn-gold" style="flex:1;" onclick="closeRegionGuide(); closeSiegePopup(); switchTab('temple');">⚒️ 去鍛造聖物</button>
+          <button class="btn btn-sm btn-holy" style="flex:1;" onclick="closeRegionGuide(); closeSiegePopup(); switchTab('grimoire');">📖 去調整牌組</button>
+        </div>
+        <button class="btn" style="width:100%;" onclick="closeRegionGuide()">關閉攻略（返回出征面板）</button>
+      `;
+      document.getElementById("guide-modal").classList.remove("hidden");
+    }
+
+    function closeRegionGuide() {
+      const el = document.getElementById("guide-modal");
+      if (el) el.classList.add("hidden");
+    }
+
 
     // ==========================================
     // 5. 本地裝置存檔系統（支援三界進度、聖物與卡牌淬鍊）
@@ -3039,6 +3389,71 @@
           osc.start(now);
           osc.stop(now + dur + 0.03);
           return;
+        } else if (type === "slash") {
+          const dur = 0.16;
+          const bufSize = Math.floor(audioCtx.sampleRate * dur);
+          const noiseBuf = audioCtx.createBuffer(1, bufSize, audioCtx.sampleRate);
+          const data = noiseBuf.getChannelData(0);
+          for (let i = 0; i < bufSize; i++) data[i] = (Math.random() * 2 - 1) * (1 - i / bufSize);
+          const noise = audioCtx.createBufferSource();
+          noise.buffer = noiseBuf;
+          const filter = audioCtx.createBiquadFilter();
+          filter.type = "bandpass";
+          filter.frequency.setValueAtTime(2800, now);
+          filter.frequency.exponentialRampToValueAtTime(520, now + dur);
+          filter.Q.setValueAtTime(2.2, now);
+          const nGain = audioCtx.createGain();
+          nGain.gain.setValueAtTime(0.32, now);
+          nGain.gain.exponentialRampToValueAtTime(0.001, now + dur);
+          noise.connect(filter);
+          filter.connect(nGain);
+          nGain.connect(audioCtx.destination);
+          noise.start(now);
+          return;
+        } else if (type === "shatter") {
+          [1850, 2400, 3100, 1420].forEach((f, idx) => {
+            const o = audioCtx.createOscillator();
+            const g = audioCtx.createGain();
+            o.type = "triangle";
+            o.frequency.setValueAtTime(f, now + idx * 0.025);
+            o.frequency.exponentialRampToValueAtTime(f * 0.45, now + idx * 0.025 + 0.14);
+            g.gain.setValueAtTime(0.14, now + idx * 0.025);
+            g.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.025 + 0.15);
+            o.connect(g);
+            g.connect(audioCtx.destination);
+            o.start(now + idx * 0.025);
+            o.stop(now + idx * 0.025 + 0.16);
+          });
+          return;
+        } else if (type === "ritual") {
+          [165, 247, 330].forEach((f, idx) => {
+            const o = audioCtx.createOscillator();
+            const g = audioCtx.createGain();
+            o.type = "sawtooth";
+            o.frequency.setValueAtTime(f, now);
+            o.frequency.exponentialRampToValueAtTime(f * 1.5, now + 0.36);
+            g.gain.setValueAtTime(0.09, now);
+            g.gain.exponentialRampToValueAtTime(0.001, now + 0.38);
+            o.connect(g);
+            g.connect(audioCtx.destination);
+            o.start(now);
+            o.stop(now + 0.4);
+          });
+          return;
+        } else if (type === "bell") {
+          [523.25, 1046.5, 1568].forEach((f, idx) => {
+            const o = audioCtx.createOscillator();
+            const g = audioCtx.createGain();
+            o.type = "sine";
+            o.frequency.setValueAtTime(f, now);
+            g.gain.setValueAtTime(0.15 / (idx + 1), now);
+            g.gain.exponentialRampToValueAtTime(0.001, now + 0.95);
+            o.connect(g);
+            g.connect(audioCtx.destination);
+            o.start(now);
+            o.stop(now + 1.0);
+          });
+          return;
         } else {
           osc.type = "square";
           osc.frequency.setValueAtTime(740, now);
@@ -3406,13 +3821,46 @@
       el.className = cls;
     }
 
+    function appendBattleLog(text) {
+      if (!duel || !text) return;
+      if (!Array.isArray(duel.logs)) duel.logs = [];
+      duel.logs.unshift(`<strong>[T${duel.turn}]</strong> ${text}`);
+      if (duel.logs.length > 40) duel.logs.pop();
+      const listEl = document.getElementById("battle-log-list");
+      if (listEl && !document.getElementById("battle-log-drawer").classList.contains("hidden")) {
+        listEl.innerHTML = duel.logs.map(l => `<div class="battle-log-item">${l}</div>`).join("");
+      }
+    }
+
+    function toggleBattleLog() {
+      const drawer = document.getElementById("battle-log-drawer");
+      if (!drawer) return;
+      const willShow = drawer.classList.contains("hidden");
+      drawer.classList.toggle("hidden", !willShow);
+      if (willShow && duel) {
+        const listEl = document.getElementById("battle-log-list");
+        const logs = duel.logs || [];
+        listEl.innerHTML = logs.length > 0
+          ? logs.map(l => `<div class="battle-log-item">${l}</div>`).join("")
+          : `<div class="battle-log-item" style="color:#94a3b8;">尚無戰鬥紀錄</div>`;
+      }
+    }
+
+    let activeBannerCount = 0;
     function showDuelBannerText(text, color = "#fde047") {
+      appendBattleLog(text);
+      const slotOffset = (activeBannerCount % 3) * 34;
+      activeBannerCount++;
       const el = document.createElement("div");
       el.className = "float-banner-text";
       el.style.color = color;
+      el.style.top = `calc(38% + ${slotOffset}px)`;
       el.textContent = text;
       document.body.appendChild(el);
-      setTimeout(() => el.remove(), 960);
+      setTimeout(() => {
+        el.remove();
+        activeBannerCount = Math.max(0, activeBannerCount - 1);
+      }, 1360);
     }
 
     // ==========================================
@@ -3797,7 +4245,302 @@
         startLoop();
       }
 
-      return { meteor, lightning, explosion, getElCenter, shakeArena };
+      // ⚔️ 高亮弧形斬擊刀光
+      function slash(x, y, opts = {}) {
+        if (!ensureCanvas()) return;
+        const color = opts.color || "#fde047";
+        const scale = opts.scale || 1.0;
+        if (!opts.silent) playSfx("slash");
+        const ang = (Math.random() - 0.5) * 0.7 - 0.65;
+        effects.push({
+          age: 0,
+          duration: 0.26,
+          draw(c) {
+            const p = this.age / this.duration;
+            const alpha = Math.max(0, 1 - p * 1.15);
+            c.save();
+            c.globalCompositeOperation = "lighter";
+            c.translate(x, y);
+            c.rotate(ang);
+            c.strokeStyle = color;
+            c.globalAlpha = alpha * 0.75;
+            c.lineWidth = (14 * (1 - p * 0.7)) * scale;
+            c.lineCap = "round";
+            c.beginPath();
+            c.arc(0, 0, 56 * scale, -1.1 + p * 0.5, 1.1 - (1 - p) * 0.4);
+            c.stroke();
+
+            c.strokeStyle = "#ffffff";
+            c.globalAlpha = alpha;
+            c.lineWidth = (4.5 * (1 - p * 0.6)) * scale;
+            c.beginPath();
+            c.arc(0, 0, 56 * scale, -1.0 + p * 0.5, 1.0 - (1 - p) * 0.4);
+            c.stroke();
+            c.restore();
+          }
+        });
+        startLoop();
+      }
+
+      // 🏹 貫穿光矛射線（一路轟穿至目標／敵方血條）
+      function pierceBeam(x1, y1, x2, y2, opts = {}) {
+        if (!ensureCanvas()) return;
+        const color = opts.color || "#fb923c";
+        playSfx("slash");
+        shakeArena(8, 220);
+        effects.push({
+          age: 0,
+          duration: 0.34,
+          draw(c) {
+            const p = this.age / this.duration;
+            const alpha = Math.max(0, 1 - p * 1.1);
+            const prog = Math.min(1, p * 2.6);
+            const cx = x1 + (x2 - x1) * prog;
+            const cy = y1 + (y2 - y1) * prog;
+            c.save();
+            c.globalCompositeOperation = "lighter";
+            c.lineCap = "round";
+            c.globalAlpha = alpha * 0.55;
+            c.strokeStyle = color;
+            c.lineWidth = 20 * (1 - p * 0.6);
+            c.beginPath();
+            c.moveTo(x1, y1);
+            c.lineTo(cx, cy);
+            c.stroke();
+
+            c.globalAlpha = alpha;
+            c.strokeStyle = "#ffffff";
+            c.lineWidth = 6 * (1 - p * 0.6);
+            c.beginPath();
+            c.moveTo(x1, y1);
+            c.lineTo(cx, cy);
+            c.stroke();
+            c.restore();
+          }
+        });
+        startLoop();
+      }
+
+      // 💥 卡片幾何碎裂飛散（怪獸戰死／效果破壞）
+      function shatter(x, y, opts = {}) {
+        if (!ensureCanvas()) return;
+        const color = opts.color || "#facc15";
+        playSfx("shatter");
+        const shards = [];
+        for (let i = 0; i < 16; i++) {
+          const ang = (Math.PI * 2 * i) / 16 + (Math.random() - 0.5) * 0.4;
+          const spd = 110 + Math.random() * 240;
+          shards.push({
+            x: x + (Math.random() - 0.5) * 26,
+            y: y + (Math.random() - 0.5) * 32,
+            vx: Math.cos(ang) * spd,
+            vy: Math.sin(ang) * spd - 70,
+            w: 7 + Math.random() * 10,
+            h: 5 + Math.random() * 8,
+            rot: Math.random() * Math.PI * 2,
+            vrot: (Math.random() - 0.5) * 16
+          });
+        }
+        effects.push({
+          age: 0,
+          duration: 0.58,
+          draw(c, dt) {
+            const p = this.age / this.duration;
+            c.save();
+            shards.forEach(s => {
+              s.vx *= 0.96;
+              s.vy += 420 * dt;
+              s.x += s.vx * dt;
+              s.y += s.vy * dt;
+              s.rot += s.vrot * dt;
+              c.save();
+              c.globalAlpha = Math.max(0, 1 - p * 1.15);
+              c.translate(s.x, s.y);
+              c.rotate(s.rot);
+              c.fillStyle = "#1c1208";
+              c.strokeStyle = color;
+              c.lineWidth = 1.6;
+              c.beginPath();
+              c.moveTo(-s.w / 2, -s.h / 2);
+              c.lineTo(s.w / 2, -s.h / 4);
+              c.lineTo(s.w / 3, s.h / 2);
+              c.lineTo(-s.w / 2, s.h / 3);
+              c.closePath();
+              c.fill();
+              c.stroke();
+              c.restore();
+            });
+            c.restore();
+          }
+        });
+        startLoop();
+      }
+
+      // 🛡️ 聖盾六角晶格裂解特效
+      function shieldBreak(x, y) {
+        if (!ensureCanvas()) return;
+        playSfx("shatter");
+        const pieces = [];
+        for (let i = 0; i < 12; i++) {
+          const ang = (Math.PI * 2 * i) / 12;
+          pieces.push({ x, y, vx: Math.cos(ang) * (100 + Math.random() * 120), vy: Math.sin(ang) * (100 + Math.random() * 120), r: 6 + Math.random() * 6 });
+        }
+        effects.push({
+          age: 0,
+          duration: 0.45,
+          draw(c, dt) {
+            const p = this.age / this.duration;
+            c.save();
+            c.globalCompositeOperation = "lighter";
+            c.globalAlpha = Math.max(0, 1 - p * 1.2);
+            c.strokeStyle = "#38bdf8";
+            c.lineWidth = 3 * (1 - p);
+            c.beginPath();
+            for (let k = 0; k < 6; k++) {
+              const a = (Math.PI / 3) * k;
+              const rx = x + Math.cos(a) * (24 + p * 44);
+              const ry = y + Math.sin(a) * (24 + p * 44);
+              if (k === 0) c.moveTo(rx, ry); else c.lineTo(rx, ry);
+            }
+            c.closePath();
+            c.stroke();
+            pieces.forEach(s => {
+              s.x += s.vx * dt;
+              s.y += s.vy * dt;
+              c.fillStyle = "#bae6fd";
+              c.beginPath();
+              c.arc(s.x, s.y, s.r * (1 - p * 0.7), 0, Math.PI * 2);
+              c.fill();
+            });
+            c.restore();
+          }
+        });
+        startLoop();
+      }
+
+      // ✡️ 獻祭吸魂連線＋所羅門六芒星法陣展開
+      function tributeLink(fromPts, toPt, opts = {}) {
+        if (!ensureCanvas()) return;
+        const color = opts.color || "#c084fc";
+        playSfx("ritual");
+        effects.push({
+          age: 0,
+          duration: 0.55,
+          draw(c) {
+            const p = this.age / this.duration;
+            const alpha = Math.max(0, 1 - Math.max(0, p - 0.55) * 2.2);
+            c.save();
+            c.globalCompositeOperation = "lighter";
+            // 吸魂光束連線
+            (fromPts || []).forEach(fp => {
+              c.strokeStyle = color;
+              c.globalAlpha = alpha * 0.85;
+              c.lineWidth = 4 * (1 - p * 0.5);
+              c.beginPath();
+              c.moveTo(fp.x, fp.y);
+              c.lineTo(toPt.x, toPt.y);
+              c.stroke();
+              const orbX = fp.x + (toPt.x - fp.x) * Math.min(1, p * 1.6);
+              const orbY = fp.y + (toPt.y - fp.y) * Math.min(1, p * 1.6);
+              c.fillStyle = "#fde047";
+              c.beginPath();
+              c.arc(orbX, orbY, 7, 0, Math.PI * 2);
+              c.fill();
+            });
+            // 目標格旋轉六芒星
+            const rad = 18 + Math.min(1, p * 1.5) * 42;
+            c.translate(toPt.x, toPt.y);
+            c.rotate(p * 2.6);
+            c.strokeStyle = "#fde047";
+            c.globalAlpha = alpha;
+            c.lineWidth = 2.2;
+            c.beginPath();
+            c.arc(0, 0, rad, 0, Math.PI * 2);
+            c.stroke();
+            [0, Math.PI].forEach(offset => {
+              c.beginPath();
+              for (let k = 0; k < 3; k++) {
+                const a = offset + (Math.PI * 2 * k) / 3 - Math.PI / 2;
+                const px = Math.cos(a) * rad, py = Math.sin(a) * rad;
+                if (k === 0) c.moveTo(px, py); else c.lineTo(px, py);
+              }
+              c.closePath();
+              c.stroke();
+            });
+            c.restore();
+          }
+        });
+        startLoop();
+      }
+
+      // 🩸 吸血／生命吸取光點流
+      function drainParticles(fromPt, toPt, color = "#4ade80") {
+        if (!ensureCanvas()) return;
+        const orbs = [];
+        for (let i = 0; i < 10; i++) {
+          orbs.push({
+            delay: i * 0.025,
+            ctrlX: (fromPt.x + toPt.x) / 2 + (Math.random() - 0.5) * 140,
+            ctrlY: (fromPt.y + toPt.y) / 2 + (Math.random() - 0.5) * 90
+          });
+        }
+        effects.push({
+          age: 0,
+          duration: 0.62,
+          draw(c) {
+            c.save();
+            c.globalCompositeOperation = "lighter";
+            orbs.forEach(o => {
+              const t = Math.max(0, Math.min(1, (this.age - o.delay) / 0.38));
+              if (t <= 0 || t >= 1) return;
+              const inv = 1 - t;
+              const bx = inv * inv * fromPt.x + 2 * inv * t * o.ctrlX + t * t * toPt.x;
+              const by = inv * inv * fromPt.y + 2 * inv * t * o.ctrlY + t * t * toPt.y;
+              c.fillStyle = color;
+              c.globalAlpha = Math.sin(t * Math.PI);
+              c.beginPath();
+              c.arc(bx, by, 5.5, 0, Math.PI * 2);
+              c.fill();
+            });
+            c.restore();
+          }
+        });
+        startLoop();
+      }
+
+      // ✨ 天界審判光柱（神聖戒律／100% 天罰淨化）
+      function divinePillar(x, y) {
+        if (!ensureCanvas()) return;
+        playSfx("bell");
+        shakeArena(10, 320);
+        flashScreen("flash-gold");
+        effects.push({
+          age: 0,
+          duration: 0.65,
+          draw(c) {
+            const p = this.age / this.duration;
+            const alpha = Math.max(0, 1 - p * 1.15);
+            const w = (54 - p * 26);
+            c.save();
+            c.globalCompositeOperation = "lighter";
+            const grad = c.createLinearGradient(x - w, 0, x + w, 0);
+            grad.addColorStop(0, "rgba(253,224,71,0)");
+            grad.addColorStop(0.5, `rgba(255,255,255,${alpha})`);
+            grad.addColorStop(1, "rgba(253,224,71,0)");
+            c.fillStyle = grad;
+            c.fillRect(x - w, 0, w * 2, y + 36);
+            c.strokeStyle = `rgba(254,240,138,${alpha})`;
+            c.lineWidth = 3;
+            c.beginPath();
+            c.ellipse(x, y, 22 + p * 60, 10 + p * 22, 0, 0, Math.PI * 2);
+            c.stroke();
+            c.restore();
+          }
+        });
+        startLoop();
+      }
+
+      return { meteor, lightning, explosion, slash, pierceBeam, shatter, shieldBreak, tributeLink, drainParticles, divinePillar, getElCenter, shakeArena };
     })();
 
     function fireBattleBeam(fromEl, toEl, callback) {
@@ -3817,7 +4560,8 @@
       ], { duration: 300, easing: "cubic-bezier(0.22, 1, 0.36, 1)" });
 
       setTimeout(() => {
-        BattleVFX.explosion(tx, ty, { scale: 0.85, theme: "fire", silent: true });
+        BattleVFX.slash(tx, ty, { color: "#fde047", scale: 1.05 });
+        BattleVFX.explosion(tx, ty, { scale: 0.72, theme: "fire", silent: true });
 
         toEl.animate([
           { transform: "translate(0, 0)", filter: "brightness(2.4)" },
@@ -4303,7 +5047,7 @@
             duel.spellTrapUsedThisTurn = 0;
             duel.busy = false;
             duel.tutStep = 3;
-            duel.playerMonsters.forEach(m => { if (m) m.attacksLeft = 1; });
+            duel.playerMonsters.forEach(m => { if (m) m.attacksLeft = (m.card.id === 1 && duel.wrath >= 70) ? 2 : 1; });
             updateDuelUI();
           }, 950);
           return;
@@ -4331,7 +5075,7 @@
               duel.wrath = Math.max(duel.wrath, 75);
               duel.seals = Math.max(duel.seals, 2);
               duel.tutStep = 6;
-              duel.playerMonsters.forEach(m => { if (m) m.attacksLeft = 1; });
+              duel.playerMonsters.forEach(m => { if (m) m.attacksLeft = (m.card.id === 1 && duel.wrath >= 70) ? 2 : 1; });
               showDuelBannerText("🔥 惡魔怨氣升至 75%（觸發狂暴 +500 ATK）！", "#fde047");
               updateDuelUI();
             }, 600);
@@ -4410,7 +5154,7 @@
         const hasEnemyAura = duel.enemyMonsters.some(m => m && !m.faceDown && getEnemyCardRole(m.card)?.id === "aura_debuff");
         if (hasEnemyAura) val -= 250;
       }
-      if (unit.doubleAtkTurn === (duel && duel.turn)) val *= 2;
+      if (unit.doubleAtkTurn === (duel && duel.turn)) val += 1200;
       if (isPlayer && duel && duel.wrath >= 70) {
         val += getBerserkAtkBonus();
         if (unit.card.eff === "berserk_boost") val += 400;
@@ -4493,6 +5237,9 @@
         selectedFieldSlot: null,
         selectedAttackerSlot: null,
         tributeMode: null,
+        logs: [],
+        calmSynergyTurn: 0,
+        berserkSynergyTurn: 0,
         busy: false
       };
 
@@ -4560,6 +5307,7 @@
       duel.playerDeck = shuffleArray(duel.playerDeck);
       duel.playerHand = [];
       duel.selectedHandIdx = null;
+      duel.tributeMode = null;
       drawToHand("player", cnt);
       playSfx("angel");
       flashScreen("flash-blue");
@@ -4591,6 +5339,7 @@
 
     function selectHandCard(idx) {
       if (!duel || !duel.isPlayerTurn || duel.busy || duel.phase !== "MP") return;
+      duel.lastNotice = null;
       duel.selectedFieldSlot = null;
       duel.tributeMode = null;
       duel.selectedHandIdx = (duel.selectedHandIdx === idx) ? null : idx;
@@ -4606,7 +5355,24 @@
       if (card.cardType === "monster") {
         const emptySlot = findEmptySlot(duel.playerMonsters);
 
-        // 地獄界專屬：【🩸 血祭特召】直接支付 LP 免祭品召喚 5~8★ 魔神
+        // 狂熱免祭特召（西迪 id:12 / 系爾 id:70：怨氣 50% 以上免祭品特召並抽 1 牌）
+        if (actionType === "self_special") {
+          if (card.eff !== "self_special" || duel.wrath < 50) return;
+          if (emptySlot === -1) {
+            showDuelBannerText("⚠️ 怪獸區已滿（最多 3 隻）！", "#f87171");
+            return;
+          }
+          duel.playerHand.splice(idx, 1);
+          duel.selectedHandIdx = null;
+          const targetPt = BattleVFX.getElCenter(`#p-mon-${emptySlot}`);
+          BattleVFX.tributeLink([BattleVFX.getElCenter("#wrath-meter-fill")], targetPt, { color: "#ef4444" });
+          drawToHand("player", 1);
+          showDuelBannerText(`⚡【狂熱特召】【${card.name.split(" ")[0]}】免祭品降臨並抽 1 牌！`, "#fde047");
+          summonMonsterToSlot("player", emptySlot, card, "ATK", false, {});
+          return;
+        }
+
+        // 地獄界專屬：【🩸 血祭特召】直接支付 LP 與 +25% 怨氣免祭品召喚 5~8★ 魔神（不觸發祭品繼承）
         if (actionType === "blood_summon") {
           if (duel.realm !== "inferno" || card.stars < 5) return;
           if (emptySlot === -1) {
@@ -4621,7 +5387,10 @@
           }
           duel.playerHand.splice(idx, 1);
           duel.selectedHandIdx = null;
-          dealLpDamage("player", lpCost, `🩸【血祭特召】獻出 ${lpCost} LP 強行召喚【${card.name.split(" ")[0]}】！`);
+          const targetPt = BattleVFX.getElCenter(`#p-mon-${emptySlot}`);
+          BattleVFX.tributeLink([BattleVFX.getElCenter("#player-lp-text")], targetPt, { color: "#ef4444" });
+          dealLpDamage("player", lpCost, `🩸【血祭特召】獻出 ${lpCost} LP 與 25% 怨氣強行召喚【${card.name.split(" ")[0]}】！`);
+          addPlayerWrath(25);
           summonMonsterToSlot("player", emptySlot, card, "ATK", false, {});
           return;
         }
@@ -4766,7 +5535,7 @@
         best.doubleAtkTurn = duel.turn;
         const mCenter = BattleVFX.getElCenter(`#p-mon-${bestIdx}`);
         BattleVFX.lightning(mCenter.x, mCenter.y, { color: "#fde047" });
-        showDuelBannerText(`✡️【真名解放】【${best.card.name.split(" ")[0]}】本回合 ATK 翻倍！`, "#fde047");
+        showDuelBannerText(`✡️【真名解放】【${best.card.name.split(" ")[0]}】本回合 ATK +1200 且附帶貫穿！`, "#fde047");
         triggerArkDrain();
         updateDuelUI();
       } else if (cost === 3) {
@@ -4835,7 +5604,8 @@
         const devoured = duel.enemyMonsters[targetIdx];
         const healAmt = Math.floor(getEffectiveAtk(devoured, false) * 0.5);
         const ePos = BattleVFX.getElCenter(`#e-mon-${targetIdx}`);
-        BattleVFX.explosion(ePos.x, ePos.y, { scale: 1.35, theme: "arcane" });
+        BattleVFX.shatter(ePos.x, ePos.y, { color: "#c084fc" });
+        BattleVFX.drainParticles(ePos, BattleVFX.getElCenter("#player-lp-text"), "#c084fc");
         duel.enemyMonsters[targetIdx] = null;
         duel.playerLp = Math.min(duel.playerMaxLp, duel.playerLp + healAmt);
         showDuelBannerText(`😈【暴食・吞噬聖光】吞噬【${devoured.card.name.split(" ")[0]}】並恢復 ${healAmt} LP！`, "#c084fc");
@@ -4856,7 +5626,7 @@
           const bPos = BattleVFX.getElCenter("#duel-board");
           BattleVFX.lightning(bPos.x, bPos.y, { color: "#fde047" });
         }
-        showDuelBannerText("👑【傲慢・無視戒律】本回合完全破除神聖戒律，且最強魔神 ATK 翻倍！", "#fde047");
+        showDuelBannerText("👑【傲慢・無視戒律】破除本回合神聖戒律，最強魔神 ATK +1200 且附帶貫穿！", "#fde047");
         updateDuelUI();
       } else if (tier === 3) {
         if (duel.seals < 3) return;
@@ -4901,7 +5671,7 @@
         doubleAtkTurn: 0,
         summonedTurn: duel.turn,
         changedPosTurn: duel.turn,
-        attacksLeft: 1,
+        attacksLeft: (isPlayer && card.id === 1 && duel && duel.wrath >= 70) ? 2 : 1,
         shield: !!bonusOpts.shield || (!isPlayer && isHeavenlyDecreeActive("first_shield")),
         holySealed: false,
         equipLocked: false,
@@ -4922,28 +5692,45 @@
           triggerMonsterSummonEffect("player", unit);
         }
 
-        // 檢查敵方召喚反應陷阱（若剛登場的 8★ 君王已炸毀敵後台，此處自然不會觸發；弑神覺醒 Lv.3 亦完全免疫）
-        if (!faceDown && card.stars >= 5 && awakenLv < 3) {
+        // 檢查敵方召喚反應陷阱（先讓怪獸落地顯示 0.42 秒，再發動反擊陷阱摧毀／放逐，避免看起來像召喚失敗）
+        if (!faceDown && card.stars >= 5) {
           const exileIdx = duel.enemySpells.findIndex(s => s && s.faceDown && s.card.eff === "trap_exile_king");
           if (exileIdx !== -1 && card.stars >= 8) {
-            duel.enemySpells[exileIdx] = null;
-            duel.playerMonsters[slotIdx] = null;
-            const sPos = BattleVFX.getElCenter(`#p-mon-${slotIdx}`);
-            BattleVFX.lightning(sPos.x, sPos.y, { color: "#c084fc" });
-            duel.playerDeck.unshift(card);
-            showDuelBannerText(`🌀 敵方反擊陷阱【次元放逐陣】！【${card.name.split(" ")[0]}】被放逐回牌組！`, "#ef4444");
+            duel.busy = true;
             updateDuelUI();
+            setTimeout(() => {
+              if (!duel) return;
+              duel.enemySpells[exileIdx] = null;
+              duel.playerMonsters[slotIdx] = null;
+              const sPos = BattleVFX.getElCenter(`#p-mon-${slotIdx}`);
+              BattleVFX.lightning(sPos.x, sPos.y, { color: "#c084fc" });
+              BattleVFX.shatter(sPos.x, sPos.y, { color: "#c084fc" });
+              duel.playerDeck.unshift(card);
+              const msg = `🌀 敵方蓋牌反擊陷阱【次元放逐陣】發動！剛召喚的【${card.name.split(" ")[0]}】被放逐回牌組！`;
+              duel.lastNotice = msg;
+              showDuelBannerText(msg, "#ef4444");
+              duel.busy = false;
+              updateDuelUI();
+            }, 420);
             return;
           }
           const negIdx = duel.enemySpells.findIndex(s => s && s.faceDown && s.card.eff === "trap_negate");
           if (negIdx !== -1) {
-            duel.enemySpells[negIdx] = null;
-            duel.playerMonsters[slotIdx] = null;
-            const sPos = BattleVFX.getElCenter(`#p-mon-${slotIdx}`);
-            BattleVFX.lightning(sPos.x, sPos.y, { color: "#fde047" });
-            BattleVFX.explosion(sPos.x, sPos.y, { scale: 1.15, theme: "fire" });
-            showDuelBannerText(`⚡ 敵方反擊陷阱【神聖真名剝奪】！摧毀剛登場的【${card.name.split(" ")[0]}】！`, "#ef4444");
+            duel.busy = true;
             updateDuelUI();
+            setTimeout(() => {
+              if (!duel) return;
+              duel.enemySpells[negIdx] = null;
+              duel.playerMonsters[slotIdx] = null;
+              const sPos = BattleVFX.getElCenter(`#p-mon-${slotIdx}`);
+              BattleVFX.lightning(sPos.x, sPos.y, { color: "#fde047" });
+              BattleVFX.shatter(sPos.x, sPos.y, { color: "#ef4444" });
+              const msg = `⚡ 敵方蓋牌反擊陷阱【神聖真名剝奪】發動！剛召喚的【${card.name.split(" ")[0]}】遭到反擊摧毀！`;
+              duel.lastNotice = msg;
+              showDuelBannerText(msg, "#ef4444");
+              duel.busy = false;
+              updateDuelUI();
+            }, 420);
             return;
           }
         }
@@ -4983,8 +5770,31 @@
       }
     }
 
+    function grantPlayerSeals(amount) {
+      if (!duel || amount <= 0) return;
+      const before = duel.seals;
+      duel.seals = Math.min(duel.maxSeals, duel.seals + amount);
+      const overflow = (before + amount) - duel.maxSeals;
+      if (overflow > 0) {
+        duel.playerMonsters.forEach(m => { if (m && !m.faceDown) m.atkMod += 150 * overflow; });
+        showDuelBannerText(`✡️【充能溢出】封印環已滿，轉化為我方全軍 ATK +${150 * overflow}！`, "#c084fc");
+      }
+    }
+
+    function applyPlayerCalmEffect(reduceAmount) {
+      if (!duel) return;
+      duel.wrath = Math.max(0, duel.wrath - reduceAmount);
+      if (duel.wrath < 30 && duel.calmSynergyTurn !== duel.turn) {
+        duel.calmSynergyTurn = duel.turn;
+        duel.playerLp = Math.min(duel.playerMaxLp, duel.playerLp + 300);
+        drawToHand("player", 1);
+        showDuelBannerText("🕊️【控怒穩健流聯動】低怨氣控場獎勵：+300 LP 並抽 1 張牌！", "#4ade80");
+      }
+    }
+
     function triggerMonsterSummonEffect(side, unit) {
       const eff = unit.card.eff;
+      const cid = unit.card.id;
       const isP = side === "player";
       const lv = isP ? (unit.card.awakenLv || 1) : 1;
       const oppMonsters = isP ? duel.enemyMonsters : duel.playerMonsters;
@@ -4992,20 +5802,46 @@
 
       if (eff === "summon_draw1") {
         drawToHand(side, lv >= 2 ? 2 : 1);
-        if (isP) showDuelBannerText(`🃏 ${unit.card.name.split(" ")[0]}：抽取 ${lv >= 2 ? 2 : 1} 張牌！`, "#60a5fa");
+        let extraMsg = "";
+        if (isP && [6, 47, 56, 71].includes(cid)) {
+          grantPlayerSeals(1);
+          extraMsg = "＋1 封印環";
+        }
+        if (isP && [11, 27, 53, 69].includes(cid)) {
+          applyPlayerCalmEffect(cid === 27 ? 15 : 10);
+          extraMsg = `並降怒 ${cid === 27 ? 15 : 10}%`;
+        }
+        if (cid === 26) {
+          const tIdx = oppSpells.findIndex(s => s !== null);
+          if (tIdx !== -1) {
+            oppSpells[tIdx] = null;
+            extraMsg = "並摧毀 1 張敵方後台";
+          }
+        }
+        if (isP) showDuelBannerText(`🃏 ${unit.card.name.split(" ")[0]}：抽 ${lv >= 2 ? 2 : 1} 張牌${extraMsg}！`, "#60a5fa");
       } else if (eff === "summon_draw2") {
         drawToHand(side, lv >= 2 ? 3 : 2);
-        if (isP) showDuelBannerText(`🃏 ${unit.card.name.split(" ")[0]}：預言抽 ${lv >= 2 ? 3 : 2} 張牌！`, "#60a5fa");
+        let extraMsg = "";
+        if (isP && [20, 51].includes(cid)) {
+          grantPlayerSeals(1);
+          extraMsg = "＋1 封印環";
+        }
+        if (isP && cid === 36) {
+          applyPlayerCalmEffect(20);
+          extraMsg = "並降怒 20%";
+        }
+        if (isP) showDuelBannerText(`🃏 ${unit.card.name.split(" ")[0]}：預言抽 ${lv >= 2 ? 3 : 2} 張牌${extraMsg}！`, "#60a5fa");
       } else if (eff === "summon_seal" && isP) {
-        duel.seals = Math.min(duel.maxSeals, duel.seals + (lv >= 2 ? 2 : 1));
+        grantPlayerSeals(lv >= 2 ? 2 : 1);
         showDuelBannerText(`✡️ 獲得 ${lv >= 2 ? 2 : 1} 枚封印環！`, "#c084fc");
       } else if (eff === "summon_shield") {
         unit.shield = true;
-        if (isP) showDuelBannerText("🛡️ 獲得一次破壞免疫聖盾！", "#38bdf8");
-      } else if (eff === "summon_calm" && isP) {
-        duel.wrath = Math.max(0, duel.wrath - (lv >= 2 ? 30 : 20));
+        if (isP && cid === 8) applyPlayerCalmEffect(15);
+        if (isP) showDuelBannerText(cid === 8 ? "🛡️ 獲得聖盾並降怒 15%！" : "🛡️ 獲得一次破壞免疫聖盾！", "#38bdf8");
+      } else if (eff === "summon_calm") {
+        if (isP) applyPlayerCalmEffect(lv >= 2 ? 30 : 20);
         oppMonsters.forEach(m => { if (m && !m.faceDown) m.atkMod -= 300; });
-        showDuelBannerText("🕊️ 安撫魔神怨氣，敵軍 ATK -300！", "#4ade80");
+        if (isP) showDuelBannerText("🕊️ 安撫魔神怨氣，敵軍 ATK -300！", "#4ade80");
       } else if (eff === "summon_debuff") {
         let strongest = null;
         oppMonsters.forEach(m => {
@@ -5069,60 +5905,73 @@
       BattleVFX.lightning(boardCenter.x, boardCenter.y, { color: isP ? "#38bdf8" : "#c084fc" });
 
       if (isP && lv >= 3) {
-        duel.seals = Math.min(duel.maxSeals, duel.seals + 1);
+        grantPlayerSeals(1);
       }
 
       if (!isP && (duel.region.id === "r4" || duel.region.id === "h4")) {
         duel.enemyMonsters.forEach(m => { if (m) m.atkMod += 250; });
       }
 
+      const myMonsters = isP ? duel.playerMonsters : duel.enemyMonsters;
+
       if (card.eff === "draw2") {
         const drawCnt = lv >= 2 ? 3 : 2;
         drawToHand(side, drawCnt);
-        showDuelBannerText(`📖《所羅門的小鑰匙》抽取 ${drawCnt} 張卡牌！`, "#4ade80");
+        showDuelBannerText(`📖${isP ? "" : "敵方發動"}《所羅門的小鑰匙》抽取 ${drawCnt} 張卡牌！`, isP ? "#4ade80" : "#fca5a5");
       } else if (card.eff === "special_lv4") {
         const hand = isP ? duel.playerHand : duel.enemyHand;
-        const field = isP ? duel.playerMonsters : duel.enemyMonsters;
         const lv4Idx = hand.findIndex(c => c.cardType === "monster" && c.stars <= (lv >= 2 ? 6 : 4));
-        const emptySlot = findEmptySlot(field);
+        const emptySlot = findEmptySlot(myMonsters);
         if (lv4Idx !== -1 && emptySlot !== -1) {
-          dealLpDamage(side, 500, "🪙 黃金聖殿徵召：支付 500 LP！");
+          dealLpDamage(side, 500, `🪙 ${isP ? "" : "敵方"}黃金聖殿徵召：支付 500 LP！`);
           const mCard = hand.splice(lv4Idx, 1)[0];
           summonMonsterToSlot(side, emptySlot, mCard, "ATK", false, {});
         } else {
           drawToHand(side, 1);
-          showDuelBannerText("🪙 無可徵召魔神，改抽 1 張牌！", "#fde047");
+          showDuelBannerText("🪙 無可徵召怪獸，改抽 1 張牌！", "#fde047");
         }
-      } else if (card.eff === "ring_boost" && isP) {
+      } else if (card.eff === "ring_boost") {
         let best = null;
-        duel.playerMonsters.forEach(m => {
-          if (m && !m.faceDown && (!best || getEffectiveAtk(m, true) > getEffectiveAtk(best, true))) best = m;
+        myMonsters.forEach(m => {
+          if (m && !m.faceDown && (!best || getEffectiveAtk(m, isP) > getEffectiveAtk(best, isP))) best = m;
         });
         if (best) {
           const boost = Math.floor(700 * mult);
           best.atkMod += boost;
           if (lv < 3) best.destroyAtEnd = true;
-          showDuelBannerText(`💍 印戒緊箍咒！【${best.card.name.split(" ")[0]}】ATK +${boost}！`, "#fde047");
+          showDuelBannerText(`💍 ${isP ? "" : "敵方"}印戒緊箍咒！【${best.card.name.split(" ")[0]}】ATK +${boost}！`, isP ? "#fde047" : "#fca5a5");
         }
-      } else if (card.eff === "equip_lock" && isP) {
+      } else if (card.eff === "equip_lock") {
         let best = null;
-        duel.playerMonsters.forEach(m => {
+        myMonsters.forEach(m => {
           if (m && !m.faceDown && (!best || m.card.stars > best.card.stars)) best = m;
         });
         if (best) {
           const boost = Math.floor(300 * mult);
           best.atkMod += boost;
           best.equipLocked = true;
-          showDuelBannerText(`✡️ 大衛之星鎖鏈！【${best.card.name.split(" ")[0]}】ATK +${boost} 且免疫叛變！`, "#38bdf8");
+          if (!isP) best.shield = true;
+          showDuelBannerText(`✡️ ${isP ? "大衛之星鎖鏈" : "敵方星鏈護佑"}！【${best.card.name.split(" ")[0]}】ATK +${boost}！`, "#38bdf8");
         }
-      } else if (card.eff === "heal_calm" && isP) {
-        const heal = Math.floor(1000 * mult);
-        duel.playerLp = Math.min(duel.playerMaxLp, duel.playerLp + heal);
-        duel.wrath = Math.max(0, duel.wrath - 25);
-        showDuelBannerText(`💚 聖光療愈：+${heal} LP 且怨氣 -25%！`, "#4ade80");
-      } else if (card.eff === "gain_seals" && isP) {
-        duel.seals = Math.min(duel.maxSeals, duel.seals + (lv >= 2 ? 3 : 2));
-        showDuelBannerText("✡️ 深淵獻祭儀式：封印環充能！", "#c084fc");
+      } else if (card.eff === "heal_calm") {
+        const heal = Math.floor((isP ? 1000 : 800) * mult);
+        if (isP) {
+          duel.playerLp = Math.min(duel.playerMaxLp, duel.playerLp + heal);
+          applyPlayerCalmEffect(25);
+          showDuelBannerText(`💚 聖光療愈：+${heal} LP 且怨氣 -25%！`, "#4ade80");
+        } else {
+          duel.enemyLp = Math.min(duel.enemyMaxLp, duel.enemyLp + heal);
+          showDuelBannerText(`💚 敵方施放聖光療愈：敵方恢復 +${heal} LP！`, "#fca5a5");
+        }
+      } else if (card.eff === "gain_seals") {
+        if (isP) {
+          grantPlayerSeals(lv >= 2 ? 3 : 2);
+          showDuelBannerText("✡️ 深淵獻祭儀式：封印環充能！", "#c084fc");
+        } else {
+          drawToHand("enemy", 1);
+          myMonsters.forEach(m => { if (m && !m.faceDown) m.atkMod += 200; });
+          showDuelBannerText("✡️ 敵方深淵儀式：抽 1 牌且敵軍 ATK +200！", "#fca5a5");
+        }
       }
       updateDuelUI();
     }
@@ -5142,8 +5991,19 @@
         if (existPos !== -1) sel.splice(existPos, 1); else sel.push(slotIdx);
 
         if (sel.length >= duel.tributeMode.required) {
+          const handIdx = duel.tributeMode.handIdx;
+          const checkCard = duel.playerHand[handIdx];
+          if (!checkCard || checkCard.cardType !== "monster") {
+            duel.tributeMode = null;
+            showDuelBannerText("⚠️ 手牌狀態已變動，請重新選擇欲召喚的魔神！", "#f87171");
+            updateDuelUI();
+            return;
+          }
+
           let inheritAtk = 0, inheritShield = false;
+          const fromPts = [];
           sel.forEach(sIdx => {
+            fromPts.push(BattleVFX.getElCenter(`#p-mon-${sIdx}`));
             const sacrificed = duel.playerMonsters[sIdx];
             if (sacrificed) {
               if (sacrificed.pos === "ATK") inheritAtk += 300;
@@ -5153,10 +6013,11 @@
           });
 
           const targetSlot = sel[0];
-          const card = duel.playerHand.splice(duel.tributeMode.handIdx, 1)[0];
+          BattleVFX.tributeLink(fromPts, BattleVFX.getElCenter(`#p-mon-${targetSlot}`), { color: "#c084fc" });
+          const card = duel.playerHand.splice(handIdx, 1)[0];
           duel.tributeMode = null;
           duel.normalSummonedThisTurn = true;
-          duel.seals = Math.min(duel.maxSeals, duel.seals + 1);
+          grantPlayerSeals(1);
 
           let bonusMsg = "🔥 祭品解放完成！+1 封印環";
           if (inheritAtk > 0) bonusMsg += ` · 攻繼承 +${inheritAtk}`;
@@ -5227,7 +6088,7 @@
 
       if (unit.card.eff === "act_heal") {
         duel.playerLp = Math.min(duel.playerMaxLp, duel.playerLp + 700);
-        duel.wrath = Math.max(0, duel.wrath - 20);
+        applyPlayerCalmEffect(20);
         playSfx("trap");
         showDuelBannerText(`💚 ${unit.card.name.split(" ")[0]}：恢復 700 LP 並降怒 20%！`, "#4ade80");
       } else if (unit.card.eff === "act_destroy") {
@@ -5331,7 +6192,7 @@
         return;
       }
 
-      attacker.attacksLeft = 0;
+      attacker.attacksLeft = Math.max(0, attacker.attacksLeft - 1);
       if (isPAtk) duel.selectedAttackerSlot = null;
 
       const fromEl = document.getElementById(`${isPAtk ? "p" : "e"}-mon-${atkSlotIdx}`);
@@ -5342,7 +6203,8 @@
       fireBattleBeam(fromEl, toEl, () => {
         if (!duel) return;
 
-        const trapIdx = defSpells.findIndex(s => s && s.faceDown && s.card.cardType === "trap" && s.card.eff !== "trap_exile_king" && s.card.eff !== "trap_counter_spell");
+        const isImmuneNormalTrap = isPAtk && (attacker.card.awakenLv || 1) >= 3;
+        const trapIdx = isImmuneNormalTrap ? -1 : defSpells.findIndex(s => s && s.faceDown && s.card.cardType === "trap" && s.card.eff !== "trap_exile_king" && s.card.eff !== "trap_counter_spell");
         if (trapIdx !== -1) {
           const trapCard = defSpells[trapIdx].card;
           defSpells[trapIdx] = null;
@@ -5388,7 +6250,7 @@
               showDuelBannerText("👁️【創世減傷膜】抵消了 50% 傷害（本回合後續攻擊恢復全額）！", "#fde047");
             }
             if (isHeavenlyDecreeActive("heal_and_cap")) {
-              const cap = state.heavenStage >= 4 ? 4000 : 2200;
+              const cap = state.heavenStage >= 4 ? 4000 : 2400;
               val = Math.min(val, cap);
             }
           }
@@ -5422,7 +6284,7 @@
 
         const atkCenter = BattleVFX.getElCenter(fromEl);
         const defCenter = BattleVFX.getElCenter(toEl);
-        const hasFullPierce = attacker.card.eff === "pierce" || attacker.card.eff === "satan_cataclysm" ||
+        const hasFullPierce = attacker.card.eff === "pierce" || attacker.card.eff === "satan_cataclysm" || attacker.doubleAtkTurn === duel.turn ||
           (isPAtk && duel.realm === "inferno" && (duel.wrath >= 100 || state.hellStage >= 6));
 
         if (defender.pos === "ATK") {
@@ -5431,14 +6293,20 @@
             const diff = Math.floor((atkVal - defAtkVal) * dmgMult);
             if (defender.shield) {
               defender.shield = false;
-              playSfx("attack");
+              BattleVFX.shieldBreak(defCenter.x, defCenter.y);
               showDuelBannerText("🛡️ 聖盾抵消了本次破壞！", "#38bdf8");
             } else {
-              BattleVFX.explosion(defCenter.x, defCenter.y, { scale: 1.3, theme: "fire" });
+              BattleVFX.shatter(defCenter.x, defCenter.y, { color: isPAtk ? "#fb7185" : "#fde047" });
               const defRole = isPAtk ? getEnemyCardRole(defender.card) : null;
               if (isPAtk) duel.enemyGraveyard.push(defender.card);
               defArr[defSlotIdx] = null;
-              if (isPAtk) duel.seals = Math.min(duel.maxSeals, duel.seals + 1);
+              if (isPAtk) {
+                grantPlayerSeals(1);
+                if (duel.wrath >= 70 && getDemonArchetype(attacker.card)?.key === "berserk" && duel.berserkSynergyTurn !== duel.turn) {
+                  duel.berserkSynergyTurn = duel.turn;
+                  grantPlayerSeals(1);
+                }
+              }
               if (!isPAtk && duel.region.id === "h3") {
                 duel.enemyLp = Math.min(duel.enemyMaxLp, duel.enemyLp + 800);
               }
@@ -5480,15 +6348,17 @@
           if (atkVal > defVal) {
             if (defender.shield) {
               defender.shield = false;
-              playSfx("attack");
+              BattleVFX.shieldBreak(defCenter.x, defCenter.y);
               showDuelBannerText("🛡️ 聖盾抵消了本次破壞！", "#38bdf8");
             } else {
-              BattleVFX.explosion(defCenter.x, defCenter.y, { scale: 1.2, theme: "fire" });
+              BattleVFX.shatter(defCenter.x, defCenter.y, { color: isPAtk ? "#fb7185" : "#fde047" });
               const defRole = isPAtk ? getEnemyCardRole(defender.card) : null;
               if (isPAtk) duel.enemyGraveyard.push(defender.card);
               defArr[defSlotIdx] = null;
-              if (isPAtk) duel.seals = Math.min(duel.maxSeals, duel.seals + 1);
+              if (isPAtk) grantPlayerSeals(1);
               if (hasFullPierce) {
+                const lpPt = BattleVFX.getElCenter(isPAtk ? "#enemy-lp-text" : "#player-lp-text");
+                BattleVFX.pierceBeam(atkCenter.x, atkCenter.y, lpPt.x, lpPt.y, { color: "#fb923c" });
                 const pierceDmg = isPAtk ? capEnemyDamage(Math.floor((atkVal - defVal) * dmgMult)) : Math.floor((atkVal - defVal) * dmgMult);
                 if (isPAtk) dmgDealtToEnemy = pierceDmg;
                 dealLpDamage(isPAtk ? "enemy" : "player", pierceDmg, `🏹 貫穿防禦！造成 ${pierceDmg} 貫穿傷害！`);
@@ -5518,20 +6388,21 @@
     function triggerFlipEffect(side, unit) {
       const eff = unit.card.eff;
       const isP = side === "player";
+      if (isP) grantPlayerSeals(1); // 🏺 反轉流被動：翻開額外 +1 封印環
       if (eff === "flip_draw") {
         drawToHand(side, 1);
+        if (isP && unit.card.id === 24) applyPlayerCalmEffect(15);
         if (isP) {
-          duel.seals = Math.min(duel.maxSeals, duel.seals + 1);
-          showDuelBannerText(`🔄 反轉效果【${unit.card.name.split(" ")[0]}】抽 1 牌＋1 封印環！`, "#38bdf8");
+          showDuelBannerText(`🔄 反轉效果【${unit.card.name.split(" ")[0]}】抽 1 牌＋1 封印環${unit.card.id === 24 ? "並降怒15%" : ""}！`, "#38bdf8");
         }
       } else if (eff === "flip_calm" && isP) {
-        duel.wrath = Math.max(0, duel.wrath - 25);
+        applyPlayerCalmEffect(25);
         drawToHand("player", 1);
-        showDuelBannerText("🔄 反轉效果：怨氣 -25% 並抽 1 張牌！", "#4ade80");
+        showDuelBannerText("🔄 反轉效果：怨氣 -25%、抽 1 牌＋1 封印環！", "#4ade80");
       } else if (eff === "flip_freeze" && duel.region.id !== "r7" && duel.region.id !== "h3") {
         const opp = isP ? duel.enemyMonsters : duel.playerMonsters;
         opp.forEach(m => { if (m) { m.pos = "DEF"; m.attacksLeft = 0; } });
-        showDuelBannerText("🔄 反轉結界！敵軍全體強制轉為守備表示！", "#38bdf8");
+        showDuelBannerText("🔄 反轉結界！敵軍全體強制轉為守備表示＋1 封印環！", "#38bdf8");
       }
     }
 
@@ -5543,6 +6414,7 @@
         const heal = Math.floor(dmgDealtToEnemy * drainRate);
         if (heal > 0) {
           duel.playerLp = Math.min(duel.playerMaxLp, duel.playerLp + heal);
+          BattleVFX.drainParticles(BattleVFX.getElCenter("#enemy-lp-text"), BattleVFX.getElCenter("#player-lp-text"), "#ef4444");
           showDuelBannerText(`🩸 煉獄暴走吸血：恢復 ${heal} LP！`, "#4ade80");
         }
       }
@@ -5605,8 +6477,38 @@
       const maxCap = duel.realm === "inferno" ? 150 : 100;
       duel.wrath = Math.min(maxCap, Math.max(0, duel.wrath + delta));
       enforceBerserkStance();
-      // 只有人間界會在 100% 時叛變自爆；地獄界與天界轉化為煉獄暴走！
-      if (duel.realm === "mortal" && duel.wrath >= 100) triggerRebellionBetrayal();
+      if (duel.realm === "mortal" && duel.wrath >= 100) {
+        triggerRebellionBetrayal();
+      } else if (duel.realm === "celestia" && duel.wrath >= 100) {
+        triggerCelestiaPurge();
+      }
+    }
+
+    function triggerCelestiaPurge() {
+      if (!duel) return;
+      const orobasIdx = duel.playerMonsters.findIndex(m => m && !m.faceDown && m.card.eff === "loyal");
+      if (orobasIdx !== -1) {
+        duel.playerMonsters[orobasIdx] = null;
+        duel.wrath = 0;
+        flashScreen("flash-blue");
+        showDuelBannerText("🐎【歐若博司】忠誠擋下天界【天罰淨化】！（怨氣歸零）", "#60a5fa");
+        return;
+      }
+      let bestIdx = -1, maxAtk = -1;
+      duel.playerMonsters.forEach((m, i) => {
+        if (m && !m.equipLocked && getEffectiveAtk(m, true) > maxAtk) { maxAtk = getEffectiveAtk(m, true); bestIdx = i; }
+      });
+      duel.wrath = 0;
+      if (bestIdx !== -1) {
+        duel.playerMonsters[bestIdx].atkMod -= 800;
+        const pPos = BattleVFX.getElCenter(`#p-mon-${bestIdx}`);
+        BattleVFX.divinePillar(pPos.x, pPos.y);
+      } else {
+        const bPos = BattleVFX.getElCenter("#player-duel-bar");
+        BattleVFX.divinePillar(bPos.x, bPos.y);
+      }
+      dealLpDamage("player", 800, "⚡ 天界100%怨氣觸發【天罰淨化】！最強魔神 ATK -800 並受 800 神罰傷害！");
+      checkDuelEnd();
     }
 
     function enforceBerserkStance() {
@@ -5729,7 +6631,7 @@
 
       // 天界治療戒律
       if (isHeavenlyDecreeActive("heal_and_cap")) {
-        const hAmt = state.heavenStage >= 4 ? 500 : 1000;
+        const hAmt = state.heavenStage >= 4 ? 400 : 800;
         duel.enemyLp = Math.min(duel.enemyMaxLp, duel.enemyLp + hAmt);
         showDuelBannerText(`⚖️ 天界不滅戒律：敵方恢復 ${hAmt} LP！`, "#fde047");
       }
@@ -5779,13 +6681,38 @@
         const isAwakenedGraceTurn = (duel.region.isFinalBoss || duel.region.isHellBoss || duel.region.isHeavenBoss) && duel.bossAwakenedTurn === duel.turn;
 
         if (!isAwakenedGraceTurn) {
+          // 1. 優先發動抽牌或特召魔法，幫自己湊齊祭品與手牌資源
+          const prepSpellIdx = duel.enemyHand.findIndex(c => c.cardType === "spell" && (c.eff === "draw2" || c.eff === "special_lv4"));
+          if (prepSpellIdx !== -1) {
+            const pSpell = duel.enemyHand.splice(prepSpellIdx, 1)[0];
+            activateSpellCard("enemy", pSpell);
+          }
+
+          // 2. 若場上祭品不足但手上有 4★ 下級怪，先召喚下級怪鋪場
+          const emptySlotPre = findEmptySlot(duel.enemyMonsters);
+          const lowCardsPre = duel.enemyHand
+            .map((c, idx) => ({ c, idx }))
+            .filter(x => x.c.cardType === "monster" && x.c.stars <= 4)
+            .sort((a, b) => b.c.atk - a.c.atk);
+          let aiNormalSummoned = false;
+
+          if (emptySlotPre !== -1 && lowCardsPre.length > 0 && countMonsters(duel.enemyMonsters) < 2) {
+            const chosen = lowCardsPre[0];
+            duel.enemyHand.splice(chosen.idx, 1);
+            aiNormalSummoned = true;
+            const maxPlayerAtk = Math.max(0, ...duel.playerMonsters.map(m => (m && !m.faceDown) ? getEffectiveAtk(m, true) : 0));
+            const shouldDef = (duel.region.id !== "r7" && duel.region.id !== "h3") && (chosen.c.atk < maxPlayerAtk && chosen.c.def >= chosen.c.atk);
+            summonMonsterToSlot("enemy", emptySlotPre, chosen.c, shouldDef ? "DEF" : "ATK", shouldDef, {});
+          }
+
+          // 3. 檢查是否可升級召喚 5~8★ 王牌
           const highCards = duel.enemyHand
             .map((c, idx) => ({ c, idx }))
             .filter(x => x.c.cardType === "monster" && x.c.stars >= 5)
             .sort((a, b) => b.c.stars - a.c.stars);
 
           const eCount = countMonsters(duel.enemyMonsters);
-          if (highCards.length > 0) {
+          if (highCards.length > 0 && !aiNormalSummoned) {
             const bestHigh = highCards[0];
             const req = bestHigh.c.stars >= 7 ? 2 : 1;
             if (eCount >= req) {
@@ -5795,27 +6722,32 @@
                 .sort((a, b) => a.atk - b.atk);
 
               const targetSlot = sortedField[0].i;
+              const fromPts = [];
               for (let k = 0; k < req; k++) {
+                fromPts.push(BattleVFX.getElCenter(`#e-mon-${sortedField[k].i}`));
                 duel.enemyMonsters[sortedField[k].i] = null;
               }
+              BattleVFX.tributeLink(fromPts, BattleVFX.getElCenter(`#e-mon-${targetSlot}`), { color: "#ef4444" });
               duel.enemyHand.splice(bestHigh.idx, 1);
+              aiNormalSummoned = true;
               showDuelBannerText(`⚡ 敵軍解放祭品，降臨王牌【${bestHigh.c.name.split(" ")[0]}】！`, "#fde047");
               summonMonsterToSlot("enemy", targetSlot, bestHigh.c, "ATK", false, {});
             }
           }
 
-          const emptySlot = findEmptySlot(duel.enemyMonsters);
-          const lowCards = duel.enemyHand
+          // 4. 若尚未通常召喚且仍有空位，補下 4★ 怪獸
+          const emptySlotPost = findEmptySlot(duel.enemyMonsters);
+          const lowCardsPost = duel.enemyHand
             .map((c, idx) => ({ c, idx }))
             .filter(x => x.c.cardType === "monster" && x.c.stars <= 4)
             .sort((a, b) => b.c.atk - a.c.atk);
 
-          if (emptySlot !== -1 && lowCards.length > 0) {
-            const chosen = lowCards[0];
+          if (!aiNormalSummoned && emptySlotPost !== -1 && lowCardsPost.length > 0) {
+            const chosen = lowCardsPost[0];
             duel.enemyHand.splice(chosen.idx, 1);
             const maxPlayerAtk = Math.max(0, ...duel.playerMonsters.map(m => (m && !m.faceDown) ? getEffectiveAtk(m, true) : 0));
             const shouldDef = (duel.region.id !== "r7" && duel.region.id !== "h3") && (chosen.c.atk < maxPlayerAtk && chosen.c.def >= chosen.c.atk);
-            summonMonsterToSlot("enemy", emptySlot, chosen.c, shouldDef ? "DEF" : "ATK", shouldDef, {});
+            summonMonsterToSlot("enemy", emptySlotPost, chosen.c, shouldDef ? "DEF" : "ATK", shouldDef, {});
           }
         }
 
@@ -5894,6 +6826,17 @@
         if (isAwakenedGraceTurn) {
           showDuelBannerText("✨ 覺醒真身正在凝聚終極力量，本回合暫未進攻！", "#fde047");
         }
+        // 敵軍回合結束清理：承受《印戒緊箍咒》的敵怪必須正常自毀！
+        duel.enemyMonsters.forEach((em, idx) => {
+          if (em && em.destroyAtEnd) {
+            const ePos = BattleVFX.getElCenter(`#e-mon-${idx}`);
+            BattleVFX.shatter(ePos.x, ePos.y, { color: "#ef4444" });
+            duel.enemyGraveyard.push(em.card);
+            duel.enemyMonsters[idx] = null;
+            showDuelBannerText(`💥 敵軍【${em.card.name.split(" ")[0]}】因《印戒緊箍咒》代價，於回合結束自毀！`, "#fde047");
+          }
+        });
+
         // 敵軍【💚 聖詠治癒】回合結束回饋（每回合全場最多觸發 1 次）
         const healerUnit = duel.enemyMonsters.find(em => em && !em.faceDown && getEnemyCardRole(em.card)?.id === "healer");
         if (healerUnit) {
@@ -5909,7 +6852,7 @@
         duel.spellTrapUsedThisTurn = 0;
         duel.nileRevivedThisTurn = false;
         duel.busy = false;
-        duel.playerMonsters.forEach(m => { if (m) m.attacksLeft = 1; });
+        duel.playerMonsters.forEach(m => { if (m) m.attacksLeft = (m.card.id === 1 && duel.wrath >= 70) ? 2 : 1; });
 
         // 通天塔三階：每回合開始自動獲得 +1 封印環
         if (state.heavenStage >= 3) {
@@ -5943,7 +6886,8 @@
         } else {
           const pStat = pm.pos === "ATK" ? getEffectiveAtk(pm, true) : getEffectiveDef(pm, true);
           if (myAtk >= pStat) {
-            const score = pStat + (pm.shield ? 50 : 300);
+            const utilBonus = ["act_heal", "act_destroy", "loyal"].includes(pm.card.eff) ? 450 : 0;
+            const score = pStat + utilBonus + (pm.shield ? 50 : 300);
             if (score > bestScore) { bestScore = score; bestTarget = i; }
           }
         }
@@ -6014,8 +6958,8 @@
         if (duel.region.isHeavenBoss && !duel.bossPhase2Triggered) {
           duel.bossPhase2Triggered = true;
           duel.bossAwakenedTurn = duel.turn + 1;
-          duel.enemyLp = 12000;
-          duel.enemyMaxLp = 12000;
+          duel.enemyLp = 9500;
+          duel.enemyMaxLp = 9500;
           duel.enemyMonsters = [null, null, null];
           summonMonsterToSlot("enemy", 0, getCardData(307), "ATK", false, {});
           summonMonsterToSlot("enemy", 1, getCardData(309), "ATK", false, { atkMod: 400 });
@@ -6080,7 +7024,7 @@
 
       const maxWrath = isInferno ? 150 : 100;
       document.getElementById("wrath-meter-fill").style.width = `${Math.min(100, (duel.wrath / maxWrath) * 100)}%`;
-      document.getElementById("wrath-cap-label").textContent = isInferno ? "150% 煉獄吸血暴走" : "100% 惡魔叛變";
+      document.getElementById("wrath-cap-label").textContent = isInferno ? "150% 煉獄吸血暴走" : (duel.realm === "celestia" ? "100% 天罰淨化" : "100% 惡魔叛變");
 
       if (isOverdrive) {
         document.getElementById("wrath-status-label").innerHTML = `<strong style="color:#ff8080;">🩸 煉獄覺醒(${duel.wrath}%)：貫穿+吸血+${getBerserkAtkBonus() + 400} ATK</strong>`;
@@ -6106,7 +7050,7 @@
         const hasKing = duel.playerHand.some(c => c.cardType === "monster" && c.stars >= 8);
         skillStrip.innerHTML = `
           <button class="seal-btn" onclick="useSinSkill(1)" ${!(canUseSkill && duel.seals >= c1 && hasEnemy) ? "disabled" : ""}>😈${c1}環·暴食(吞敵回血)</button>
-          <button class="seal-btn" onclick="useSinSkill(2)" ${!(canUseSkill && duel.seals >= c2) ? "disabled" : ""}>👑${c2}環·傲慢(破戒+翻倍)</button>
+          <button class="seal-btn" onclick="useSinSkill(2)" ${!(canUseSkill && duel.seals >= c2) ? "disabled" : ""}>👑${c2}環·傲慢(破戒+1200貫穿)</button>
           <button class="seal-btn" onclick="useSinSkill(3)" ${!(canUseSkill && duel.seals >= 3 && hasKing) ? "disabled" : ""}>🔥3環·憤怒(降臨+1500傷)</button>
           ${duel.canRerollHand ? `<button class="seal-btn" style="border-color:#38bdf8;" onclick="useRelicRerollHand()" ${!canUseSkill ? "disabled" : ""}>🔮星象重抽</button>` : ""}
         `;
@@ -6116,7 +7060,7 @@
         const activeCnt = duel.playerMonsters.filter(m => m && !m.faceDown).length;
         skillStrip.innerHTML = `
           <button class="seal-btn" onclick="useSealSkill(1)" ${!(canUseSkill && duel.seals >= 1 && duel.wrath > 0) ? "disabled" : ""}>✡️1環·鎮壓(-30%怒)</button>
-          <button class="seal-btn" onclick="useSealSkill(2)" ${!(canUseSkill && duel.seals >= 2 && activeCnt > 0) ? "disabled" : ""}>✡️2環·真名(ATK翻倍)</button>
+          <button class="seal-btn" onclick="useSealSkill(2)" ${!(canUseSkill && duel.seals >= 2 && activeCnt > 0) ? "disabled" : ""}>✡️2環·真名(+1200貫穿)</button>
           <button class="seal-btn" onclick="useSealSkill(3)" ${!(canUseSkill && duel.seals >= s3Cost && duel.playerHand.some(c => c.cardType === "monster" && c.stars >= 8)) ? "disabled" : ""}>✡️${s3Cost}環·降臨(免祭特召)</button>
           ${isInferno ? `<button class="seal-btn" style="background:linear-gradient(180deg,#dc2626,#7f1d1d); border-color:#fde047;" onclick="triggerDualSynergy()" ${!(canUseSkill && duel.seals >= synCost && activeCnt >= 2) ? "disabled" : ""}>🔥${synCost}環·雙柱聯攜奧義</button>` : ""}
           ${duel.canRerollHand ? `<button class="seal-btn" style="border-color:#38bdf8;" onclick="useRelicRerollHand()" ${!canUseSkill ? "disabled" : ""}>🔮星象重抽</button>` : ""}
@@ -6275,6 +7219,7 @@
         const c = duel.playerHand[duel.selectedHandIdx];
         if (c.cardType === "monster") {
           const reqTrib = getRequiredTributes(c);
+          const canSelfSpecial = c.eff === "self_special" && duel.wrath >= 50;
           const canBronzeGrace = state.templeStage >= 2 && !duel.bronzeGraceUsed && c.stars >= 5 && c.stars <= 6;
           const canBloodSummon = duel.realm === "inferno" && c.stars >= 5;
           const bloodCost = state.hellStage >= 2 ? (c.stars >= 8 ? 1000 : 500) : (c.stars >= 8 ? 2000 : 1000);
@@ -6286,6 +7231,7 @@
                 ? `<button class="btn btn-sm btn-crimson" onclick="executeHandAction('normal_atk')">⚔️ 攻擊召喚</button>
                    <button class="btn btn-sm btn-holy" onclick="executeHandAction('set_def')">🛡️ 守備蓋牌</button>`
                 : `<button class="btn btn-sm btn-gold" onclick="executeHandAction('normal_atk')">🔥 獻祭召喚(${reqTrib}祭)</button>`}
+              ${canSelfSpecial ? `<button class="btn btn-sm btn-crimson" onclick="executeHandAction('self_special')">⚡ 狂熱特召(免祭+抽1)</button>` : ""}
               ${canBronzeGrace ? `<button class="btn btn-sm btn-purple" onclick="executeHandAction('bronze_grace')">🏛️ 神恩無祭</button>` : ""}
               ${canBloodSummon ? `<button class="btn btn-sm btn-crimson" onclick="executeHandAction('blood_summon')">🩸 血祭特召(-${bloodCost}LP)</button>` : ""}
               <button class="btn btn-sm" style="background:#334155;" onclick="openDemonDetail(${c.id})">📖 效果</button>
@@ -6330,6 +7276,9 @@
         } else {
           banner.innerHTML = `<span>⚔️ 戰鬥階段：點擊我方「攻擊表示」魔神進攻，或按【結束】。</span>`;
         }
+      } else if (duel.lastNotice) {
+        banner.classList.add("warn-mode");
+        banner.innerHTML = `<span>${duel.lastNotice}</span>`;
       } else {
         banner.innerHTML = `<span>${duel.region.domainRule}</span>`;
       }
@@ -6492,6 +7441,8 @@
       if (qCard) qCard.classList.add("hidden");
       const adv = document.getElementById("advisor-warn-modal");
       if (adv) adv.classList.add("hidden");
+      const logDr = document.getElementById("battle-log-drawer");
+      if (logDr) logDr.classList.add("hidden");
       const overlay = document.getElementById("battle-overlay");
       if (overlay) {
         overlay.classList.remove("tutorial-active", "tutorial-expanded");
@@ -6998,6 +7949,9 @@
             ${lockedFinal ? "🔒 需聖殿 6/6 解鎖" : "⚔️ 開啟決鬥"}
           </button>
         </div>
+        <button class="btn btn-holy" style="width:100%; margin-top:7px; padding:8px; font-size:0.84rem;" onclick="openRegionGuide('${cur.id}')">
+          📖 參考攻略（必看破關要點與推薦配牌）
+        </button>
       `;
     }
 
@@ -7117,10 +8071,41 @@
       document.getElementById("cnt-unlocked").textContent = uniqueUnlocked.length;
       document.getElementById("deck-count-label").textContent = `出戰牌組：${state.deckIds.length} 張 (10~24張)`;
 
+      // 渲染牌組星數分布與防卡手提示條
+      const curveEl = document.getElementById("deck-curve-bar");
+      if (curveEl) {
+        let cLow = 0, cMid = 0, cKing = 0, cMagic = 0;
+        state.deckIds.forEach(id => {
+          const cd = getCardData(id);
+          if (!cd) return;
+          if (cd.cardType !== "monster") cMagic++;
+          else if (cd.stars <= 4) cLow++;
+          else if (cd.stars <= 6) cMid++;
+          else cKing++;
+        });
+        const warnMsg = cLow < 4
+          ? "⚠️ 4★ 下級怪少於 4 張，起手極易無祭品卡手！"
+          : (cKing > 4 ? "⚠️ 8★ 君王超過 4 張，建議適度精簡以維持流暢度！" : "✅ 牌組曲線流暢，可穩定鋪場與獻祭召喚。");
+        curveEl.innerHTML = `
+          <div style="font-weight:900; color:var(--ink);">📊 出戰牌組星數分布（防卡手分析）</div>
+          <div class="deck-curve-pills">
+            <span class="curve-pill">⚔️ 3~4★ 下級：${cLow}張</span>
+            <span class="curve-pill">🛡️ 5~6★ 中階：${cMid}張</span>
+            <span class="curve-pill">👑 8★ 君王：${cKing}張</span>
+            <span class="curve-pill">🔮 魔陷：${cMagic}張</span>
+          </div>
+          <div class="curve-warn" style="color:${(cLow < 4 || cKing > 4) ? '#b91c1c' : '#15803d'};">${warnMsg}</div>
+        `;
+      }
+
       const filtered = ALL_CARDS.map(raw => getCardData(raw.id)).filter(c => {
         if (state.activeRankTab === "deck") return state.deckIds.includes(c.id);
         if (state.activeRankTab === "unlocked") return uniqueUnlocked.includes(c.id);
         if (state.activeRankTab === "arcana") return c.cardType !== "monster";
+        if (state.activeRankTab.startsWith("arch_")) {
+          const targetArch = state.activeRankTab.replace("arch_", "");
+          return c.cardType === "monster" && getDemonArchetype(c)?.key === targetArch;
+        }
         return c.cardType === "monster" && c.rank === state.activeRankTab;
       });
 
@@ -7157,7 +8142,7 @@
               <div class="sigil-box">${generateCardSigilSVG(c, 36)}</div>
               <div style="flex:1; min-width:0;">
                 <div style="display:flex; justify-content:space-between; align-items:center; gap:4px;">
-                  <strong style="font-size:0.84rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${c.name.split(" ")[0]} ${lvTag}</strong>
+                  <strong style="font-size:0.84rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${c.name.split(" ")[0]} ${lvTag} ${getDemonArchetype(c) ? `<span class="arch-pill ${getDemonArchetype(c).cls}">${getDemonArchetype(c).label}</span>` : ""}</strong>
                   ${badge}
                 </div>
                 <div style="font-size:0.7rem; color:var(--ink-muted); margin-top:2px; line-height:1.3;">${c.effText}</div>
