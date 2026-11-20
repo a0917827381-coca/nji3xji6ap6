@@ -2481,7 +2481,7 @@
     // 1. 完整 72 柱魔神 + 三界魔王與秘儀卡牌資料庫
     // ==========================================
     const RAW_DEMONS = [
-      { id: 1, name: "巴力 (Bael)", rank: "King", stars: 8, atk: 3000, def: 2500, agitate: 30, summonCost: 280, eff: "king_storm", effText: "【誘發】登場炸毀敵方全後台魔陷；70%狂暴時可連擊2次！", trait: "東方魔神之王，三首噴吐毀滅烈焰。" },
+      { id: 1, name: "巴力 (Bael)", rank: "King", stars: 8, atk: 3000, def: 2500, agitate: 22, summonCost: 280, eff: "king_storm", effText: "【誘發】登場炸毀敵方全後台魔陷；70%狂暴時可連擊2次！", trait: "東方魔神之王，三首噴吐毀滅烈焰。" },
       { id: 2, name: "阿加雷斯 (Agares)", rank: "Duke", stars: 6, atk: 2400, def: 2000, agitate: -15, summonCost: 150, eff: "summon_calm", effText: "【誘發】登場時怨氣 -20%，敵方全體 ATK -300。", trait: "引發地震構築岩壁並安撫魔神躁動。" },
       { id: 3, name: "瓦沙克 (Vassago)", rank: "Prince", stars: 5, atk: 2000, def: 1800, agitate: -10, summonCost: 140, eff: "summon_draw2", effText: "【誘發】召喚成功時從牌組抽取 2 張卡牌。", trait: "預言親王，洞察戰局先機。" },
       { id: 4, name: "薩米基納 (Samigina)", rank: "Marquis", stars: 4, atk: 1750, def: 1200, agitate: 10, summonCost: 100, eff: "pierce", effText: "【永續】攻擊守備怪獸時給予差額貫穿傷害。", trait: "驅使亡靈軍團突擊的疾風侯爵。" },
@@ -2543,7 +2543,7 @@
       { id: 60, name: "瓦布拉 (Vapula)", rank: "Duke", stars: 6, atk: 2500, def: 1750, agitate: 15, summonCost: 175, eff: "pierce", effText: "【永續】操縱攻城器械造成守備貫穿傷害。", trait: "獅鷲翼獅子公爵精通工藝與攻城。" },
       { id: 61, name: "撒共 (Zagan)", rank: "King", stars: 8, atk: 2950, def: 2300, agitate: 30, summonCost: 275, eff: "king_storm", effText: "【誘發】召喚成功時摧毀敵方所有後台魔陷卡。", trait: "翼牛君王轉化戰場魔力。" },
       { id: 62, name: "華劣克 (Valac)", rank: "President", stars: 4, atk: 1700, def: 1300, agitate: 10, summonCost: 115, eff: "summon_seal", effText: "【誘發】登場時額外獲得 1 枚封印環。", trait: "騎雙頭龍的孩童統領。" },
-      { id: 63, name: "安德拉斯 (Andras)", rank: "Marquis", stars: 4, atk: 1850, def: 900, agitate: 25, summonCost: 130, eff: "berserk_boost", effText: "【永續】狂暴時 ATK 暴增至 2750+，雙面刃打手！", trait: "鴉首天使翼的極致挑撥者。" },
+      { id: 63, name: "安德拉斯 (Andras)", rank: "Marquis", stars: 4, atk: 1850, def: 900, agitate: 25, summonCost: 130, eff: "berserk_boost", effText: "【永續】70% 狂暴狀態下 ATK 額外 +400，高躁動雙面刃打手！", trait: "鴉首天使翼的極致挑撥者。" },
       { id: 64, name: "佛勞洛斯 (Flauros)", rank: "Duke", stars: 6, atk: 2550, def: 1650, agitate: 20, summonCost: 170, eff: "burn", effText: "【誘發】登場時焚燒敵軍造成 500 LP 傷害。", trait: "花豹公爵化作烈焰焚盡敵人。" },
       { id: 65, name: "安德雷斐斯", rank: "Marquis", stars: 4, atk: 1450, def: 1850, agitate: -10, summonCost: 105, eff: "flip_freeze", effText: "【反轉】翻開時敵方全體強制轉為守備表示。", trait: "孔雀侯爵以幾何結界困住敵陣。" },
       { id: 66, name: "錫蒙力 (Cimejes)", rank: "Marquis", stars: 4, atk: 1800, def: 1300, agitate: 10, summonCost: 110, eff: "pierce", effText: "【永續】騎乘黑馬發動疾風貫穿突刺。", trait: "非洲眾靈統帥戰士侯爵。" },
@@ -2578,7 +2578,7 @@
 
 
     const ANGEL_BOSS_CARDS = [
-      { id: 201, name: "智天使・奧法尼姆", rank: "Angel", stars: 4, atk: 1950, def: 1850, agitate: 0, cardType: "monster", eff: "summon_debuff", effText: "【天界】火焰戰車之輪，登場使魔神 ATK -400。" },
+      { id: 201, name: "智天使・奧法尼姆", rank: "Angel", stars: 4, atk: 1950, def: 1850, agitate: 0, cardType: "monster", eff: "summon_debuff", effText: "【天界】火焰戰車之輪，登場使最強魔神 ATK 永久 -400。" },
       { id: 202, name: "座天使・神聖堡壘", rank: "Angel", stars: 4, atk: 1650, def: 2300, agitate: 0, cardType: "monster", eff: "summon_shield", effText: "【天界】高達 2300 守備力並自帶神聖護盾。" },
       { id: 203, name: "主天使・聖光裁決者", rank: "Angel", stars: 6, atk: 2650, def: 2200, agitate: 0, cardType: "monster", eff: "pierce", effText: "【天界】手持審判長槍，附帶全額守備貫穿。" },
       { id: 204, name: "熾天使・六翼炎劍", rank: "Angel", stars: 8, atk: 3200, def: 2700, agitate: 0, cardType: "monster", eff: "king_burn", effText: "【天界】燃燒淨化之火，擊破魔神再燒 800 LP。" },
@@ -2590,21 +2590,21 @@
       { id: 303, name: "墮天晨星・路西法撒旦", rank: "King", stars: 8, atk: 3500, def: 3000, agitate: 0, cardType: "monster", eff: "king_storm", effText: "【煉獄真身】燃盡九層地獄的晨星之焰，登場摧毀所有後台！" },
       { id: 304, name: "能天使・卡麥爾", rank: "Angel", stars: 6, atk: 2750, def: 2300, agitate: 0, cardType: "monster", eff: "pierce", effText: "【天界】神之戰士，附帶貫穿攻擊。" },
       { id: 305, name: "大天使・拉斐爾", rank: "Angel", stars: 6, atk: 2650, def: 2800, agitate: 0, cardType: "monster", eff: "summon_shield", effText: "【天界】治癒之光，登場獲得神聖護盾。" },
-      { id: 306, name: "大天使・加百列", rank: "Angel", stars: 8, atk: 3350, def: 2800, agitate: 0, cardType: "monster", eff: "summon_debuff", effText: "【天界】審判號角，登場使敵方最強魔神 ATK -400。" },
+      { id: 306, name: "大天使・加百列", rank: "Angel", stars: 8, atk: 3350, def: 2800, agitate: 0, cardType: "monster", eff: "summon_debuff", effText: "【天界】審判號角，登場使最強魔神 ATK 永久 -400。" },
       { id: 307, name: "熾天使長・米迦勒", rank: "Angel", stars: 8, atk: 3450, def: 3000, agitate: 0, cardType: "monster", eff: "king_burn", effText: "【天界統帥】天火聖劍，擊破魔神再燒 800 LP。" },
       { id: 308, name: "至高神座・無上造物主", rank: "Angel", stars: 8, atk: 3450, def: 3100, agitate: 0, cardType: "monster", eff: "king_storm", effText: "【創世法則】萬物起源之光，登場清空敵方後台。" },
       { id: 309, name: "創世終焉・原初之光", rank: "Angel", stars: 8, atk: 3600, def: 3200, agitate: 0, cardType: "monster", eff: "king_burn", effText: "【終局神威】審判三界的終極光輝，擊破再燒 800 LP。" },
       { id: 401, name: "迦南巨石盾衛", rank: "Mortal", stars: 4, atk: 1350, def: 2050, agitate: 0, cardType: "monster", eff: "summon_shield", effText: "【凡間】迦南重裝巨盾兵，登場自帶聖盾並掩護友軍。" },
       { id: 402, name: "推羅海蛇重裝兵", rank: "Mortal", stars: 4, atk: 1750, def: 1350, agitate: 0, cardType: "monster", eff: "pierce", effText: "【凡間】駕馭海蛇巨艦的腓尼基精銳，附帶守備貫穿。" },
-      { id: 403, name: "阿努比斯神廟祭司", rank: "Mortal", stars: 4, atk: 1550, def: 1750, agitate: 0, cardType: "monster", eff: "summon_debuff", effText: "【凡間】冥神祭司，在場時散發威壓使我方全軍 ATK -250。" },
+      { id: 403, name: "阿努比斯神廟祭司", rank: "Mortal", stars: 4, atk: 1550, def: 1750, agitate: 0, cardType: "monster", eff: "none", effText: "【凡間】冥神祭司，在場時散發威壓使我方全軍 ATK -250。" },
       { id: 404, name: "尼羅河獅身人面巨像", rank: "Mortal", stars: 6, atk: 2350, def: 2550, agitate: 0, cardType: "monster", eff: "summon_shield", effText: "【神話巨像】法老陵墓守護神獸，具備鐵壁嘲諷與高防。" },
-      { id: 405, name: "巴比倫星靈術士", rank: "Mortal", stars: 4, atk: 1500, def: 1800, agitate: 0, cardType: "monster", eff: "summon_draw1", effText: "【凡間】觀測星軌的巴比倫大祭司，回合結束為友軍治癒並補盾。" },
+      { id: 405, name: "巴比倫星靈術士", rank: "Mortal", stars: 4, atk: 1500, def: 1800, agitate: 0, cardType: "monster", eff: "none", effText: "【凡間】觀測星軌的巴比倫大祭司，回合結束為友軍治癒並補盾。" },
       { id: 406, name: "巴比倫翼牛神獸", rank: "Mortal", stars: 6, atk: 2550, def: 2100, agitate: 0, cardType: "monster", eff: "pierce", effText: "【神話巨像】拉瑪蘇人首翼牛守護神，附帶守備貫穿衝鋒。" },
-      { id: 407, name: "波斯金面不死軍", rank: "Mortal", stars: 6, atk: 2450, def: 1900, agitate: 0, cardType: "monster", eff: "burn", effText: "【凡間】波斯萬王近衛軍，被戰鬥擊破時引爆業火反傷 450 LP。" },
+      { id: 407, name: "波斯金面不死軍", rank: "Mortal", stars: 6, atk: 2450, def: 1900, agitate: 0, cardType: "monster", eff: "none", effText: "【凡間】波斯萬王近衛軍，被戰鬥擊破時引爆業火反傷 450 LP。" },
       { id: 408, name: "奧林帕斯雷霆青銅巨像", rank: "Mortal", stars: 8, atk: 3050, def: 2600, agitate: 0, cardType: "monster", eff: "king_storm", effText: "【神話巨像】宙斯鍛造的雷霆青銅巨人，登場震毀後台！" },
       { id: 409, name: "羅馬禁衛角鬥士", rank: "Mortal", stars: 4, atk: 1950, def: 1200, agitate: 0, cardType: "monster", eff: "pierce", effText: "【凡間】血戰角鬥場百勝冠軍，附帶全額守備貫穿。" },
-      { id: 410, name: "極北霜狼狂戰士", rank: "Mortal", stars: 6, atk: 2600, def: 1650, agitate: 0, cardType: "monster", eff: "berserk_boost", effText: "【凡間】披戴霜狼戰甲的阿斯嘉特勇士，戰死時爆發寒霜餘燼反傷。" },
-      { id: 411, name: "崑崙御劍仙兵", rank: "Mortal", stars: 6, atk: 2550, def: 2150, agitate: 0, cardType: "monster", eff: "summon_debuff", effText: "【仙道兵種】駕馭飛劍的崑崙仙衛，在場時劍氣威壓使我方 ATK -250。" },
+      { id: 410, name: "極北霜狼狂戰士", rank: "Mortal", stars: 6, atk: 2600, def: 1650, agitate: 0, cardType: "monster", eff: "none", effText: "【凡間】披戴霜狼戰甲的阿斯嘉特勇士，戰死時爆發寒霜餘燼反傷。" },
+      { id: 411, name: "崑崙御劍仙兵", rank: "Mortal", stars: 6, atk: 2550, def: 2150, agitate: 0, cardType: "monster", eff: "none", effText: "【仙道兵種】駕馭飛劍的崑崙仙衛，在場時劍氣威壓使我方 ATK -250。" },
       { id: 412, name: "崑崙鎮天青龍神獸", rank: "Mortal", stars: 8, atk: 3250, def: 2800, agitate: 0, cardType: "monster", eff: "king_rally", effText: "【東方神獸】鎮守玉京城的太古青龍，登場鼓舞全軍 ATK +300！" }
     ];
 
@@ -3652,7 +3652,7 @@
           desc: "【鐵壁護衛】此卡在場時，我方必須優先攻擊護衛怪獸（可用貫穿傷害打穿或效果破壞移除）。"
         };
       }
-      if ([201, 306, 2, 19, 403, 411].includes(id)) {
+      if ([2, 19, 403, 411].includes(id)) {
         return {
           id: "aura_debuff",
           tag: "🔮威壓",
@@ -5464,7 +5464,7 @@
             duel.spellTrapUsedThisTurn = 0;
             duel.busy = false;
             duel.tutStep = 3;
-            duel.playerMonsters.forEach(m => { if (m) m.attacksLeft = (m.card.id === 1 && duel.wrath >= 70) ? 2 : 1; });
+            duel.playerMonsters.forEach(m => { if (m) { const isBaelBerserk = (m.card.id === 1 && duel.wrath >= 70); m.attacksLeft = isBaelBerserk ? 2 : 1; m.baelExtraGrantedTurn = isBaelBerserk ? duel.turn : 0; } });
             updateDuelUI();
           }, 950);
           return;
@@ -5492,7 +5492,7 @@
               duel.wrath = Math.max(duel.wrath, 75);
               duel.seals = Math.max(duel.seals, 2);
               duel.tutStep = 6;
-              duel.playerMonsters.forEach(m => { if (m) m.attacksLeft = (m.card.id === 1 && duel.wrath >= 70) ? 2 : 1; });
+              duel.playerMonsters.forEach(m => { if (m) { const isBaelBerserk = (m.card.id === 1 && duel.wrath >= 70); m.attacksLeft = isBaelBerserk ? 2 : 1; m.baelExtraGrantedTurn = isBaelBerserk ? duel.turn : 0; } });
               showDuelBannerText("🔥 惡魔怨氣升至 75%（觸發狂暴 +500 ATK）！", "#fde047");
               updateDuelUI();
             }, 600);
@@ -5902,6 +5902,18 @@
           showDuelBannerText("🎴 已蓋放至下方【我方魔陷槽】警戒中！", "#f472b6");
           updateDuelUI();
         } else if (card.cardType === "spell") {
+          if ((card.eff === "ring_boost" || card.eff === "equip_lock") && !duel.playerMonsters.some(m => m && !m.faceDown)) {
+            showDuelBannerText("⚠️ 場上必須有至少 1 隻表側魔神才能發動此強化魔法！", "#f87171");
+            return;
+          }
+          if (card.eff === "special_lv4") {
+            const lv = card.awakenLv || 1;
+            const hasTarget = duel.playerHand.some((c, hIdx) => hIdx !== idx && c.cardType === "monster" && c.stars <= (lv >= 2 ? 6 : 4));
+            if (hasTarget && findEmptySlot(duel.playerMonsters) !== -1 && duel.playerLp <= 500) {
+              showDuelBannerText("⚠️ 生命值不足 500 LP，無法支付【黃金聖殿徵召】代價！", "#f87171");
+              return;
+            }
+          }
           duel.spellTrapUsedThisTurn++;
           duel.playerHand.splice(idx, 1);
           duel.selectedHandIdx = null;
@@ -6103,6 +6115,7 @@
         summonedTurn: duel.turn,
         changedPosTurn: duel.turn,
         attacksLeft: (isPlayer && card.id === 1 && duel && duel.wrath >= 70) ? 2 : 1,
+        baelExtraGrantedTurn: (isPlayer && card.id === 1 && duel && duel.wrath >= 70) ? duel.turn : 0,
         shield: !!bonusOpts.shield || (isPlayer && awakenLv >= 3) || (!isPlayer && isHeavenlyDecreeActive("first_shield")),
         holySealed: false,
         equipLocked: false,
@@ -6176,7 +6189,36 @@
       } else {
         duel.enemyMonsters[slotIdx] = unit;
         playSfx("summon");
-        if (!faceDown) triggerMonsterSummonEffect("enemy", unit);
+        // 敵方 8★ 君王優先發動登場能力，再結算反擊陷阱；5~7★ 則直接先受【神聖真名剝奪】反擊
+        if (!faceDown && card.stars >= 8) {
+          triggerMonsterSummonEffect("enemy", unit);
+        }
+        if (!faceDown && card.stars >= 5) {
+          const pNegIdx = duel.playerSpells.findIndex(s => s && s.faceDown && s.card.eff === "trap_negate");
+          if (pNegIdx !== -1) {
+            const negCard = duel.playerSpells[pNegIdx].card;
+            duel.playerSpells[pNegIdx] = null;
+            playSfx("trap");
+            if ((negCard.awakenLv || 1) >= 3) grantPlayerSeals(1);
+            const ePos = BattleVFX.getElCenter(`#e-mon-${slotIdx}`);
+            if (unit.shield) {
+              unit.shield = false;
+              BattleVFX.shieldBreak(ePos.x, ePos.y);
+              showDuelBannerText(`⚡ 我方反擊陷阱【神聖真名剝奪】擊碎了【${card.name.split(" ")[0]}】的聖盾！`, "#38bdf8");
+            } else {
+              BattleVFX.lightning(ePos.x, ePos.y, { color: "#fde047" });
+              BattleVFX.shatter(ePos.x, ePos.y, { color: "#ef4444" });
+              duel.enemyGraveyard.push(card);
+              duel.enemyMonsters[slotIdx] = null;
+              showDuelBannerText(`⚡ 我方反擊陷阱【神聖真名剝奪】發動！直接摧毀敵軍【${card.name.split(" ")[0]}】！`, "#fde047");
+              updateDuelUI();
+              return;
+            }
+          }
+        }
+        if (!faceDown && card.stars < 8) {
+          triggerMonsterSummonEffect("enemy", unit);
+        }
       }
 
       enforceBerserkStance();
@@ -6282,6 +6324,7 @@
         if (isP) applyPlayerCalmEffect(lv >= 2 ? 30 : 20);
         oppMonsters.forEach(m => { if (m && !m.faceDown) m.atkMod -= 300; });
         if (isP) showDuelBannerText("🕊️ 安撫魔神怨氣，敵軍 ATK -300！", "#4ade80");
+        else showDuelBannerText(`⚡ 敵軍【${unit.card.name.split(" ")[0]}】登場威壓：我方全軍 ATK -300！`, "#fca5a5");
       } else if (eff === "summon_debuff") {
         let strongest = null;
         oppMonsters.forEach(m => {
@@ -6290,10 +6333,12 @@
         if (strongest) {
           strongest.atkMod -= (lv >= 2 ? 600 : 400);
           if (isP) showDuelBannerText(`⚡ 削弱敵軍【${strongest.card.name.split(" ")[0]}】ATK -${lv >= 2 ? 600 : 400}！`, "#fde047");
+          else showDuelBannerText(`⚡ 敵軍【${unit.card.name.split(" ")[0]}】登場效果：我方【${strongest.card.name.split(" ")[0]}】ATK -400！`, "#fca5a5");
         }
       } else if (eff === "burn") {
         const bDmg = lv >= 2 ? 800 : 500;
         dealLpDamage(isP ? "enemy" : "player", bDmg, `🔥 烈焰灼燒 -${bDmg} LP！`);
+        checkDuelEnd();
       } else if (eff === "king_storm") {
         for (let i = 0; i < oppSpells.length; i++) oppSpells[i] = null;
         flashScreen("flash-gold");
@@ -6301,6 +6346,7 @@
       } else if (eff === "satan_cataclysm") {
         for (let i = 0; i < oppSpells.length; i++) oppSpells[i] = null;
         dealLpDamage(isP ? "enemy" : "player", 1000, "😈【大惡魔・撒旦】晨星降世！炸毀後台並灼燒 1000 LP！");
+        checkDuelEnd();
       } else if (eff === "king_rally") {
         if (isP) {
           duel.playerMonsters.forEach(m => { if (m && !m.faceDown) m.atkMod += (lv >= 2 ? 600 : 400); });
@@ -6329,11 +6375,17 @@
       if (targetIdx !== -1) {
         const vDom = document.getElementById(`${targetSide === "player" ? "p" : "e"}-mon-${targetIdx}`);
         const vPos = BattleVFX.getElCenter(vDom);
-        BattleVFX.lightning(vPos.x, vPos.y, { color: "#fde047" });
-        BattleVFX.explosion(vPos.x, vPos.y, { scale: 1.15, theme: "fire" });
-        if (targetSide === "enemy") duel.enemyGraveyard.push(arr[targetIdx].card);
-        arr[targetIdx] = null;
-        if (msg) showDuelBannerText(msg, "#fde047");
+        if (arr[targetIdx].shield) {
+          arr[targetIdx].shield = false;
+          BattleVFX.shieldBreak(vPos.x, vPos.y);
+          showDuelBannerText(`🛡️【${arr[targetIdx].card.name.split(" ")[0]}】的聖盾抵消了效果破壞！`, "#38bdf8");
+        } else {
+          BattleVFX.lightning(vPos.x, vPos.y, { color: "#fde047" });
+          BattleVFX.explosion(vPos.x, vPos.y, { scale: 1.15, theme: "fire" });
+          if (targetSide === "enemy") duel.enemyGraveyard.push(arr[targetIdx].card);
+          arr[targetIdx] = null;
+          if (msg) showDuelBannerText(msg, "#fde047");
+        }
       }
     }
 
@@ -6370,6 +6422,7 @@
         const emptySlot = findEmptySlot(myMonsters);
         if (lv4Idx !== -1 && emptySlot !== -1) {
           dealLpDamage(side, 500, `🪙 ${isP ? "" : "敵方"}黃金聖殿徵召：支付 500 LP！`);
+          if (checkDuelEnd()) return;
           const mCard = hand.splice(lv4Idx, 1)[0];
           summonMonsterToSlot(side, emptySlot, mCard, "ATK", false, {});
         } else {
@@ -6517,11 +6570,13 @@
         showDuelBannerText("🔥 70% 狂暴狀態下魔神拒絕轉為守備表示！", "#f87171");
         return;
       }
+      const wasFaceDown = !!unit.faceDown;
       unit.faceDown = false;
       unit.pos = (unit.pos === "ATK") ? "DEF" : "ATK";
       unit.changedPosTurn = duel.turn;
       duel.selectedFieldSlot = null;
       playSfx("summon");
+      if (wasFaceDown) triggerFlipEffect("player", unit);
       updateDuelUI();
     }
 
@@ -6533,10 +6588,13 @@
       duel.selectedFieldSlot = null;
 
       if (unit.card.eff === "act_heal") {
-        duel.playerLp = Math.min(duel.playerMaxLp, duel.playerLp + 700);
-        applyPlayerCalmEffect(20);
+        const lv = unit.card.awakenLv || 1;
+        const healAmt = lv >= 2 ? 950 : 700;
+        const calmAmt = lv >= 2 ? 25 : 20;
+        duel.playerLp = Math.min(duel.playerMaxLp, duel.playerLp + healAmt);
+        applyPlayerCalmEffect(calmAmt);
         playSfx("trap");
-        showDuelBannerText(`💚 ${unit.card.name.split(" ")[0]}：恢復 700 LP 並降怒 20%！`, "#4ade80");
+        showDuelBannerText(`💚 ${unit.card.name.split(" ")[0]}：恢復 ${healAmt} LP 並降怒 ${calmAmt}%！`, "#4ade80");
       } else if (unit.card.eff === "act_destroy") {
         destroyLowestAtkMonster("enemy", `💥 ${unit.card.name.split(" ")[0]} 起動效果：摧毀敵軍弱點怪獸！`);
         addPlayerWrath(15);
@@ -6649,12 +6707,14 @@
       fireBattleBeam(fromEl, toEl, () => {
         if (!duel) return;
 
-        const trapIdx = defSpells.findIndex(s => s && s.faceDown && s.card.cardType === "trap" && s.card.eff !== "trap_exile_king" && s.card.eff !== "trap_counter_spell");
+        const trapIdx = defSpells.findIndex(s => s && s.faceDown && s.card.cardType === "trap" && s.card.eff !== "trap_exile_king" && s.card.eff !== "trap_counter_spell" && s.card.eff !== "trap_negate");
         if (trapIdx !== -1) {
           const trapCard = defSpells[trapIdx].card;
           defSpells[trapIdx] = null;
           playSfx("trap");
           flashScreen("flash-blue");
+          const trapLv = !isPAtk ? (trapCard.awakenLv || 1) : 1;
+          if (!isPAtk && trapLv >= 3) grantPlayerSeals(1);
 
           if (trapCard.eff === "trap_mirror") {
             const atkPos = BattleVFX.getElCenter(fromEl);
@@ -6681,8 +6741,11 @@
           } else if (trapCard.eff === "trap_burn") {
             const atkPos = BattleVFX.getElCenter(fromEl);
             BattleVFX.explosion(atkPos.x, atkPos.y, { scale: 1.2, theme: "fire" });
-            attacker.atkMod -= 500;
-            dealLpDamage(attackerSide, 800, `🔥 陷阱【${trapCard.name}】反擊 -800 LP 並降攻 500！`);
+            const tMult = trapLv === 1 ? 1 : (trapLv === 2 ? 1.3 : 1.5);
+            const tDmg = Math.floor(800 * tMult);
+            const tDebuff = Math.floor(500 * tMult);
+            attacker.atkMod -= tDebuff;
+            dealLpDamage(attackerSide, tDmg, `🔥 陷阱【${trapCard.name}】反擊 -${tDmg} LP 並降攻 ${tDebuff}！`);
           }
         }
 
@@ -6730,7 +6793,7 @@
 
         if (defender.faceDown) {
           defender.faceDown = false;
-          triggerFlipEffect(!isPAtk, defender);
+          triggerFlipEffect(isPAtk ? "enemy" : "player", defender);
         }
 
         const atkCenter = BattleVFX.getElCenter(fromEl);
@@ -6808,12 +6871,18 @@
               if (isPAtk) duel.enemyGraveyard.push(defender.card);
               defArr[defSlotIdx] = null;
               if (isPAtk) grantPlayerSeals(1);
+              const burnBonus = attacker.card.eff === "king_burn" ? 800 : 0;
               if (hasFullPierce) {
                 const lpPt = BattleVFX.getElCenter(isPAtk ? "#enemy-lp-text" : "#player-lp-text");
                 BattleVFX.pierceBeam(atkCenter.x, atkCenter.y, lpPt.x, lpPt.y, { color: "#fb923c" });
-                const pierceDmg = isPAtk ? capEnemyDamage(Math.floor((atkVal - defVal) * dmgMult)) : Math.floor((atkVal - defVal) * dmgMult);
+                const rawPierce = Math.floor((atkVal - defVal) * dmgMult) + burnBonus;
+                const pierceDmg = isPAtk ? capEnemyDamage(rawPierce) : rawPierce;
                 if (isPAtk) dmgDealtToEnemy = pierceDmg;
-                dealLpDamage(isPAtk ? "enemy" : "player", pierceDmg, `🏹 貫穿防禦！造成 ${pierceDmg} 貫穿傷害！`);
+                dealLpDamage(isPAtk ? "enemy" : "player", pierceDmg, `🏹 貫穿防禦！造成 ${pierceDmg} 傷害${burnBonus > 0 ? "（含君王灼燒）" : ""}！`);
+              } else if (burnBonus > 0) {
+                const burnDmg = isPAtk ? capEnemyDamage(burnBonus) : burnBonus;
+                if (isPAtk) dmgDealtToEnemy = burnDmg;
+                dealLpDamage(isPAtk ? "enemy" : "player", burnDmg, `🔥 擊碎守備怪獸！君王灼燒再造成 ${burnDmg} LP 傷害！`);
               } else {
                 showDuelBannerText("🛡️ 擊碎敵方守備怪獸！", "#fde047");
               }
@@ -6847,19 +6916,25 @@
         if (isP) {
           showDuelBannerText(`🔄 反轉效果【${unit.card.name.split(" ")[0]}】抽 1 牌＋1 封印環${unit.card.id === 24 ? "並降怒15%" : ""}！`, "#38bdf8");
         }
-      } else if (eff === "flip_calm" && isP) {
-        applyPlayerCalmEffect(25);
-        drawToHand("player", 1);
-        showDuelBannerText("🔄 反轉效果：怨氣 -25%、抽 1 牌＋1 封印環！", "#4ade80");
+      } else if (eff === "flip_calm") {
+        if (isP) {
+          applyPlayerCalmEffect(25);
+          drawToHand("player", 1);
+          showDuelBannerText("🔄 反轉效果：怨氣 -25%、抽 1 牌＋1 封印環！", "#4ade80");
+        } else {
+          drawToHand("enemy", 1);
+          showDuelBannerText(`🔄 敵軍反轉效果【${unit.card.name.split(" ")[0]}】：敵方抽 1 張牌！`, "#fca5a5");
+        }
       } else if (eff === "flip_freeze" && duel.region.id !== "r7" && duel.region.id !== "h3") {
         const opp = isP ? duel.enemyMonsters : duel.playerMonsters;
         opp.forEach(m => { if (m) { m.pos = "DEF"; m.attacksLeft = 0; } });
-        showDuelBannerText("🔄 反轉結界！敵軍全體強制轉為守備表示＋1 封印環！", "#38bdf8");
+        if (isP) showDuelBannerText("🔄 反轉結界！敵軍全體強制轉為守備表示＋1 封印環！", "#38bdf8");
+        else showDuelBannerText(`🔄 敵軍反轉結界【${unit.card.name.split(" ")[0]}】！我方全體強制轉為守備表示！`, "#fca5a5");
       }
     }
 
     function finishSingleAttack(isPAtk, attacker, didStrike, dmgDealtToEnemy, onComplete) {
-      if (!duel) return;
+      if (!duel || duel.ended) return;
       // 地獄 100%+ 煉獄暴走吸血回饋
       if (isPAtk && dmgDealtToEnemy > 0 && duel.realm === "inferno" && duel.wrath >= 100) {
         const drainRate = state.hellStage >= 3 ? 0.40 : 0.30;
@@ -6871,12 +6946,19 @@
         }
       }
 
-      if (isPAtk && didStrike && attacker) {
+      // 優先判定勝負／魔王換階段：若已打出致勝一擊，不再觸發戰後 100% 叛變或天罰
+      updateDuelUI();
+      if (checkDuelEnd()) return;
+
+      // 只有攻擊後仍存活在場上的魔神才會累積攻擊怨氣（撞死或同歸於盡不加怒）
+      const attackerAlive = isPAtk && attacker && duel.playerMonsters.includes(attacker);
+      if (attackerAlive && didStrike) {
         const extraWrath = (duel.region.id === "r8") ? 15 : 0;
-        let delta = attacker.card.agitate + extraWrath;
-        if (delta > 0 && duel.halfWrathRelic) delta = Math.ceil(delta * 0.5);
+        const delta = attacker.card.agitate + extraWrath;
         if (delta !== 0) addPlayerWrath(delta);
       }
+
+      if (!duel || duel.ended) return;
       duel.busy = false;
       updateDuelUI();
       if (checkDuelEnd()) return;
@@ -6948,9 +7030,13 @@
     }
 
     function addPlayerWrath(delta) {
-      if (!duel) return;
+      if (!duel || duel.ended) return;
+      let actualDelta = delta;
+      if (actualDelta > 0 && duel.halfWrathRelic) {
+        actualDelta = Math.ceil(actualDelta * 0.5);
+      }
       const maxCap = duel.realm === "inferno" ? 150 : 100;
-      duel.wrath = Math.min(maxCap, Math.max(0, duel.wrath + delta));
+      duel.wrath = Math.min(maxCap, Math.max(0, duel.wrath + actualDelta));
       enforceBerserkStance();
       if (!duel.isTutorial && !duel.wrath70Spoken && duel.wrath >= 70) {
         duel.wrath70Spoken = true;
@@ -7000,7 +7086,14 @@
       if (!duel) return;
       if (duel.wrath >= 70) {
         duel.playerMonsters.forEach(m => {
-          if (m) { m.faceDown = false; m.pos = "ATK"; }
+          if (m) {
+            m.faceDown = false;
+            m.pos = "ATK";
+            if (m.card.id === 1 && m.baelExtraGrantedTurn !== duel.turn) {
+              m.baelExtraGrantedTurn = duel.turn;
+              m.attacksLeft += 1;
+            }
+          }
         });
       }
     }
@@ -7166,49 +7259,35 @@
         const isAwakenedGraceTurn = (duel.region.isFinalBoss || duel.region.isHellBoss || duel.region.isHeavenBoss) && duel.bossAwakenedTurn === duel.turn;
 
         if (!isAwakenedGraceTurn) {
-          // 1. 優先發動抽牌或特召魔法，幫自己湊齊祭品與手牌資源
-          const prepSpellIdx = duel.enemyHand.findIndex(c => c.cardType === "spell" && (c.eff === "draw2" || c.eff === "special_lv4"));
+          // 1. 優先發動抽牌或特召魔法，幫自己湊齊祭品與手牌資源（避免殘血自殺）
+          const prepSpellIdx = duel.enemyHand.findIndex(c => c.cardType === "spell" && (c.eff === "draw2" || (c.eff === "special_lv4" && duel.enemyLp > 500)));
           if (prepSpellIdx !== -1) {
             const pSpell = duel.enemyHand.splice(prepSpellIdx, 1)[0];
             activateSpellCard("enemy", pSpell);
           }
 
-          // 2. 若場上祭品不足但手上有 4★ 下級怪，先召喚下級怪鋪場
-          const emptySlotPre = findEmptySlot(duel.enemyMonsters);
-          const lowCardsPre = duel.enemyHand
-            .map((c, idx) => ({ c, idx }))
-            .filter(x => x.c.cardType === "monster" && x.c.stars <= 4)
-            .sort((a, b) => b.c.atk - a.c.atk);
           let aiNormalSummoned = false;
 
-          if (emptySlotPre !== -1 && lowCardsPre.length > 0 && countMonsters(duel.enemyMonsters) < 2) {
-            const chosen = lowCardsPre[0];
-            duel.enemyHand.splice(chosen.idx, 1);
-            aiNormalSummoned = true;
-            const maxPlayerAtk = Math.max(0, ...duel.playerMonsters.map(m => (m && !m.faceDown) ? getEffectiveAtk(m, true) : 0));
-            const shouldDef = (duel.region.id !== "r7" && duel.region.id !== "h3") && (chosen.c.atk < maxPlayerAtk && chosen.c.def >= chosen.c.atk);
-            summonMonsterToSlot("enemy", emptySlotPre, chosen.c, shouldDef ? "DEF" : "ATK", shouldDef, {});
-          }
-
-          // 3. 檢查是否可升級召喚 5~8★ 王牌
-          const highCards = duel.enemyHand
-            .map((c, idx) => ({ c, idx }))
-            .filter(x => x.c.cardType === "monster" && x.c.stars >= 5)
-            .sort((a, b) => b.c.stars - a.c.stars);
-
+          // 2. 優先檢查是否能升級召喚手牌中的 5~8★ 王牌（避免 6★ 有 1 祭品卻被 4★ 搶先佔用通常召喚）
           const eCount = countMonsters(duel.enemyMonsters);
-          if (highCards.length > 0 && !aiNormalSummoned) {
-            const bestHigh = highCards[0];
-            const req = bestHigh.c.stars >= 7 ? 2 : 1;
-            if (eCount >= req) {
-              const sortedField = duel.enemyMonsters
-                .map((m, i) => ({ m, i, atk: m ? getEffectiveAtk(m, false) : 999999 }))
-                .filter(x => x.m !== null)
-                .sort((a, b) => a.atk - b.atk);
+          const summonableHighs = duel.enemyHand
+            .map((c, idx) => ({ c, idx, req: c.stars >= 7 ? 2 : 1 }))
+            .filter(x => x.c.cardType === "monster" && x.c.stars >= 5 && eCount >= x.req)
+            .sort((a, b) => b.c.stars - a.c.stars || b.c.atk - a.c.atk);
 
+          if (summonableHighs.length > 0) {
+            const bestHigh = summonableHighs[0];
+            const sortedField = duel.enemyMonsters
+              .map((m, i) => ({ m, i, atk: m ? getEffectiveAtk(m, false) : 999999 }))
+              .filter(x => x.m !== null)
+              .sort((a, b) => a.atk - b.atk);
+
+            // 只有當新王牌攻擊力高於即將獻祭的怪獸（或能清場）時才獻祭，避免把更強的大怪拿去祭弱怪
+            const maxSacAtk = sortedField[bestHigh.req - 1].atk;
+            if (bestHigh.c.atk > maxSacAtk || bestHigh.c.eff === "king_storm" || bestHigh.c.eff === "satan_cataclysm") {
               const targetSlot = sortedField[0].i;
               const fromPts = [];
-              for (let k = 0; k < req; k++) {
+              for (let k = 0; k < bestHigh.req; k++) {
                 fromPts.push(BattleVFX.getElCenter(`#e-mon-${sortedField[k].i}`));
                 duel.enemyMonsters[sortedField[k].i] = null;
               }
@@ -7220,7 +7299,7 @@
             }
           }
 
-          // 4. 若尚未通常召喚且仍有空位，補下 4★ 怪獸
+          // 3. 若尚未通常召喚且仍有空位，召喚 4★ 以下怪獸鋪場
           const emptySlotPost = findEmptySlot(duel.enemyMonsters);
           const lowCardsPost = duel.enemyHand
             .map((c, idx) => ({ c, idx }))
@@ -7230,6 +7309,7 @@
           if (!aiNormalSummoned && emptySlotPost !== -1 && lowCardsPost.length > 0) {
             const chosen = lowCardsPost[0];
             duel.enemyHand.splice(chosen.idx, 1);
+            aiNormalSummoned = true;
             const maxPlayerAtk = Math.max(0, ...duel.playerMonsters.map(m => (m && !m.faceDown) ? getEffectiveAtk(m, true) : 0));
             const shouldDef = (duel.region.id !== "r7" && duel.region.id !== "h3") && (chosen.c.atk < maxPlayerAtk && chosen.c.def >= chosen.c.atk);
             summonMonsterToSlot("enemy", emptySlotPost, chosen.c, shouldDef ? "DEF" : "ATK", shouldDef, {});
@@ -7245,8 +7325,10 @@
             if (em.pos === "ATK" && myA < maxPAtk && myD > myA) {
               em.pos = "DEF";
             } else if (em.pos === "DEF" && myA >= maxPAtk) {
+              const wasFD = !!em.faceDown;
               em.faceDown = false;
               em.pos = "ATK";
+              if (wasFD) triggerFlipEffect("enemy", em);
             }
           });
         }
@@ -7277,7 +7359,14 @@
           }
         }
 
-        const spellIdx = duel.enemyHand.findIndex(c => c.cardType === "spell" || c.cardType === "trap");
+        const hasEnemyFaceUpMon = duel.enemyMonsters.some(m => m && !m.faceDown);
+        const spellIdx = duel.enemyHand.findIndex(c => {
+          if (c.cardType === "trap") return findEmptySlot(duel.enemySpells) !== -1;
+          if (c.cardType !== "spell") return false;
+          if ((c.eff === "ring_boost" || c.eff === "equip_lock") && !hasEnemyFaceUpMon) return false;
+          if (c.eff === "special_lv4" && duel.enemyLp <= 500) return false;
+          return true;
+        });
         if (spellIdx !== -1) {
           const sCard = duel.enemyHand[spellIdx];
           if (sCard.cardType === "spell") {
@@ -7322,6 +7411,13 @@
           }
         });
 
+        // 地獄二關貪婪熔金庫：敵方手牌超過 5 張同樣受每張 400 LP 懲罰
+        if (duel.region.id === "h2" && duel.enemyHand.length > 5) {
+          const eExcess = duel.enemyHand.length - 5;
+          dealLpDamage("enemy", eExcess * 400, `🪙 熔金貪婪懲罰：敵方手牌溢出 ${eExcess} 張，扣除 ${eExcess * 400} LP！`);
+          if (checkDuelEnd()) return;
+        }
+
         // 敵軍【💚 聖詠治癒】回合結束回饋（每回合全場最多觸發 1 次）
         const healerUnit = duel.enemyMonsters.find(em => em && !em.faceDown && getEnemyCardRole(em.card)?.id === "healer");
         if (healerUnit) {
@@ -7337,7 +7433,7 @@
         duel.spellTrapUsedThisTurn = 0;
         duel.nileRevivedThisTurn = false;
         duel.busy = false;
-        duel.playerMonsters.forEach(m => { if (m) m.attacksLeft = (m.card.id === 1 && duel.wrath >= 70) ? 2 : 1; });
+        duel.playerMonsters.forEach(m => { if (m) { const isBaelBerserk = (m.card.id === 1 && duel.wrath >= 70); m.attacksLeft = isBaelBerserk ? 2 : 1; m.baelExtraGrantedTurn = isBaelBerserk ? duel.turn : 0; } });
 
         // 通天塔三階：天界每回合開始自動獲得 +1 原罪能量
         if (duel.realm === "celestia" && state.heavenStage >= 3) {
@@ -7387,7 +7483,7 @@
 
     // 三界三大章節魔王雙階段覺醒檢測！
     function checkDuelEnd() {
-      if (!duel) return true;
+      if (!duel || duel.ended) return true;
       if (duel.enemyLp <= 0) {
         // 1. 人間篇最終 Boss：梅塔特隆第二形態
         if (duel.region.isFinalBoss && !duel.bossPhase2Triggered) {
@@ -7466,11 +7562,13 @@
           return false;
         }
 
+        duel.ended = true;
         duel.busy = true;
         setTimeout(() => handleBattleVictory(), 550);
         return true;
       }
       if (duel.playerLp <= 0) {
+        duel.ended = true;
         duel.busy = true;
         setTimeout(() => {
           alert(`⚔️ 決鬥敗北！所羅門王基本分歸零，被【${duel.region.bossName}】擊退。`);
