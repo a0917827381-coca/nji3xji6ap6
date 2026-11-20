@@ -2096,6 +2096,7 @@
           <button class="btn btn-sm btn-teal" onclick="closeGalleryModal(); playCelestiaEndingCutscene(true);">▶ 播放</button>
         </div>
       </div>
+      <div id="patch-gallery-items" style="display:flex; flex-direction:column; gap:8px; margin-bottom:10px;"></div>
       <button class="btn" style="width:100%;" onclick="closeGalleryModal()">關閉回憶錄</button>
     </div>
   </div>
@@ -2168,7 +2169,11 @@
       <div class="res-pill"><span class="r-val" id="res-wood">20</span><span class="r-lbl">🌲 香柏木</span></div>
       <div class="res-pill"><span class="r-val" id="res-gold">60</span><span class="r-lbl">🪙 黃金</span></div>
       <div class="res-pill"><span class="r-val" id="res-labor">5</span><span class="r-lbl">👷 戰俘人力</span></div>
-      <div class="res-pill"><span class="r-val" id="res-temple" style="color:var(--gold-bright);">0/6</span><span class="r-lbl" id="res-wonder-lbl">🏛️ 奇觀進度</span></div>
+      <div class="res-pill"><span class="r-val" id="res-temple" style="color:var(--gold-bright);">0/18</span><span class="r-lbl" id="res-wonder-lbl">🏛️ 奇觀進度</span></div>
+    </div>
+    <div id="realm-essence-strip" style="display:none; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:4px; margin-top:4px; text-align:center;">
+      <div class="res-pill" style="border-color:rgba(239,68,68,0.45); background:rgba(127,29,29,0.28);"><span class="r-val" id="res-soulfire" style="color:#fca5a5;">0</span><span class="r-lbl">🔥 深淵魂火（地獄淬鍊/建殿）</span></div>
+      <div class="res-pill" style="border-color:rgba(250,204,21,0.5); background:rgba(120,53,15,0.28);"><span class="r-val" id="res-essence" style="color:#fef08a;">0</span><span class="r-lbl">✨ 原初神粹（天界淬鍊/建殿）</span></div>
     </div>
   </header>
 
@@ -2305,7 +2310,7 @@
 
         <div class="lp-meter-panel">
           <div style="display:flex; justify-content:space-between; align-items:baseline; gap:4px;">
-            <span style="font-size:0.64rem; font-weight:800; color:#fda4af;">敵LP</span>
+            <span style="font-size:0.64rem; font-weight:800; color:#fda4af;">敵LP <span id="enemy-hit-shield-badge" style="display:none; background:#1e3a8a; color:#fef08a; border:1px solid #fde047; border-radius:4px; padding:0 4px; font-size:0.58rem; margin-left:2px;">🛡️0</span></span>
             <span class="lp-number-bright" style="color:#ff6b6b;"><span id="enemy-lp-text">3000</span></span>
           </div>
           <div class="lp-bar-mini"><div class="lp-bar-mini-fill" id="enemy-lp-bar" style="width:100%; background:#ef4444;"></div></div>
@@ -2523,18 +2528,18 @@
       { id: 202, name: "座天使・神聖堡壘", rank: "Angel", stars: 4, atk: 1650, def: 2300, agitate: 0, cardType: "monster", eff: "summon_shield", effText: "【天界】高達 2300 守備力並自帶神聖護盾。" },
       { id: 203, name: "主天使・聖光裁決者", rank: "Angel", stars: 6, atk: 2650, def: 2200, agitate: 0, cardType: "monster", eff: "pierce", effText: "【天界】手持審判長槍，附帶全額守備貫穿。" },
       { id: 204, name: "熾天使・六翼炎劍", rank: "Angel", stars: 8, atk: 3200, def: 2700, agitate: 0, cardType: "monster", eff: "king_burn", effText: "【天界】燃燒淨化之火，擊破魔神再燒 800 LP。" },
-      { id: 205, name: "大天使長・梅塔特隆", rank: "Angel", stars: 8, atk: 3500, def: 3000, agitate: 0, cardType: "monster", eff: "king_storm", effText: "【天界書記官】登場摧毀敵方所有後台魔陷，至高神威！" },
+      { id: 205, name: "大天使長・梅塔特隆", rank: "Angel", stars: 8, atk: 3350, def: 2900, agitate: 0, cardType: "monster", eff: "king_storm", effText: "【天界書記官】登場摧毀敵方所有後台魔陷，至高神威！" },
       { id: 206, name: "神罰之雷", cardType: "trap", subType: "天界陷阱", eff: "trap_mirror", effText: "【天界蓋牌】惡魔宣告攻擊時降下神罰將其徹底淨化！" },
       { id: 207, name: "次元放逐陣", cardType: "trap", subType: "反擊陷阱", eff: "trap_exile_king", effText: "【敵方反擊】我方召喚 8★ 君王時自動觸發，將其放逐回牌組！" },
       { id: 208, name: "咒法反制結界", cardType: "trap", subType: "反擊陷阱", eff: "trap_counter_spell", effText: "【敵方反擊】我方發動魔法卡時自動觸發，使該魔法無效並扣 500 LP！" },
       { id: 302, name: "黑曜祭品石像", rank: "Relic", stars: 4, atk: 0, def: 2200, agitate: 0, cardType: "monster", eff: "none", effText: "【戰術聖物】由巨石與人力鍛造的祭品石像，可直接作為高星召喚祭品。" },
-      { id: 303, name: "墮天晨星・路西法撒旦", rank: "King", stars: 8, atk: 3900, def: 3300, agitate: 0, cardType: "monster", eff: "king_storm", effText: "【煉獄真身】燃盡九層地獄的晨星之焰，登場摧毀所有後台！" },
+      { id: 303, name: "墮天晨星・路西法撒旦", rank: "King", stars: 8, atk: 3500, def: 3000, agitate: 0, cardType: "monster", eff: "king_storm", effText: "【煉獄真身】燃盡九層地獄的晨星之焰，登場摧毀所有後台！" },
       { id: 304, name: "能天使・卡麥爾", rank: "Angel", stars: 6, atk: 2750, def: 2300, agitate: 0, cardType: "monster", eff: "pierce", effText: "【天界】神之戰士，附帶貫穿攻擊。" },
       { id: 305, name: "大天使・拉斐爾", rank: "Angel", stars: 6, atk: 2650, def: 2800, agitate: 0, cardType: "monster", eff: "summon_shield", effText: "【天界】治癒之光，登場獲得神聖護盾。" },
       { id: 306, name: "大天使・加百列", rank: "Angel", stars: 8, atk: 3350, def: 2800, agitate: 0, cardType: "monster", eff: "summon_debuff", effText: "【天界】審判號角，登場使敵方最強魔神 ATK -400。" },
-      { id: 307, name: "熾天使長・米迦勒", rank: "Angel", stars: 8, atk: 3750, def: 3200, agitate: 0, cardType: "monster", eff: "king_burn", effText: "【天界統帥】天火聖劍，擊破魔神再燒 800 LP。" },
-      { id: 308, name: "至高神座・無上造物主", rank: "Angel", stars: 8, atk: 3700, def: 3300, agitate: 0, cardType: "monster", eff: "king_storm", effText: "【創世法則】萬物起源之光，登場清空敵方後台。" },
-      { id: 309, name: "創世終焉・原初之光", rank: "Angel", stars: 8, atk: 4000, def: 3600, agitate: 0, cardType: "monster", eff: "king_burn", effText: "【終局神威】審判三界的終極光輝，擊破再燒 800 LP。" },
+      { id: 307, name: "熾天使長・米迦勒", rank: "Angel", stars: 8, atk: 3450, def: 3000, agitate: 0, cardType: "monster", eff: "king_burn", effText: "【天界統帥】天火聖劍，擊破魔神再燒 800 LP。" },
+      { id: 308, name: "至高神座・無上造物主", rank: "Angel", stars: 8, atk: 3450, def: 3100, agitate: 0, cardType: "monster", eff: "king_storm", effText: "【創世法則】萬物起源之光，登場清空敵方後台。" },
+      { id: 309, name: "創世終焉・原初之光", rank: "Angel", stars: 8, atk: 3600, def: 3200, agitate: 0, cardType: "monster", eff: "king_burn", effText: "【終局神威】審判三界的終極光輝，擊破再燒 800 LP。" },
       { id: 401, name: "迦南巨石盾衛", rank: "Mortal", stars: 4, atk: 1350, def: 2050, agitate: 0, cardType: "monster", eff: "summon_shield", effText: "【凡間】迦南重裝巨盾兵，登場自帶聖盾並掩護友軍。" },
       { id: 402, name: "推羅海蛇重裝兵", rank: "Mortal", stars: 4, atk: 1750, def: 1350, agitate: 0, cardType: "monster", eff: "pierce", effText: "【凡間】駕馭海蛇巨艦的腓尼基精銳，附帶守備貫穿。" },
       { id: 403, name: "阿努比斯神廟祭司", rank: "Mortal", stars: 4, atk: 1550, def: 1750, agitate: 0, cardType: "monster", eff: "summon_debuff", effText: "【凡間】冥神祭司，在場時散發威壓使我方全軍 ATK -250。" },
@@ -2577,24 +2582,34 @@
 
       const clone = { ...base, awakenLv: lv };
       if (clone.cardType === "monster") {
-        const statBonus = lv === 2 ? 200 : 450;
+        const statBonus = lv === 2 ? 150 : 300;
         clone.atk += statBonus;
         clone.def += statBonus;
         if (clone.agitate > 0) clone.agitate = Math.max(5, clone.agitate - (lv === 2 ? 5 : 10));
-        clone.effText = (lv === 2 ? "【煉獄覺醒】" : "【弑神覺醒・免攻陷】") + clone.effText;
+        clone.effText = (lv === 2 ? "【煉獄覺醒・能力強化】" : "【弑神覺醒・聖盾＋貫穿】") + clone.effText;
       } else {
-        clone.effText = (lv === 2 ? "【煉獄增幅+50%】" : "【弑神增幅+100%+1環】") + clone.effText;
+        clone.effText = (lv === 2 ? "【煉獄增幅+30%】" : "【弑神增幅+50%+1環】") + clone.effText;
       }
       return clone;
     }
 
     function getTemperedCost(card, targetLv) {
-      const mult = card.cardType === "monster" ? Math.max(1, Math.floor(card.stars / 3)) : 1.5;
-      const tierMult = targetLv === 2 ? 1 : 2.4;
+      const starTier = card.cardType === "monster" ? (card.stars >= 8 ? 3 : (card.stars >= 5 ? 2 : 1)) : 2;
+      if (targetLv === 2) {
+        return {
+          stone: 0,
+          wood: 0,
+          gold: 120 * starTier,
+          soulFire: 2 * starTier,
+          divineEssence: 0
+        };
+      }
       return {
-        stone: Math.floor(140 * mult * tierMult),
-        wood: Math.floor(110 * mult * tierMult),
-        gold: Math.floor(160 * mult * tierMult)
+        stone: 0,
+        wood: 0,
+        gold: 240 * starTier,
+        soulFire: 0,
+        divineEssence: 2 * starTier
       };
     }
 
@@ -2623,7 +2638,7 @@
       {
         id: "relic_bomb",
         name: "☄️ 煉獄爆裂火油",
-        desc: "決鬥開場天降隕石，直接炸毀敵方後台所有蓋牌並先制造成【1000 LP】傷害！",
+        desc: "決鬥開場天降隕石，隨機炸毀敵方【1 張蓋牌】並先制造成【500 LP】傷害（可削弱魔王次數盾）！",
         cost: { stone: 150, wood: 150, gold: 150, labor: 10 }
       }
     ];
@@ -2632,31 +2647,31 @@
     // 3. 三界奇觀建造（人間聖殿 / 地獄萬魔殿 / 天界通天塔）
     // ==========================================
     const TEMPLE_STAGES = [
-      { name: "階段一：摩利亞山基石與白大理石階", desc: "場地效果：【決鬥初始 LP 4000 → 5000】！", stone: 100, wood: 50, gold: 0, labor: 12, reqRank: null, reqCount: 0, reqLabel: "無爵位門檻" },
-      { name: "階段二：外院青銅燔祭壇與銅海洗濯盆", desc: "場地效果：【每場決鬥限 1 次，可發動「青銅神恩」免祭品召喚 5～6★ 魔神】！", stone: 260, wood: 160, gold: 130, labor: 28, reqRank: "Marquis", reqCount: 2, reqLabel: "需契約至少 2 柱【侯爵】" },
-      { name: "階段三：黎巴嫩香柏木聖所主體", desc: "場地效果：【起始手牌 4 → 5 張，且我方所有魔神 DEF +400】！", stone: 520, wood: 420, gold: 320, labor: 50, reqRank: "Prince", reqCount: 2, reqLabel: "需契約至少 2 柱【親王】" },
-      { name: "階段四：雅斤與波阿斯雙巨型青銅柱", desc: "場地效果：【每回合結束階段，自動淨化我方 10% 支配怨氣】！", stone: 900, wood: 720, gold: 580, labor: 75, reqRank: "Duke", reqCount: 3, reqLabel: "需契約至少 3 柱【公爵】" },
-      { name: "階段五：純金包覆至聖所與基路伯", desc: "場地效果：【70% 狂暴加成暴增至 ATK +800，且 3 環降臨僅需 2 環】！", stone: 1450, wood: 1200, gold: 1050, labor: 110, reqRank: "Duke", reqCount: 5, reqLabel: "需契約至少 5 柱【公爵】" },
-      { name: "階段六：舉行約櫃降臨大典（觸發終局反轉）", desc: "場地覺醒：【至聖所決戰中，發動封印環吸取敵方 600 LP，且 8★ 君王免疫神聖封印】！", stone: 2200, wood: 1850, gold: 1700, labor: 160, reqRank: "King", reqCount: 2, reqLabel: "需契約至少 2 柱【君王】" }
+      { name: "階段一：摩利亞山基石與白大理石階", desc: "人間場地：【人間界決鬥初始 LP 4000 → 5000】！", stone: 100, wood: 50, gold: 0, labor: 12, reqRank: null, reqCount: 0, reqLabel: "無爵位門檻" },
+      { name: "階段二：外院青銅燔祭壇與銅海洗濯盆", desc: "全三界通用：【每場決鬥限 1 次，可發動「青銅神恩」免祭品召喚 5～6★ 魔神】！", stone: 260, wood: 160, gold: 130, labor: 28, reqRank: "Marquis", reqCount: 2, reqLabel: "需契約至少 2 柱【侯爵】" },
+      { name: "階段三：黎巴嫩香柏木聖所主體", desc: "全三界起手 4→5 張；人間界額外賦予我方魔神 DEF +300！", stone: 520, wood: 420, gold: 320, labor: 50, reqRank: "Prince", reqCount: 2, reqLabel: "需契約至少 2 柱【親王】" },
+      { name: "階段四：雅斤與波阿斯雙巨型青銅柱", desc: "人間場地：【每回合結束階段，自動淨化我方 10% 支配怨氣】！", stone: 900, wood: 720, gold: 580, labor: 75, reqRank: "Duke", reqCount: 3, reqLabel: "需契約至少 3 柱【公爵】" },
+      { name: "階段五：純金包覆至聖所與基路伯", desc: "人間場地：【人間 70% 狂暴加成提升至 ATK +650，且 3 環降臨僅需 2 環】！", stone: 1450, wood: 1200, gold: 1050, labor: 110, reqRank: "Duke", reqCount: 5, reqLabel: "需契約至少 5 柱【公爵】" },
+      { name: "階段六：舉行約櫃降臨大典（觸發終局反轉）", desc: "人間覺醒：【至聖所決戰中，發動封印環吸取敵方 600 LP，且 8★ 君王免疫神聖封印】！", stone: 2200, wood: 1850, gold: 1700, labor: 160, reqRank: "King", reqCount: 2, reqLabel: "需契約至少 2 柱【君王】" }
     ];
 
 
     const HELL_STAGES = [
-      { name: "地獄一階：焦黑黑曜石深淵地基", desc: "煉獄場地：【所有決鬥初始 LP 額外 +1500】！", stone: 450, wood: 300, gold: 350, labor: 40, reqRank: null, reqCount: 0, reqLabel: "無爵位門檻" },
-      { name: "地獄二階：血祭燔祭深淵祭壇", desc: "煉獄場地：【地獄「🩸血祭召喚」消耗 LP 減半（僅需 500 / 1000 LP）】！", stone: 750, wood: 520, gold: 600, labor: 65, reqRank: "Duke", reqCount: 3, reqLabel: "需契約至少 3 柱【公爵】" },
-      { name: "地獄三階：熔岩心臟與不滅煉爐", desc: "煉獄場地：【100% 煉獄暴走吸血效率提升至 40%，且起手牌再 +1 張】！", stone: 1150, wood: 850, gold: 950, labor: 90, reqRank: "Duke", reqCount: 5, reqLabel: "需契約至少 5 柱【公爵】" },
-      { name: "地獄四階：雙柱魔導共鳴尖塔", desc: "煉獄場地：【「🔥雙柱聯攜奧義」僅需 1 封印環，且合體傷害提升至 80%】！", stone: 1650, wood: 1250, gold: 1400, labor: 120, reqRank: "King", reqCount: 2, reqLabel: "需契約至少 2 柱【君王】" },
-      { name: "地獄五階：暗金骸骨迴廊", desc: "煉獄場地：【我方全軍基礎 ATK 永久 +350，且 70% 狂暴額外 +400】！", stone: 2300, wood: 1800, gold: 2000, labor: 155, reqRank: "King", reqCount: 3, reqLabel: "需契約至少 3 柱【君王】" },
-      { name: "地獄六階：撒旦黑焰王座（開啟天界逆襲）", desc: "煉獄覺醒：【封印環上限提升至 4 枚，全軍獲得守備貫穿能力】！", stone: 3200, wood: 2600, gold: 2800, labor: 200, reqRank: "King", reqCount: 4, reqLabel: "需契約至少 4 柱【君王】" }
+      { name: "地獄一階：焦黑黑曜石深淵地基", desc: "煉獄場地：【地獄界決鬥初始 LP 4000 → 5200】！（零魂火門檻）", stone: 450, wood: 300, gold: 350, labor: 40, soulFire: 0, reqRank: null, reqCount: 0, reqLabel: "無爵位門檻" },
+      { name: "地獄二階：血祭燔祭深淵祭壇", desc: "煉獄場地：【地獄「🩸血祭召喚」消耗 LP 減半（僅需 500 / 1000 LP）】！", stone: 700, wood: 480, gold: 550, labor: 60, soulFire: 3, reqRank: "Duke", reqCount: 3, reqLabel: "需契約至少 3 柱【公爵】" },
+      { name: "地獄三階：熔岩心臟與不滅煉爐", desc: "全三界起手再 +1 張；地獄 100% 煉獄暴走吸血效率提升至 40%！", stone: 1050, wood: 750, gold: 850, labor: 85, soulFire: 6, reqRank: "Duke", reqCount: 5, reqLabel: "需契約至少 5 柱【公爵】" },
+      { name: "地獄四階：雙柱魔導共鳴尖塔", desc: "煉獄場地：【「🔥雙柱聯攜奧義」僅需 1 封印環，且合體傷害提升至 70%（可破魔王次數盾）】！", stone: 1450, wood: 1100, gold: 1200, labor: 110, soulFire: 9, reqRank: "King", reqCount: 2, reqLabel: "需契約至少 2 柱【君王】" },
+      { name: "地獄五階：暗金骸骨迴廊", desc: "煉獄場地：【地獄界我方全軍基礎 ATK +250，且 70% 狂暴提升至 +650】！", stone: 1950, wood: 1500, gold: 1650, labor: 140, soulFire: 12, reqRank: "King", reqCount: 3, reqLabel: "需契約至少 3 柱【君王】" },
+      { name: "地獄六階：撒旦黑焰王座（開啟天界逆襲）", desc: "煉獄覺醒：【地獄界封印環上限提升至 4 枚，全軍獲得守備貫穿能力】！", stone: 2600, wood: 2100, gold: 2200, labor: 175, soulFire: 16, reqRank: "King", reqCount: 4, reqLabel: "需契約至少 4 柱【君王】" }
     ];
 
     const HEAVEN_STAGES = [
-      { name: "天界一階：雲海破界白玉基座", desc: "通天塔靈氣：【所有決鬥初始 LP 額外 +2000】！", stone: 1200, wood: 950, gold: 1100, labor: 80, reqRank: null, reqCount: 0, reqLabel: "無爵位門檻" },
-      { name: "天界二階：弑神魔導反制迴路", desc: "通天塔靈氣：【我方所有魔神完全免疫敵方減攻（Debuff）效果】！", stone: 1800, wood: 1450, gold: 1650, labor: 115, reqRank: "King", reqCount: 3, reqLabel: "需契約至少 3 柱【君王】" },
-      { name: "天界三階：七宗罪共鳴方尖碑", desc: "通天塔靈氣：【我方每回合開始自動獲得 +1 枚封印環】！", stone: 2500, wood: 2100, gold: 2300, labor: 150, reqRank: "King", reqCount: 4, reqLabel: "需契約至少 4 柱【君王】" },
-      { name: "天界四階：破律聖痕鎖鏈陣", desc: "通天塔靈氣：【天界「神聖戒律」的單次傷害上限放寬至 4000，且治療量減半】！", stone: 3400, wood: 2800, gold: 3100, labor: 190, reqRank: "King", reqCount: 5, reqLabel: "需契約至少 5 柱【君王】" },
-      { name: "天界五階：諸神黃昏星辰環", desc: "通天塔靈氣：【我方全軍基礎 ATK +500 / DEF +500】！", stone: 4500, wood: 3800, gold: 4200, labor: 240, reqRank: "King", reqCount: 6, reqLabel: "需契約至少 6 柱【君王】" },
-      { name: "天界六階：至高天弑神王座（終局完全體）", desc: "通天塔覺醒：【【暴食】與【傲慢】原罪權能消耗減半，迎戰創世神座】！", stone: 6000, wood: 5000, gold: 5500, labor: 300, reqRank: "King", reqCount: 7, reqLabel: "需契約至少 7 柱【君王】" }
+      { name: "天界一階：雲海破界白玉基座", desc: "通天塔靈氣：【天界決鬥初始 LP 4000 → 5500】！（零神粹門檻）", stone: 950, wood: 750, gold: 900, labor: 70, divineEssence: 0, reqRank: null, reqCount: 0, reqLabel: "無爵位門檻" },
+      { name: "天界二階：弑神魔導反制迴路", desc: "通天塔靈氣：【天界決鬥中，我方所有魔神免疫敵方減攻（Debuff）效果】！", stone: 1400, wood: 1150, gold: 1300, labor: 95, divineEssence: 3, reqRank: "King", reqCount: 3, reqLabel: "需契約至少 3 柱【君王】" },
+      { name: "天界三階：七宗罪共鳴方尖碑", desc: "通天塔靈氣：【天界每回合開始自動獲得 +1 枚原罪能量】！", stone: 1950, wood: 1600, gold: 1800, labor: 125, divineEssence: 6, reqRank: "King", reqCount: 4, reqLabel: "需契約至少 4 柱【君王】" },
+      { name: "天界四階：破律聖痕鎖鏈陣", desc: "通天塔靈氣：【天界「神聖戒律」單次傷害上限放寬至 3200，且敵方戒律治療減半】！", stone: 2600, wood: 2150, gold: 2400, labor: 160, divineEssence: 9, reqRank: "King", reqCount: 5, reqLabel: "需契約至少 5 柱【君王】" },
+      { name: "天界五階：諸神黃昏星辰環", desc: "通天塔靈氣：【天界我方全軍基礎 ATK +350 / DEF +350】！", stone: 3400, wood: 2800, gold: 3100, labor: 200, divineEssence: 12, reqRank: "King", reqCount: 6, reqLabel: "需契約至少 6 柱【君王】" },
+      { name: "天界六階：至高天弑神王座（終局完全體）", desc: "通天塔覺醒：【【傲慢】原罪權能消耗減半，全力迎戰創世神座】！", stone: 4500, wood: 3800, gold: 4200, labor: 250, divineEssence: 16, reqRank: "King", reqCount: 7, reqLabel: "需契約至少 7 柱【君王】" }
     ];
 
     // ==========================================
@@ -2688,41 +2703,41 @@
 
 
     const INFERNO_REGIONS = [
-      { id: "h1", realm: "inferno", name: "邊獄焦土・失控先鋒", icon: "🔥", x: 15, y: 74, diff: "★☆☆☆☆ 地獄深淵 1/6", domainName: "🔥 焦土餘燼", domainRule: "【地獄規則】取消100%自爆，改為150%煉獄暴走(全軍貫穿+吸血)！本關每次召喚怨氣+15%。", desc: "墜入地獄後的第一道防線，失控的叛逃侯爵正率領焦土魔獸圍攻你。", bossName: "叛逃侯爵・安德拉斯", bossLp: 6800, startTraps: [107, 110], aiDeckIds: [7, 7, 25, 57, 63, 16, 23, 52, 64, 103, 107, 101], loot: { stone: 380, wood: 280, gold: 360, labor: 45 } },
-      { id: "h2", realm: "inferno", name: "貪婪熔金庫・瑪門之門", icon: "💰", x: 30, y: 42, diff: "★★☆☆☆ 地獄深淵 2/6", domainName: "🪙 熔金貪婪結界", domainRule: "【地獄規則】雙方每回合多抽 1 張牌，但結束階段手牌超過 5 張每張扣 400 LP！", desc: "黃金熔岩奔流的貪婪地獄，善用血祭召喚快速傾瀉手牌！", bossName: "貪婪君王・派蒙", bossLp: 7400, startTraps: [208, 107], aiDeckIds: [5, 27, 35, 44, 58, 6, 18, 9, 20, 101, 102, 107], loot: { stone: 460, wood: 350, gold: 580, labor: 55 } },
-      { id: "h3", realm: "inferno", name: "暴怒血海・阿斯莫德殿", icon: "🩸", x: 48, y: 72, diff: "★★★☆☆ 地獄深淵 3/6", domainName: "🩸 沸騰血海", domainRule: "【地獄規則】全場怪獸強制表側攻擊表示，且戰鬥差額傷害 1.5 倍！", desc: "狂怒之王阿斯莫德盤踞的血海競技場，唯有比他更狂暴的煉獄攻勢才能勝出。", bossName: "狂怒君王・阿斯莫德", bossLp: 8000, startTraps: [110, 107], aiDeckIds: [7, 14, 35, 48, 63, 16, 28, 32, 32, 103, 107, 101], loot: { stone: 580, wood: 460, gold: 650, labor: 68 } },
-      { id: "h4", realm: "inferno", name: "永夜迷宮・彼列黑塔", icon: "🗼", x: 62, y: 34, diff: "★★★★☆ 地獄深淵 4/6", domainName: "🌑 永夜不滅結界", domainRule: "【地獄規則】敵方怪獸免疫效果破壞，且每次發動魔法敵方全軍 ATK +250。", desc: "無主之王彼列的黑曜石迷宮，必須靠純粹的戰鬥力與雙柱聯攜奧義正面擊潰！", bossName: "無主君王・彼列", bossLp: 8600, startTraps: [207, 208], aiDeckIds: [17, 24, 43, 59, 65, 8, 29, 68, 68, 104, 107, 109], loot: { stone: 720, wood: 580, gold: 780, labor: 82 } },
-      { id: "h5", realm: "inferno", name: "叛逆雙王殿・巴力王座", icon: "👑", x: 78, y: 58, diff: "★★★★★ 地獄深淵 5/6", domainName: "⚡ 霸王雷獄", domainRule: "【地獄規則】每回合結束階段，炸毀雙方場上攻擊力最低的 1 隻怪獸！", desc: "昔日首席魔神王巴力在此阻攔，保住你的高星主力並祭出聯攜奧義！", bossName: "東方魔神王・巴力", bossLp: 9200, startTraps: [207, 110], aiDeckIds: [4, 7, 35, 39, 66, 15, 1, 1, 13, 101, 103, 109], loot: { stone: 900, wood: 750, gold: 960, labor: 100 } },
+      { id: "h1", realm: "inferno", name: "邊獄焦土・失控先鋒", icon: "🔥", x: 15, y: 74, diff: "★☆☆☆☆ 地獄深淵 1/6", domainName: "🔥 焦土餘燼", domainRule: "【地獄規則】取消100%自爆，改為150%煉獄暴走(全軍貫穿+吸血)！本關每次召喚怨氣+15%。", desc: "墜入地獄後的第一道防線（無門檻刷取🔥深淵魂火），失控的叛逃侯爵正率領焦土魔獸圍攻你。", bossName: "叛逃侯爵・安德拉斯", bossLp: 4600, startTraps: [107], aiDeckIds: [7, 7, 25, 57, 63, 16, 23, 52, 64, 103, 107, 101], loot: { stone: 380, wood: 280, gold: 360, labor: 45, soulFire: 2 } },
+      { id: "h2", realm: "inferno", name: "貪婪熔金庫・瑪門之門", icon: "💰", x: 30, y: 42, diff: "★★☆☆☆ 地獄深淵 2/6", domainName: "🪙 熔金貪婪結界", domainRule: "【地獄規則】雙方每回合多抽 1 張牌，但結束階段手牌超過 5 張每張扣 400 LP！", desc: "黃金熔岩奔流的貪婪地獄，善用血祭召喚快速傾瀉手牌！", bossName: "貪婪君王・派蒙", bossLp: 5000, startTraps: [208, 107], aiDeckIds: [5, 27, 35, 44, 58, 6, 18, 9, 20, 101, 102, 107], loot: { stone: 460, wood: 350, gold: 580, labor: 55, soulFire: 3 } },
+      { id: "h3", realm: "inferno", name: "暴怒血海・阿斯莫德殿", icon: "🩸", x: 48, y: 72, diff: "★★★☆☆ 地獄深淵 3/6", domainName: "🩸 沸騰血海", domainRule: "【地獄規則】全場怪獸強制表側攻擊表示，且戰鬥差額傷害 1.5 倍！", desc: "狂怒之王阿斯莫德盤踞的血海競技場，唯有比他更狂暴的煉獄攻勢才能勝出。", bossName: "狂怒君王・阿斯莫德", bossLp: 5400, startTraps: [110, 107], aiDeckIds: [7, 14, 35, 48, 63, 16, 28, 32, 32, 103, 107, 101], loot: { stone: 580, wood: 460, gold: 650, labor: 68, soulFire: 4 } },
+      { id: "h4", realm: "inferno", name: "永夜迷宮・彼列黑塔", icon: "🗼", x: 62, y: 34, diff: "★★★★☆ 地獄深淵 4/6", domainName: "🌑 永夜不滅結界", domainRule: "【地獄規則】敵方怪獸免疫效果破壞，且每次發動魔法敵方全軍 ATK +250。", desc: "無主之王彼列的黑曜石迷宮，必須靠純粹的戰鬥力與雙柱聯攜奧義正面擊潰！", bossName: "無主君王・彼列", bossLp: 5800, startTraps: [207, 208], aiDeckIds: [17, 24, 43, 59, 65, 8, 29, 68, 68, 104, 107, 109], loot: { stone: 720, wood: 580, gold: 780, labor: 82, soulFire: 5 } },
+      { id: "h5", realm: "inferno", name: "叛逆雙王殿・巴力王座", icon: "👑", x: 78, y: 58, diff: "★★★★★ 地獄深淵 5/6", domainName: "⚡ 霸王雷獄", domainRule: "【地獄規則】每回合結束階段，炸毀雙方場上攻擊力最低的 1 隻怪獸！主將自帶 1 層煉獄次數盾。", desc: "昔日首席魔神王巴力在此阻攔，保住你的高星主力並祭出聯攜奧義！", bossName: "東方魔神王・巴力", bossLp: 6200, bossHitShield: 1, startTraps: [207, 110], aiDeckIds: [4, 7, 35, 39, 66, 15, 1, 1, 13, 101, 103, 109], loot: { stone: 900, wood: 750, gold: 960, labor: 100, soulFire: 6 } },
       {
         id: "h_boss", realm: "inferno", name: "第九層寒冰獄・撒旦王座", icon: "😈", x: 86, y: 24,
-        diff: "💀 地獄終局（雙階段晨星覺醒）",
+        diff: "💀 地獄終局（雙階段＋次數盾）",
         domainName: "❄️ 絕對零度與晨星黑焰",
-        domainRule: "【撒旦領域】每回合凍結我方 1 隻非君王怪獸；擊破第一形態後覺醒為【墮天晨星・路西法撒旦】！",
+        domainRule: "【撒旦領域】每回合凍結 1 隻非君王怪獸；覺醒二階【路西法撒旦】附帶 2 層煉獄次數盾（多段攻擊／聯攜奧義／灼燒均可破盾）！",
         desc: "地獄最深處的寒冰王座！擊敗大惡魔撒旦，奪取煉獄王冠並收服撒旦加入牌組！",
-        bossName: "大惡魔・撒旦", bossLp: 10000,
+        bossName: "大惡魔・撒旦", bossLp: 6500, bossHitShield: 1,
         startTraps: [207, 208],
         aiDeckIds: [7, 25, 35, 43, 63, 29, 32, 68, 301, 101, 103, 109],
-        loot: { stone: 1800, wood: 1500, gold: 2000, labor: 180 },
+        loot: { stone: 1800, wood: 1500, gold: 2000, labor: 180, soulFire: 12 },
         isHellBoss: true
       }
     ];
 
     const CELESTIA_REGIONS = [
-      { id: "c1", realm: "celestia", name: "第一重天・雲海星門", icon: "☁️", x: 16, y: 72, diff: "★★★★★ 天界聖域 1/5", domainName: "⚖️ 戒律一：沉默聖域", decreeType: "odd_no_spell", domainRule: "【神聖戒律】奇數回合（T1, T3, T5...）禁止發動任何魔法卡！天界怨氣滿100%觸發天罰淨化。", desc: "通天塔刺破雲海的第一道天門，能天使卡麥爾以沉默戒律封鎖咒法。", bossName: "能天使・卡麥爾", bossLp: 9500, startTraps: [206, 208], aiDeckIds: [201, 201, 202, 202, 202, 203, 304, 304, 305, 105, 107, 206], loot: { stone: 1100, wood: 900, gold: 1200, labor: 110 } },
-      { id: "c2", realm: "celestia", name: "第三重天・治癒聖泉殿", icon: "⛲", x: 34, y: 46, diff: "★★★★★ 天界聖域 2/5", domainName: "⚖️ 戒律二：不滅聖光", decreeType: "heal_and_cap", domainRule: "【神聖戒律】敵方每回合結束恢復 800 LP，且我方單次戰鬥傷害上限為 2400！", desc: "大天使拉斐爾鎮守的聖泉神殿，善用【1環·暴食】直接吞噬天使打破持久戰！", bossName: "大天使・拉斐爾", bossLp: 10500, startTraps: [206, 108], aiDeckIds: [201, 201, 202, 202, 202, 203, 305, 305, 306, 105, 108, 206], loot: { stone: 1350, wood: 1150, gold: 1450, labor: 130 } },
-      { id: "c3", realm: "celestia", name: "第五重天・神諭審判庭", icon: "📯", x: 54, y: 66, diff: "★★★★★★ 天界聖域 3/5", domainName: "⚖️ 戒律三：威壓審判", decreeType: "king_sick", domainRule: "【神聖戒律】我方 8★ 君王級魔神在召喚登場的當回合無法發動攻擊！可用【2環·傲慢】破除。", desc: "吹響末日號角的大天使加百列，利用時間差戒律限制我方君王爆發。", bossName: "大天使・加百列", bossLp: 11500, startTraps: [207, 206], aiDeckIds: [201, 201, 201, 202, 202, 203, 304, 306, 306, 101, 107, 206], loot: { stone: 1650, wood: 1400, gold: 1750, labor: 155 } },
-      { id: "c4", realm: "celestia", name: "第七重天・天軍統帥府", icon: "🗡️", x: 70, y: 34, diff: "★★★★★★ 天界聖域 4/5", domainName: "⚖️ 戒律四：不屈聖盾", decreeType: "first_shield", domainRule: "【神聖戒律】敵方所有天使登場時自動獲得一次「破壞免疫聖盾」！", desc: "天界最強戰神米迦勒親自率軍迎戰，熾熱炎劍足以斬斷一切魔神！", bossName: "熾天使長・米迦勒", bossLp: 12500, startTraps: [206, 207], aiDeckIds: [201, 201, 202, 202, 202, 204, 205, 307, 307, 103, 107, 206], loot: { stone: 2000, wood: 1750, gold: 2200, labor: 185 } },
+      { id: "c1", realm: "celestia", name: "第一重天・雲海星門", icon: "☁️", x: 16, y: 72, diff: "★★★★★ 天界聖域 1/5", domainName: "⚖️ 戒律一：沉默聖域", decreeType: "odd_no_spell", domainRule: "【神聖戒律】奇數回合（T1, T3, T5...）禁止發動任何魔法卡！天界怨氣滿100%觸發天罰淨化。", desc: "通天塔刺破雲海的第一道天門（無門檻刷取✨原初神粹），能天使卡麥爾以沉默戒律封鎖咒法。", bossName: "能天使・卡麥爾", bossLp: 5200, startTraps: [206], aiDeckIds: [201, 201, 202, 202, 202, 203, 304, 304, 305, 105, 107, 206], loot: { stone: 1100, wood: 900, gold: 1200, labor: 110, divineEssence: 2 } },
+      { id: "c2", realm: "celestia", name: "第三重天・治癒聖泉殿", icon: "⛲", x: 34, y: 46, diff: "★★★★★ 天界聖域 2/5", domainName: "⚖️ 戒律二：不滅聖光", decreeType: "heal_and_cap", domainRule: "【神聖戒律】敵方每回合結束恢復 500 LP，且我方單次戰鬥傷害上限為 2200！", desc: "大天使拉斐爾鎮守的聖泉神殿，善用【1環·暴食】直接吞噬天使打破持久戰！", bossName: "大天使・拉斐爾", bossLp: 5800, startTraps: [206, 108], aiDeckIds: [201, 201, 202, 202, 202, 203, 305, 305, 306, 105, 108, 206], loot: { stone: 1350, wood: 1150, gold: 1450, labor: 130, divineEssence: 3 } },
+      { id: "c3", realm: "celestia", name: "第五重天・神諭審判庭", icon: "📯", x: 54, y: 66, diff: "★★★★★★ 天界聖域 3/5", domainName: "⚖️ 戒律三：威壓審判", decreeType: "king_sick", domainRule: "【神聖戒律】我方 8★ 君王級魔神在召喚登場的當回合無法發動攻擊！可用【2環·傲慢】破除。", desc: "吹響末日號角的大天使加百列，利用時間差戒律限制我方君王爆發。", bossName: "大天使・加百列", bossLp: 6400, bossHitShield: 1, startTraps: [207, 206], aiDeckIds: [201, 201, 201, 202, 202, 203, 304, 306, 306, 101, 107, 206], loot: { stone: 1650, wood: 1400, gold: 1750, labor: 155, divineEssence: 4 } },
+      { id: "c4", realm: "celestia", name: "第七重天・天軍統帥府", icon: "🗡️", x: 70, y: 34, diff: "★★★★★★ 天界聖域 4/5", domainName: "⚖️ 戒律四：不屈聖盾", decreeType: "first_shield", domainRule: "【神聖戒律】敵方所有天使登場時自動獲得一次「破壞免疫聖盾」，主將自帶 1 層神聖次數盾！", desc: "天界最強戰神米迦勒親自率軍迎戰，熾熱炎劍足以斬斷一切魔神！", bossName: "熾天使長・米迦勒", bossLp: 7000, bossHitShield: 1, startTraps: [206, 207], aiDeckIds: [201, 201, 202, 202, 202, 204, 205, 307, 307, 103, 107, 206], loot: { stone: 2000, wood: 1750, gold: 2200, labor: 185, divineEssence: 5 } },
       {
         id: "c_boss", realm: "celestia", name: "至高天・神之王座", icon: "👁️", x: 84, y: 18,
-        diff: "💀 創世終局（雙階段弑神最終戰）",
+        diff: "💀 創世終局（雙階段＋創世次數盾）",
         domainName: "⚖️ 至高戒律：創世絕對法則",
         decreeType: "supreme_law",
-        domainRule: "【至高戒律】奇數回合禁魔法＋敵方回合結束回 800 LP！擊破第一形態將覺醒【創世終焉・原初之光】！",
+        domainRule: "【至高戒律】奇數回合禁魔法＋敵方每回合回 500 LP！一階帶 2 層神聖次數盾，二階【原初之光】帶 3 層創世次數盾！",
         desc: "三界征途的最終終點！在無上造物主的王座前，以七宗罪與七十二柱魔神改寫宇宙命運！",
-        bossName: "至高神座・無上造物主", bossLp: 13500,
+        bossName: "至高神座・無上造物主", bossLp: 7500, bossHitShield: 2,
         startTraps: [206, 207],
         aiDeckIds: [201, 201, 202, 202, 202, 204, 306, 307, 308, 101, 206, 207],
-        loot: { stone: 5000, wood: 5000, gold: 5000, labor: 500 },
+        loot: { stone: 5000, wood: 5000, gold: 5000, labor: 500, divineEssence: 12 },
         isHeavenBoss: true
       }
     ];
@@ -2983,6 +2998,8 @@
       wood: 20,
       gold: 60,
       labor: 5,
+      soulFire: 0,
+      divineEssence: 0,
       templeStage: 0,
       hellStage: 0,
       heavenStage: 0,
@@ -3013,6 +3030,8 @@
         if (state.isTempleRuined && !state.unlockedRealms.includes("inferno")) state.unlockedRealms.push("inferno");
         if (typeof state.hellStage !== "number") state.hellStage = 0;
         if (typeof state.heavenStage !== "number") state.heavenStage = 0;
+        if (typeof state.soulFire !== "number") state.soulFire = 0;
+        if (typeof state.divineEssence !== "number") state.divineEssence = 0;
         if (!state.cardLevels) state.cardLevels = {};
         if (!state.relicInventory) state.relicInventory = { relic_golem: 0, relic_incense: 0, relic_dice: 0, relic_bomb: 0 };
         if (!Array.isArray(state.equippedRelics)) state.equippedRelics = [];
@@ -3037,6 +3056,23 @@
     }
 
     function openGalleryModal() {
+      const holder = document.getElementById("patch-gallery-items");
+      if (holder && typeof CUSTOM_CUTSCENES !== "undefined") {
+        const keys = Object.keys(CUSTOM_CUTSCENES);
+        holder.innerHTML = keys.map(k => {
+          const cs = CUSTOM_CUTSCENES[k];
+          const cls = cs.theme === "danger" ? "danger" : (cs.theme === "holy" ? "holy" : "");
+          return `
+            <div class="rule-item ${cls}" style="display:flex; justify-content:space-between; align-items:center; margin:0;">
+              <div>
+                <strong>✨ ${cs.title || k}</strong><br>
+                <span style="font-size:0.73rem;">${cs.subtitle || "擴充補丁劇情"}</span>
+              </div>
+              <button class="btn btn-sm btn-purple" onclick="closeGalleryModal(); playCustomCutscene('${k}', true);">▶ 播放</button>
+            </div>
+          `;
+        }).join("");
+      }
       document.getElementById("gallery-modal").classList.remove("hidden");
     }
 
@@ -3180,6 +3216,16 @@
     }
 
     function generateCardSigilSVG(card, size = 40, fullArt = false) {
+      // 0. 補丁自訂立繪／精靈圖掛鉤（支援單張圖檔或精靈圖裁切）
+      if (card && card.customArt) {
+        if (typeof card.customArt === "string") {
+          return `<div style="width:${fullArt ? "100%" : size + "px"};height:${fullArt ? "100%" : size + "px"};border-radius:4px;background:#0b0705 url('${card.customArt}') center/cover no-repeat;flex-shrink:0;"></div>`;
+        }
+        if (card.customArt.sheet) {
+          return renderSpriteFrame(card.customArt.sheet, card.customArt.cols || 1, card.customArt.rows || 1, card.customArt.idx || 1, size, fullArt);
+        }
+      }
+
       // 1. 72 柱魔神怪獸（ID 1 ~ 72）
       if (card.cardType === "monster" && card.id >= 1 && card.id <= 72) {
         const isSecondSheet = card.id > 36;
@@ -5111,62 +5157,67 @@
       return a;
     }
 
-    function getPlayerStartLp() {
-      let lp = state.templeStage >= 1 ? 5000 : 4000;
-      if (state.hellStage >= 1) lp += 1500;
-      if (state.heavenStage >= 1) lp += 2000;
-      return lp;
+    function getPlayerStartLp(realmOverride) {
+      const realm = realmOverride || (duel ? duel.realm : (state.activeWonderTab || "mortal"));
+      if (realm === "inferno") return state.hellStage >= 1 ? 5200 : 4000;
+      if (realm === "celestia") return state.heavenStage >= 1 ? 5500 : 4000;
+      return state.templeStage >= 1 ? 5000 : 4000;
     }
 
     function getPlayerStartHand() {
+      // 起手牌屬於操作手感紅利，全三界保留
       let h = state.templeStage >= 3 ? 5 : 4;
       if (state.hellStage >= 3) h += 1;
       return h;
     }
 
-    function getTempleDefBonus() {
-      let d = state.templeStage >= 3 ? 400 : 0;
-      if (state.heavenStage >= 5) d += 500;
-      return d;
+    function getTempleDefBonus(realmOverride) {
+      const realm = realmOverride || (duel ? duel.realm : (state.activeWonderTab || "mortal"));
+      if (realm === "mortal") return state.templeStage >= 3 ? 300 : 0;
+      if (realm === "celestia") return state.heavenStage >= 5 ? 350 : 0;
+      return 0;
     }
 
-    function getGlobalAtkBonus() {
-      let a = 0;
-      if (state.hellStage >= 5) a += 350;
-      if (state.heavenStage >= 5) a += 500;
-      return a;
+    function getGlobalAtkBonus(realmOverride) {
+      const realm = realmOverride || (duel ? duel.realm : (state.activeWonderTab || "mortal"));
+      if (realm === "inferno") return state.hellStage >= 5 ? 250 : 0;
+      if (realm === "celestia") return state.heavenStage >= 5 ? 350 : 0;
+      return 0;
     }
 
-    function getBerserkAtkBonus() {
-      let b = state.templeStage >= 5 ? 800 : 500;
-      if (state.hellStage >= 5) b += 400;
-      return b;
+    function getBerserkAtkBonus(realmOverride) {
+      const realm = realmOverride || (duel ? duel.realm : (state.activeWonderTab || "mortal"));
+      if (realm === "mortal") return state.templeStage >= 5 ? 650 : 400;
+      if (realm === "inferno") return state.hellStage >= 5 ? 650 : 400;
+      return 400;
     }
 
     function getEffectiveAtk(unit, isPlayer) {
       if (!unit) return 0;
+      const realm = duel ? duel.realm : "mortal";
       let mod = unit.atkMod || 0;
-      // 通天塔二階：我方魔神免疫減攻效果
-      if (isPlayer && state.heavenStage >= 2 && mod < 0) mod = 0;
-      let val = unit.card.atk + mod + (isPlayer ? getGlobalAtkBonus() : 0);
-      // 敵軍【🔮 威壓光環】：存活在場時使我方全軍 ATK -250（同類不疊加，通天塔二階免疫）
-      if (isPlayer && duel && state.heavenStage < 2) {
+      // 通天塔二階：天界決鬥中我方魔神免疫減攻效果
+      if (isPlayer && realm === "celestia" && state.heavenStage >= 2 && mod < 0) mod = 0;
+      let val = unit.card.atk + mod + (isPlayer ? getGlobalAtkBonus(realm) : 0);
+      // 敵軍【🔮 威壓光環】：存活在場時使我方全軍 ATK -250（同類不疊加，天界通天塔二階免疫）
+      if (isPlayer && duel && !(realm === "celestia" && state.heavenStage >= 2)) {
         const hasEnemyAura = duel.enemyMonsters.some(m => m && !m.faceDown && getEnemyCardRole(m.card)?.id === "aura_debuff");
         if (hasEnemyAura) val -= 250;
       }
       if (unit.doubleAtkTurn === (duel && duel.turn)) val += 1200;
       if (isPlayer && duel && duel.wrath >= 70) {
-        val += getBerserkAtkBonus();
+        val += getBerserkAtkBonus(realm);
         if (unit.card.eff === "berserk_boost") val += 400;
-        if (duel.wrath >= 100) val += 400; // 煉獄 100%+ 額外增傷
+        if (realm === "inferno" && duel.wrath >= 100) val += 250; // 煉獄 100%+ 額外增傷
       }
       return Math.max(0, val);
     }
 
     function getEffectiveDef(unit, isPlayer) {
       if (!unit) return 0;
+      const realm = duel ? duel.realm : "mortal";
       let val = unit.card.def + (unit.defMod || 0);
-      if (isPlayer) val += getTempleDefBonus();
+      if (isPlayer) val += getTempleDefBonus(realm);
       if (!isPlayer && duel && duel.region.id === "r1" && unit.pos === "DEF") val += 400;
       return Math.max(0, val);
     }
@@ -5189,7 +5240,7 @@
       const realm = region.realm || "mortal";
       const pDeck = shuffleArray(state.deckIds.map((id, i) => ({ ...getCardData(id), uid: `p_${id}_${i}` })));
       const eDeck = shuffleArray(region.aiDeckIds.map((id, i) => ({ ...getCardData(id), uid: `e_${id}_${i}` })));
-      const startLp = getPlayerStartLp();
+      const startLp = getPlayerStartLp(realm);
 
       // 消耗並啟動已裝備的戰術聖物
       const activeRelics = [];
@@ -5211,6 +5262,7 @@
         playerMaxLp: startLp,
         enemyLp: region.bossLp,
         enemyMaxLp: region.bossLp,
+        bossHitShield: region.bossHitShield || 0,
         bossPhase2Triggered: false,
         bossAwakenedTurn: 0,
         bossBarrierUsedTurn: 0,
@@ -5287,10 +5339,16 @@
       if (activeRelics.includes("relic_bomb")) {
         setTimeout(() => {
           if (!duel) return;
-          for (let i = 0; i < duel.enemySpells.length; i++) duel.enemySpells[i] = null;
+          const occupiedTraps = duel.enemySpells.map((s, i) => s ? i : -1).filter(i => i !== -1);
+          let trapMsg = "";
+          if (occupiedTraps.length > 0) {
+            const pick = occupiedTraps[Math.floor(Math.random() * occupiedTraps.length)];
+            duel.enemySpells[pick] = null;
+            trapMsg = "炸毀敵方 1 張蓋牌並";
+          }
           const eCenter = BattleVFX.getElCenter("#enemy-monsters-row");
-          BattleVFX.meteor(eCenter.x, eCenter.y, { scale: 1.3 });
-          dealLpDamage("enemy", 1000, "☄️ 聖物【煉獄爆裂火油】炸毀敵後台並造成 1000 傷害！");
+          BattleVFX.meteor(eCenter.x, eCenter.y, { scale: 1.25 });
+          dealLpDamage("enemy", 500, `☄️ 聖物【煉獄爆裂火油】${trapMsg}先制造成 500 傷害！`);
           updateDuelUI();
         }, 350);
       }
@@ -5476,7 +5534,7 @@
           duel.selectedHandIdx = null;
 
           const counterIdx = duel.enemySpells.findIndex(s => s && s.faceDown && s.card.eff === "trap_counter_spell");
-          if (counterIdx !== -1 && (card.awakenLv || 1) < 3) {
+          if (counterIdx !== -1) {
             duel.enemySpells[counterIdx] = null;
             playSfx("trap");
             dealLpDamage("player", 500, "🔮 敵方發動反擊陷阱【咒法反制結界】！魔法無效並扣 500 LP！");
@@ -5502,7 +5560,7 @@
         return;
       }
 
-      const actualCost = (cost === 3 && state.templeStage >= 5) ? 2 : cost;
+      const actualCost = (cost === 3 && duel.realm === "mortal" && state.templeStage >= 5) ? 2 : cost;
       if (duel.seals < actualCost) return;
 
       const triggerArkDrain = () => {
@@ -5567,7 +5625,7 @@
 
       duel.seals -= reqSeals;
       const sumAtk = activeUnits[0].card.atk + activeUnits[1].card.atk;
-      const mult = state.hellStage >= 4 ? 0.8 : 0.5;
+      const mult = state.hellStage >= 4 ? 0.7 : 0.5;
       const dmg = Math.floor(sumAtk * mult);
 
       triggerDestinyCutIn(activeUnits[0].card, activeUnits[1].card, "雙柱煉獄共鳴・合體隕石滅殺！");
@@ -5672,7 +5730,7 @@
         summonedTurn: duel.turn,
         changedPosTurn: duel.turn,
         attacksLeft: (isPlayer && card.id === 1 && duel && duel.wrath >= 70) ? 2 : 1,
-        shield: !!bonusOpts.shield || (!isPlayer && isHeavenlyDecreeActive("first_shield")),
+        shield: !!bonusOpts.shield || (isPlayer && awakenLv >= 3) || (!isPlayer && isHeavenlyDecreeActive("first_shield")),
         holySealed: false,
         equipLocked: false,
         destroyAtEnd: false,
@@ -5800,6 +5858,11 @@
       const oppMonsters = isP ? duel.enemyMonsters : duel.playerMonsters;
       const oppSpells = isP ? duel.enemySpells : duel.playerSpells;
 
+      if (typeof CUSTOM_EFFECTS !== "undefined" && CUSTOM_EFFECTS[eff]) {
+        try { CUSTOM_EFFECTS[eff]({ side, isPlayer: isP, unit, card: unit.card, lv, duel, state, api: window.SolomonAPI }); } catch (e) { console.error("Patch effect error:", eff, e); }
+        return;
+      }
+
       if (eff === "summon_draw1") {
         drawToHand(side, lv >= 2 ? 2 : 1);
         let extraMsg = "";
@@ -5900,7 +5963,7 @@
     function activateSpellCard(side, card) {
       const isP = side === "player";
       const lv = isP ? (card.awakenLv || 1) : 1;
-      const mult = lv === 1 ? 1 : (lv === 2 ? 1.5 : 2);
+      const mult = lv === 1 ? 1 : (lv === 2 ? 1.3 : 1.5);
       const boardCenter = BattleVFX.getElCenter("#duel-board");
       BattleVFX.lightning(boardCenter.x, boardCenter.y, { color: isP ? "#38bdf8" : "#c084fc" });
 
@@ -5913,6 +5976,12 @@
       }
 
       const myMonsters = isP ? duel.playerMonsters : duel.enemyMonsters;
+
+      if (typeof CUSTOM_EFFECTS !== "undefined" && CUSTOM_EFFECTS[card.eff]) {
+        try { CUSTOM_EFFECTS[card.eff]({ side, isPlayer: isP, card, lv, mult, duel, state, api: window.SolomonAPI }); } catch (e) { console.error("Patch spell effect error:", card.eff, e); }
+        updateDuelUI();
+        return;
+      }
 
       if (card.eff === "draw2") {
         const drawCnt = lv >= 2 ? 3 : 2;
@@ -6203,8 +6272,7 @@
       fireBattleBeam(fromEl, toEl, () => {
         if (!duel) return;
 
-        const isImmuneNormalTrap = isPAtk && (attacker.card.awakenLv || 1) >= 3;
-        const trapIdx = isImmuneNormalTrap ? -1 : defSpells.findIndex(s => s && s.faceDown && s.card.cardType === "trap" && s.card.eff !== "trap_exile_king" && s.card.eff !== "trap_counter_spell");
+        const trapIdx = defSpells.findIndex(s => s && s.faceDown && s.card.cardType === "trap" && s.card.eff !== "trap_exile_king" && s.card.eff !== "trap_counter_spell");
         if (trapIdx !== -1) {
           const trapCard = defSpells[trapIdx].card;
           defSpells[trapIdx] = null;
@@ -6213,11 +6281,17 @@
 
           if (trapCard.eff === "trap_mirror") {
             const atkPos = BattleVFX.getElCenter(fromEl);
-            BattleVFX.lightning(atkPos.x, atkPos.y, { color: "#38bdf8" });
-            BattleVFX.explosion(atkPos.x, atkPos.y, { scale: 1.25, theme: "fire" });
-            if (!isPAtk) duel.enemyGraveyard.push(attacker.card);
-            atkArr[atkSlotIdx] = null;
-            showDuelBannerText(`🪞 陷阱發動【${trapCard.name}】！反殺摧毀攻擊怪獸！`, "#f472b6");
+            if (attacker.shield) {
+              attacker.shield = false;
+              BattleVFX.shieldBreak(atkPos.x, atkPos.y);
+              showDuelBannerText(`🪞 陷阱【${trapCard.name}】擊碎了【${attacker.card.name.split(" ")[0]}】的聖盾（攻擊中斷）！`, "#38bdf8");
+            } else {
+              BattleVFX.lightning(atkPos.x, atkPos.y, { color: "#38bdf8" });
+              BattleVFX.explosion(atkPos.x, atkPos.y, { scale: 1.25, theme: "fire" });
+              if (!isPAtk) duel.enemyGraveyard.push(attacker.card);
+              atkArr[atkSlotIdx] = null;
+              showDuelBannerText(`🪞 陷阱發動【${trapCard.name}】！反殺摧毀攻擊怪獸！`, "#f472b6");
+            }
             finishSingleAttack(isPAtk, attacker, false, 0, onComplete);
             return;
           } else if (trapCard.eff === "trap_bottle") {
@@ -6250,7 +6324,7 @@
               showDuelBannerText("👁️【創世減傷膜】抵消了 50% 傷害（本回合後續攻擊恢復全額）！", "#fde047");
             }
             if (isHeavenlyDecreeActive("heal_and_cap")) {
-              const cap = state.heavenStage >= 4 ? 4000 : 2400;
+              const cap = state.heavenStage >= 4 ? 3200 : 2200;
               val = Math.min(val, cap);
             }
           }
@@ -6285,6 +6359,7 @@
         const atkCenter = BattleVFX.getElCenter(fromEl);
         const defCenter = BattleVFX.getElCenter(toEl);
         const hasFullPierce = attacker.card.eff === "pierce" || attacker.card.eff === "satan_cataclysm" || attacker.doubleAtkTurn === duel.turn ||
+          (isPAtk && (attacker.card.awakenLv || 1) >= 3) ||
           (isPAtk && duel.realm === "inferno" && (duel.wrath >= 100 || state.hellStage >= 6));
 
         if (defender.pos === "ATK") {
@@ -6459,17 +6534,26 @@
 
     function dealLpDamage(targetSide, amount, bannerText) {
       if (!duel || amount <= 0) return;
-      spawnFloatingDamage(targetSide, amount);
+      let finalAmt = amount;
+      let finalBanner = bannerText;
+      if (targetSide === "enemy" && duel.bossHitShield > 0) {
+        duel.bossHitShield--;
+        finalAmt = Math.min(amount, 300);
+        const ePos = BattleVFX.getElCenter("#enemy-lp-text");
+        BattleVFX.shieldBreak(ePos.x, ePos.y);
+        finalBanner = `🛡️ 擊碎魔王 1 層次數盾（剩餘 ${duel.bossHitShield} 層）！穿透傷害 -${finalAmt} LP！`;
+      }
+      spawnFloatingDamage(targetSide, finalAmt);
       if (targetSide === "enemy") {
-        duel.enemyLp = Math.max(0, duel.enemyLp - amount);
+        duel.enemyLp = Math.max(0, duel.enemyLp - finalAmt);
         flashScreen("flash-gold");
       } else {
-        duel.playerLp = Math.max(0, duel.playerLp - amount);
+        duel.playerLp = Math.max(0, duel.playerLp - finalAmt);
         flashScreen("flash-red");
         const bar = document.getElementById("player-duel-bar");
         if (bar) { bar.classList.remove("player-hit"); void bar.offsetWidth; bar.classList.add("player-hit"); }
       }
-      if (bannerText) showDuelBannerText(bannerText, targetSide === "enemy" ? "#fde047" : "#ef4444");
+      if (finalBanner) showDuelBannerText(finalBanner, targetSide === "enemy" ? "#fde047" : "#ef4444");
     }
 
     function addPlayerWrath(delta) {
@@ -6631,7 +6715,7 @@
 
       // 天界治療戒律
       if (isHeavenlyDecreeActive("heal_and_cap")) {
-        const hAmt = state.heavenStage >= 4 ? 400 : 800;
+        const hAmt = state.heavenStage >= 4 ? 250 : 500;
         duel.enemyLp = Math.min(duel.enemyMaxLp, duel.enemyLp + hAmt);
         showDuelBannerText(`⚖️ 天界不滅戒律：敵方恢復 ${hAmt} LP！`, "#fde047");
       }
@@ -6854,8 +6938,8 @@
         duel.busy = false;
         duel.playerMonsters.forEach(m => { if (m) m.attacksLeft = (m.card.id === 1 && duel.wrath >= 70) ? 2 : 1; });
 
-        // 通天塔三階：每回合開始自動獲得 +1 封印環
-        if (state.heavenStage >= 3) {
+        // 通天塔三階：天界每回合開始自動獲得 +1 原罪能量
+        if (duel.realm === "celestia" && state.heavenStage >= 3) {
           duel.seals = Math.min(duel.maxSeals, duel.seals + 1);
         }
         drawToHand("player", duel.region.id === "h2" ? 2 : 1);
@@ -6908,8 +6992,8 @@
         if (duel.region.isFinalBoss && !duel.bossPhase2Triggered) {
           duel.bossPhase2Triggered = true;
           duel.bossAwakenedTurn = duel.turn + 1;
-          duel.enemyLp = 4500;
-          duel.enemyMaxLp = 4500;
+          duel.enemyLp = 4200;
+          duel.enemyMaxLp = 4200;
           duel.enemyMonsters = [null, null, null];
           summonMonsterToSlot("enemy", 0, getCardData(204), "ATK", false, {});
           summonMonsterToSlot("enemy", 1, getCardData(205), "ATK", false, { atkMod: 300 });
@@ -6933,11 +7017,12 @@
         if (duel.region.isHellBoss && !duel.bossPhase2Triggered) {
           duel.bossPhase2Triggered = true;
           duel.bossAwakenedTurn = duel.turn + 1;
-          duel.enemyLp = 8500;
-          duel.enemyMaxLp = 8500;
+          duel.enemyLp = 4800;
+          duel.enemyMaxLp = 4800;
+          duel.bossHitShield = 2;
           duel.enemyMonsters = [null, null, null];
           summonMonsterToSlot("enemy", 0, getCardData(32), "ATK", false, {});
-          summonMonsterToSlot("enemy", 1, getCardData(303), "ATK", false, { atkMod: 300 });
+          summonMonsterToSlot("enemy", 1, getCardData(303), "ATK", false, { atkMod: 150 });
           summonMonsterToSlot("enemy", 2, getCardData(68), "ATK", false, {});
           document.getElementById("battle-overlay").classList.add("seraph-awakened");
           document.getElementById("enemy-name").textContent = "墮天晨星・路西法撒旦";
@@ -6949,7 +7034,7 @@
               BattleVFX.meteor(ePos.x, ePos.y, { scale: 1.4 });
             }, delayIdx * 130);
           });
-          showDuelBannerText("😈 撒旦解放晨星真身！地獄全軍狂暴集結！", "#fca5a5");
+          showDuelBannerText("😈 撒旦解放晨星真身（2層次數盾）！用連擊或聯攜破盾！", "#fca5a5");
           updateDuelUI();
           return false;
         }
@@ -6958,11 +7043,12 @@
         if (duel.region.isHeavenBoss && !duel.bossPhase2Triggered) {
           duel.bossPhase2Triggered = true;
           duel.bossAwakenedTurn = duel.turn + 1;
-          duel.enemyLp = 9500;
-          duel.enemyMaxLp = 9500;
+          duel.enemyLp = 5500;
+          duel.enemyMaxLp = 5500;
+          duel.bossHitShield = 3;
           duel.enemyMonsters = [null, null, null];
           summonMonsterToSlot("enemy", 0, getCardData(307), "ATK", false, {});
-          summonMonsterToSlot("enemy", 1, getCardData(309), "ATK", false, { atkMod: 400 });
+          summonMonsterToSlot("enemy", 1, getCardData(309), "ATK", false, { atkMod: 200 });
           summonMonsterToSlot("enemy", 2, getCardData(307), "DEF", false, {});
           document.getElementById("battle-overlay").classList.add("seraph-awakened");
           document.getElementById("enemy-name").textContent = "創世終焉・原初之光";
@@ -6974,7 +7060,7 @@
               BattleVFX.meteor(ePos.x, ePos.y, { scale: 1.45 });
             }, delayIdx * 130);
           });
-          showDuelBannerText("👁️ 至高神座降下創世原初之光・最終審判開始！", "#fde047");
+          showDuelBannerText("👁️ 原初之光降臨（3層創世次數盾）！以多段攻勢破盾！", "#fde047");
           updateDuelUI();
           return false;
         }
@@ -7002,6 +7088,15 @@
 
       document.getElementById("enemy-lp-text").textContent = duel.enemyLp;
       document.getElementById("enemy-lp-bar").style.width = `${Math.max(0, (duel.enemyLp / duel.enemyMaxLp) * 100)}%`;
+      const shieldBadge = document.getElementById("enemy-hit-shield-badge");
+      if (shieldBadge) {
+        if (duel.bossHitShield > 0) {
+          shieldBadge.style.display = "inline-block";
+          shieldBadge.textContent = `🛡️x${duel.bossHitShield}`;
+        } else {
+          shieldBadge.style.display = "none";
+        }
+      }
       document.getElementById("enemy-hand-cnt").textContent = duel.enemyHand.length;
       document.getElementById("enemy-deck-cnt").textContent = duel.enemyDeck.length;
 
@@ -7055,7 +7150,7 @@
           ${duel.canRerollHand ? `<button class="seal-btn" style="border-color:#38bdf8;" onclick="useRelicRerollHand()" ${!canUseSkill ? "disabled" : ""}>🔮星象重抽</button>` : ""}
         `;
       } else {
-        const s3Cost = state.templeStage >= 5 ? 2 : 3;
+        const s3Cost = (duel.realm === "mortal" && state.templeStage >= 5) ? 2 : 3;
         const synCost = state.hellStage >= 4 ? 1 : 2;
         const activeCnt = duel.playerMonsters.filter(m => m && !m.faceDown).length;
         skillStrip.innerHTML = `
@@ -7357,6 +7452,8 @@
       state.wood += r.loot.wood;
       state.gold += r.loot.gold;
       state.labor += r.loot.labor;
+      if (r.loot.soulFire) state.soulFire += r.loot.soulFire;
+      if (r.loot.divineEssence) state.divineEssence += r.loot.divineEssence;
       state.battlesWon++;
       state.conqueredRegions = state.conqueredRegions || {};
       state.conqueredRegions[r.id] = (state.conqueredRegions[r.id] || 0) + 1;
@@ -7367,7 +7464,9 @@
       closeBattleOverlay();
       updateAllUI();
 
-      if (wasFinal) {
+      if (r.postCutsceneId && typeof CUSTOM_CUTSCENES !== "undefined" && CUSTOM_CUTSCENES[r.postCutsceneId]) {
+        playCustomCutscene(r.postCutsceneId, false, () => showPostBattleRewardModal(r));
+      } else if (wasFinal) {
         playHellFallCutscene(false);
       } else if (wasHellBoss) {
         playInfernoCoronationCutscene(false);
@@ -7386,7 +7485,7 @@
         <h2>🏆 決鬥凱旋！攻克【${region.name}】</h2>
         <div class="rule-item holy" style="text-align:center;">
           <strong>掠奪建殿與淬鍊物資入庫（已自動存檔）：</strong><br>
-          🪨 +${region.loot.stone} 巨石 ｜ 🌲 +${region.loot.wood} 香柏木 ｜ 🪙 +${region.loot.gold} 黃金 ｜ 👷 +${region.loot.labor} 人力
+          🪨 +${region.loot.stone} 巨石 ｜ 🌲 +${region.loot.wood} 香柏木 ｜ 🪙 +${region.loot.gold} 黃金 ｜ 👷 +${region.loot.labor} 人力${region.loot.soulFire ? ` ｜ 🔥 +${region.loot.soulFire} 深淵魂火` : ""}${region.loot.divineEssence ? ` ｜ ✨ +${region.loot.divineEssence} 原初神粹` : ""}
         </div>
         <p style="font-size:0.84rem; font-weight:bold; text-align:center; margin:8px 0;">
           從敗軍封印中奪得三張決鬥卡牌，選擇 1 張納入牌庫（重複卡自動轉化為免費淬鍊資材）：
@@ -7531,18 +7630,20 @@
       } else if (realm === "inferno") {
         if (state.hellStage >= HELL_STAGES.length) return;
         const st = HELL_STAGES[state.hellStage];
-        if (state.stone < st.stone || state.wood < st.wood || state.gold < st.gold || state.labor < st.labor) return;
+        const reqFire = st.soulFire || 0;
+        if (state.stone < st.stone || state.wood < st.wood || state.gold < st.gold || state.labor < st.labor || state.soulFire < reqFire) return;
         if (st.reqRank && countUniqueRank(st.reqRank) < st.reqCount) return;
-        state.stone -= st.stone; state.wood -= st.wood; state.gold -= st.gold; state.labor -= st.labor;
+        state.stone -= st.stone; state.wood -= st.wood; state.gold -= st.gold; state.labor -= st.labor; state.soulFire -= reqFire;
         state.hellStage++;
         playSfx("boom");
         updateAllUI();
       } else if (realm === "celestia") {
         if (state.heavenStage >= HEAVEN_STAGES.length) return;
         const st = HEAVEN_STAGES[state.heavenStage];
-        if (state.stone < st.stone || state.wood < st.wood || state.gold < st.gold || state.labor < st.labor) return;
+        const reqEss = st.divineEssence || 0;
+        if (state.stone < st.stone || state.wood < st.wood || state.gold < st.gold || state.labor < st.labor || state.divineEssence < reqEss) return;
         if (st.reqRank && countUniqueRank(st.reqRank) < st.reqCount) return;
-        state.stone -= st.stone; state.wood -= st.wood; state.gold -= st.gold; state.labor -= st.labor;
+        state.stone -= st.stone; state.wood -= st.wood; state.gold -= st.gold; state.labor -= st.labor; state.divineEssence -= reqEss;
         state.heavenStage++;
         playSfx("angel");
         updateAllUI();
@@ -7696,10 +7797,10 @@
       if (wrap) wrap.classList.toggle("ruined-canvas", realm === "mortal" && !!state.isTempleRuined);
       document.getElementById("wonder-svg-holder").innerHTML = renderWonderSVG(realm);
 
-      document.getElementById("stat-lp").textContent = `${getPlayerStartLp()} LP`;
+      document.getElementById("stat-lp").textContent = `${getPlayerStartLp(realm)} LP`;
       document.getElementById("stat-draw").textContent = `${getPlayerStartHand()} 張`;
-      document.getElementById("stat-aura").textContent = `聖${state.templeStage} / 魔${state.hellStage} / 天${state.heavenStage}`;
-      document.getElementById("stat-berserk").textContent = `ATK +${getBerserkAtkBonus()}`;
+      document.getElementById("stat-aura").textContent = realm === "inferno" ? `煉獄 ATK+${getGlobalAtkBonus("inferno")}` : (realm === "celestia" ? `天界 +${getGlobalAtkBonus("celestia")}` : `人間 DEF+${getTempleDefBonus("mortal")}`);
+      document.getElementById("stat-berserk").textContent = `ATK +${getBerserkAtkBonus(realm)}`;
 
       const stages = realm === "inferno" ? HELL_STAGES : (realm === "celestia" ? HEAVEN_STAGES : TEMPLE_STAGES);
       const curStage = realm === "inferno" ? state.hellStage : (realm === "celestia" ? state.heavenStage : state.templeStage);
@@ -7730,17 +7831,22 @@
         document.getElementById("temple-status-tag").textContent = `✨ 已啟動 ${curStage}/6 層奇觀靈氣`;
         document.getElementById("temple-name").textContent = st.name;
         document.getElementById("temple-desc").textContent = st.desc;
+        const reqFire = st.soulFire || 0;
+        const reqEss = st.divineEssence || 0;
+        const extraCostStr = (reqFire > 0 ? ` ｜ <strong style="color:#b91c1c;">🔥 ${reqFire} 魂火</strong>` : "") +
+          (reqEss > 0 ? ` ｜ <strong style="color:#b45309;">✨ ${reqEss} 神粹</strong>` : "");
         document.getElementById("temple-cost-text").innerHTML =
-          `物資：🪨 ${st.stone} ｜ 🌲 ${st.wood} ｜ 🪙 ${st.gold} ｜ 👷 ${st.labor}<br>` +
+          `物資：🪨 ${st.stone} ｜ 🌲 ${st.wood} ｜ 🪙 ${st.gold} ｜ 👷 ${st.labor}${extraCostStr}<br>` +
           `<span style="color:${rankOk ? "#15803d" : "#b91c1c"};">契約門檻：${st.reqLabel} ${st.reqRank ? `(目前 ${curRankCnt}/${st.reqCount})` : "✅"}</span>`;
 
         const p1 = Math.min(1, state.stone / st.stone);
         const p2 = Math.min(1, state.wood / st.wood);
         const p3 = st.gold > 0 ? Math.min(1, state.gold / st.gold) : 1;
         const p4 = Math.min(1, state.labor / st.labor);
-        document.getElementById("temple-progress").style.width = `${Math.floor(((p1 + p2 + p3 + p4) / 4) * 100)}%`;
+        const p5 = reqFire > 0 ? Math.min(1, state.soulFire / reqFire) : (reqEss > 0 ? Math.min(1, state.divineEssence / reqEss) : 1);
+        document.getElementById("temple-progress").style.width = `${Math.floor(((p1 + p2 + p3 + p4 + p5) / 5) * 100)}%`;
 
-        const resOk = state.stone >= st.stone && state.wood >= st.wood && state.gold >= st.gold && state.labor >= st.labor;
+        const resOk = state.stone >= st.stone && state.wood >= st.wood && state.gold >= st.gold && state.labor >= st.labor && state.soulFire >= reqFire && state.divineEssence >= reqEss;
         buildBtn.disabled = !(resOk && rankOk);
         buildBtn.textContent = (realm === "mortal" && curStage === 5) ? "🏛️ 竣工並舉行約櫃降臨大典" : "🔨 動工興建奇觀階段";
         buildBtn.onclick = () => buildTempleStage();
@@ -7893,9 +7999,9 @@
         `;
       }).join("");
 
-      const launchAction = cur.isFinalBoss
-        ? "playAngelDescentCutscene(false)"
-        : `startBattle('${cur.id}')`;
+      const launchAction = cur.preCutsceneId
+        ? `playCustomCutscene('${cur.preCutsceneId}', false, () => startBattle('${cur.id}'))`
+        : (cur.isFinalBoss ? "playAngelDescentCutscene(false)" : `startBattle('${cur.id}')`);
 
       panel.innerHTML = `
         <div style="display:flex; justify-content:space-between; align-items:flex-start; border-bottom:1px solid rgba(200,150,35,0.35); padding-bottom:8px; margin-bottom:8px; gap:6px;">
@@ -7933,6 +8039,8 @@
             <span class="loot-tag">🌲 +${cur.loot.wood}</span>
             <span class="loot-tag">🪙 +${cur.loot.gold}</span>
             <span class="loot-tag">👷 +${cur.loot.labor}</span>
+            ${cur.loot.soulFire ? `<span class="loot-tag" style="background:#fee2e2; color:#991b1b;">🔥 +${cur.loot.soulFire} 魂火</span>` : ""}
+            ${cur.loot.divineEssence ? `<span class="loot-tag" style="background:#fef9c3; color:#854d0e;">✨ +${cur.loot.divineEssence} 神粹</span>` : ""}
             <span class="loot-tag" style="background:#f3e8ff; color:#6b21a8;">🃏 +1 決鬥卡</span>
           </div>
         </div>
@@ -7963,11 +8071,11 @@
       if (curLv >= 3) return;
       const nextLv = curLv + 1;
       const cost = getTemperedCost(rawCard, nextLv);
-      if (state.stone < cost.stone || state.wood < cost.wood || state.gold < cost.gold) return;
+      if (state.gold < cost.gold || state.soulFire < (cost.soulFire || 0) || state.divineEssence < (cost.divineEssence || 0)) return;
 
-      state.stone -= cost.stone;
-      state.wood -= cost.wood;
       state.gold -= cost.gold;
+      state.soulFire -= (cost.soulFire || 0);
+      state.divineEssence -= (cost.divineEssence || 0);
       state.cardLevels[id] = nextLv;
       playSfx("angel");
       updateAllUI();
@@ -8024,11 +8132,16 @@
       let upgradeHtml = "";
       if (isUnlocked && curLv < 3) {
         const cost = getTemperedCost(c, curLv + 1);
-        const canUp = state.stone >= cost.stone && state.wood >= cost.wood && state.gold >= cost.gold;
+        const reqFire = cost.soulFire || 0;
+        const reqEss = cost.divineEssence || 0;
+        const canUp = state.gold >= cost.gold && state.soulFire >= reqFire && state.divineEssence >= reqEss;
+        const matHint = curLv === 1
+          ? `🔥 ${reqFire} 深淵魂火（地獄界掉落）｜ 🪙 ${cost.gold} 黃金<br>效果：ATK/DEF +150、降躁動並強化卡牌能力`
+          : `✨ ${reqEss} 原初神粹（天界掉落）｜ 🪙 ${cost.gold} 黃金<br>效果：ATK/DEF +150、登場自帶聖盾＋守備貫穿（魔陷+1環）`;
         upgradeHtml = `
           <div class="rule-item" style="background:#fef3c7; border-left-color:#d97706;">
             <strong>🔥 真名淬鍊突破（目前 ${lvLabels[curLv]} → ${lvLabels[curLv + 1]}）：</strong><br>
-            <span style="font-size:0.75rem;">消耗：🪨 ${cost.stone} ｜ 🌲 ${cost.wood} ｜ 🪙 ${cost.gold}（永久提升攻防與效果威力）</span>
+            <span style="font-size:0.75rem;">消耗：${matHint}</span>
             <button class="btn btn-sm btn-gold" style="width:100%; margin-top:6px;" onclick="upgradeCardLevel(${id})" ${canUp ? "" : "disabled"}>
               ✨ 執行真名淬鍊突破
             </button>
@@ -8211,6 +8324,15 @@
       document.getElementById("res-gold").textContent = state.gold;
       document.getElementById("res-labor").textContent = state.labor;
       document.getElementById("res-temple").textContent = `${state.templeStage + state.hellStage + state.heavenStage}/18`;
+      const essStrip = document.getElementById("realm-essence-strip");
+      if (essStrip) {
+        const showEss = state.unlockedRealms.includes("inferno") || state.soulFire > 0 || state.divineEssence > 0;
+        essStrip.style.display = showEss ? "grid" : "none";
+        const sfEl = document.getElementById("res-soulfire");
+        const deEl = document.getElementById("res-essence");
+        if (sfEl) sfEl.textContent = state.soulFire;
+        if (deEl) deEl.textContent = state.divineEssence;
+      }
 
       updateTutorialBanner();
       updateTempleUI();
@@ -8228,7 +8350,145 @@
       location.reload();
     }
 
-    updateAllUI();
+    // ==========================================
+    // 12. 模組化補丁插座（window.SolomonAPI）與 GitHub Pages 動態補丁載入器
+    // ==========================================
+    const CUSTOM_EFFECTS = {};
+    const CUSTOM_CUTSCENES = {};
+    window.SOLOMON_LOADED_PATCHES = [];
+
+    function playCustomCutscene(id, isReplay = false, onFinish = null) {
+      const cs = CUSTOM_CUTSCENES[id];
+      if (!cs) {
+        if (typeof onFinish === "function") onFinish();
+        return;
+      }
+      if (typeof cs.play === "function") {
+        cs.play({ isReplay, onFinish, overlay: document.getElementById("cutscene-overlay"), close: closeCutsceneOverlay, api: window.SolomonAPI });
+        return;
+      }
+      const box = document.getElementById("cutscene-overlay");
+      if (!box) return;
+      playSfx(cs.sfx || "angel");
+      window.__customCutsceneFinish = () => {
+        closeCutsceneOverlay();
+        const fn = onFinish;
+        window.__customCutsceneFinish = null;
+        if (!isReplay && typeof fn === "function") fn();
+      };
+      const portraitHtml = cs.portrait
+        ? `<div class="cutscene-portrait-frame ${cs.theme === "danger" ? "crimson-frame" : ""}" style="margin-bottom:10px;"><div style="width:100%;height:100%;background:#090504 url('${cs.portrait}') center/cover no-repeat;"></div></div>`
+        : "";
+      box.innerHTML = `
+        <button class="cutscene-skip-btn" onclick="window.__customCutsceneFinish && window.__customCutsceneFinish()">⏭ 跳過</button>
+        <div class="cutscene-divine-beam"></div>
+        ${portraitHtml}
+        <div class="cutscene-dialogue-box" style="border-color:${cs.theme === "danger" ? "#ef4444" : "#fde047"};">
+          <div style="font-size:0.95rem; font-weight:900; color:${cs.theme === "danger" ? "#fca5a5" : "#fde047"}; margin-bottom:8px;">
+            ${cs.title || "✨ 擴充章節劇情"}
+          </div>
+          <p style="font-size:0.84rem; line-height:1.6; color:#fffbeb; text-align:left; margin:0 0 12px 0;">
+            ${cs.bodyHtml || cs.text || ""}
+          </p>
+          <button class="btn ${cs.theme === "danger" ? "btn-crimson" : "btn-gold"}" style="width:100%; padding:10px;" onclick="window.__customCutsceneFinish && window.__customCutsceneFinish()">
+            ${cs.btnText || (isReplay ? "關閉回憶" : "⚔️ 繼續前進")}
+          </button>
+        </div>
+      `;
+      box.classList.remove("hidden");
+    }
+
+    window.SolomonAPI = {
+      version: "1.0",
+      addCards(cards, enemyOnly = false) {
+        if (!Array.isArray(cards)) return;
+        const target = enemyOnly ? ANGEL_BOSS_CARDS : ALL_CARDS;
+        cards.forEach(c => {
+          if (!c || typeof c.id === "undefined") return;
+          const cardObj = { cardType: "monster", agitate: 0, summonCost: 120, ...c };
+          const idx = target.findIndex(x => x.id === cardObj.id);
+          if (idx !== -1) target[idx] = { ...target[idx], ...cardObj };
+          else target.push(cardObj);
+        });
+      },
+      patchCard(id, patchObj) {
+        const found = ALL_CARDS.find(c => c.id === id) || ANGEL_BOSS_CARDS.find(c => c.id === id);
+        if (found && patchObj) Object.assign(found, patchObj);
+      },
+      addRegions(realm, regions) {
+        if (!Array.isArray(regions)) return;
+        const list = realm === "inferno" ? INFERNO_REGIONS : (realm === "celestia" ? CELESTIA_REGIONS : WORLD_REGIONS);
+        regions.forEach(r => {
+          if (!r || !r.id) return;
+          const regObj = { realm: realm === "mortal" ? undefined : realm, ...r };
+          if (r.bossPortrait) BOSS_PORTRAIT_MAP[r.id] = r.bossPortrait;
+          const idx = list.findIndex(x => x.id === r.id);
+          if (idx !== -1) list[idx] = { ...list[idx], ...regObj };
+          else list.push(regObj);
+        });
+      },
+      patchRegion(regionId, patchObj) {
+        const found = getAllRegionsList().find(r => r.id === regionId);
+        if (found && patchObj) Object.assign(found, patchObj);
+      },
+      addGuides(guideMap) {
+        if (guideMap && typeof guideMap === "object") Object.assign(REGION_GUIDES, guideMap);
+      },
+      addBossPortraits(portraitMap) {
+        if (portraitMap && typeof portraitMap === "object") Object.assign(BOSS_PORTRAIT_MAP, portraitMap);
+      },
+      addRelics(relics) {
+        if (!Array.isArray(relics)) return;
+        relics.forEach(rel => {
+          if (!rel || !rel.id) return;
+          const idx = TACTICAL_RELICS.findIndex(x => x.id === rel.id);
+          if (idx !== -1) TACTICAL_RELICS[idx] = { ...TACTICAL_RELICS[idx], ...rel };
+          else TACTICAL_RELICS.push(rel);
+        });
+      },
+      registerEffect(effectKey, handlerFn) {
+        if (effectKey && typeof handlerFn === "function") CUSTOM_EFFECTS[effectKey] = handlerFn;
+      },
+      addCutscene(id, config) {
+        if (id && config) CUSTOM_CUTSCENES[id] = config;
+      },
+      getState: () => state,
+      getDuel: () => duel,
+      vfx: BattleVFX,
+      sfx: playSfx,
+      banner: showDuelBannerText,
+      dealDamage: dealLpDamage,
+      draw: drawToHand,
+      refreshUI: updateAllUI
+    };
+
+    function loadExternalScript(src) {
+      return new Promise(resolve => {
+        const s = document.createElement("script");
+        s.src = src;
+        s.async = false;
+        s.onload = () => resolve(true);
+        s.onerror = () => resolve(false);
+        document.body.appendChild(s);
+      });
+    }
+
+    async function bootSolomonWithPatches() {
+      const bust = Date.now();
+      // 採用相對路徑，相容 GitHub Pages 專案子目錄與傳統伺服器
+      const hasManifest = await loadExternalScript(`./patches/manifest.js?t=${bust}`);
+      if (hasManifest && Array.isArray(window.SOLOMON_PATCHES)) {
+        for (const file of window.SOLOMON_PATCHES) {
+          if (!file || typeof file !== "string") continue;
+          const cleanName = file.replace(/^\.?\/?patches\//, "");
+          const ok = await loadExternalScript(`./patches/${cleanName}?t=${bust}`);
+          if (ok) window.SOLOMON_LOADED_PATCHES.push(cleanName);
+        }
+      }
+      updateAllUI();
+    }
+
+    bootSolomonWithPatches();
   </script>
 </body>
 </html>
