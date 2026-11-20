@@ -640,6 +640,53 @@
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.75);
     }
 
+    .player-crest-frame {
+      width: 36px;
+      height: 36px;
+      border-radius: 7px;
+      overflow: hidden;
+      background: radial-gradient(circle, #1e3a8a 0%, #0b101d 100%);
+      border: 1.5px solid #fde047;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 2px 8px rgba(250, 204, 21, 0.45);
+      transition: border-color 0.25s, box-shadow 0.25s;
+    }
+    .player-crest-frame.demon-king-aura {
+      border-color: #ef4444;
+      box-shadow: 0 0 12px rgba(239, 68, 68, 0.85);
+    }
+
+    #battle-speech-toast {
+      position: fixed;
+      top: calc(58px + env(safe-area-inset-top));
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(420px, 92vw);
+      background: linear-gradient(90deg, rgba(20, 12, 8, 0.96) 0%, rgba(42, 16, 12, 0.96) 100%);
+      border: 1.5px solid #fde047;
+      border-radius: 10px;
+      padding: 6px 10px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      z-index: 9993;
+      pointer-events: none;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.9), 0 0 16px rgba(250, 204, 21, 0.35);
+      opacity: 0;
+      transition: opacity 0.22s ease, transform 0.22s ease;
+    }
+    #battle-speech-toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    #battle-speech-toast.boss-voice {
+      border-color: #f87171;
+      background: linear-gradient(90deg, rgba(45, 8, 14, 0.96) 0%, rgba(20, 6, 10, 0.96) 100%);
+    }
+
     .enemy-role-pill {
       position: absolute;
       bottom: 17px;
@@ -2152,6 +2199,11 @@
     <div class="modal-card" id="guide-modal-body"></div>
   </div>
 
+  <!-- 陣前叫陣與王權編年史彈窗 -->
+  <div id="story-modal" class="modal-overlay hidden" style="z-index:150;">
+    <div class="siege-panel" style="max-width:440px;" id="story-modal-body"></div>
+  </div>
+
   <!-- 頂部資源列 -->
   <header>
     <div class="top-bar-row1">
@@ -2278,6 +2330,7 @@
   <div id="battle-overlay" class="hidden">
     <div id="battle-screen-flash"></div>
     <canvas id="battle-vfx-canvas"></canvas>
+    <div id="battle-speech-toast"></div>
 
     <!-- 決鬥戰報紀錄抽屜 -->
     <div id="battle-log-drawer" class="hidden">
@@ -2354,6 +2407,7 @@
       <div class="player-duel-bar" id="player-duel-bar">
         <div style="display:flex; justify-content:space-between; align-items:center; gap:6px;">
           <div style="display:flex; align-items:center; gap:6px;">
+            <div class="player-crest-frame" id="player-crest-avatar"></div>
             <span style="font-size:0.78rem; font-weight:900; color:#fde047;" id="player-duel-title">👑 所羅門</span>
             <span class="lp-number-bright" style="color:#4ade80;">LP <span id="player-lp-text">4000</span></span>
           </div>
@@ -2745,6 +2799,321 @@
     function getAllRegionsList() {
       return [...WORLD_REGIONS, ...INFERNO_REGIONS, ...CELESTIA_REGIONS];
     }
+    // ==========================================
+    // 4.2 御駕親征敘事系統（冷酷算計霸主 → 狂傲張揚暗黑魔神王）
+    // ==========================================
+    const REGION_STORY_DIALOGUES = {
+      // --- 第一篇章・人間界：冷酷算計的歷史霸主 ---
+      r1: {
+        bossTaunt: "「區區耶路撒冷的小王，也敢帶異端怪物來搶迦南人的採石場？」",
+        solomonReply: "「摩利亞山缺三萬塊白大理石。你現在交出來，還能留一座城。」",
+        edict: "📜【王室敕令】迦南採石場已編入耶路撒冷工部，所有巨石即刻起運。",
+        halfHpBoss: "「不可能！這些惡魔竟然能鑿穿我們的巨石陣！」",
+        halfHpSolomon: "「在算清成本前，我從不發動沒把握的戰爭。」"
+      },
+      r2: {
+        bossTaunt: "「腓尼基的香柏木只賣給出得起價的霸主，不是你這靠魔神逞兇的暴君！」",
+        solomonReply: "「用黃金買太慢了。打穿你的港口，整片黎巴嫩林都是免費的。」",
+        edict: "📜【王室敕令】推羅港已改掛大衛之星旗，三千根香柏木正順海運往聖殿。",
+        halfHpBoss: "「海潮鎖鏈竟然困不住你的魔神軍團？！」",
+        halfHpSolomon: "「舊棋子磨損了，獻祭換一批新的就是。」"
+      },
+      r3: {
+        bossTaunt: "「無禮的凡人！竟敢踐踏法老的冥界神廟，阿努比斯必將秤量你的罪孽！」",
+        solomonReply: "「法老的陪葬金留在地下毫無產值。把它搬進我的聖殿，才算物盡其用。」",
+        edict: "📜【王室敕令】尼羅河金庫已全數封存，法老千年的黃金歸於所羅門名下。",
+        halfHpBoss: "「冥界輪迴陣……竟然被你的貫穿攻勢強行打斷了？！」",
+        halfHpSolomon: "「只要斬殺夠快，復活儀式就毫無意義。」"
+      },
+      r4: {
+        bossTaunt: "「星軌早已預言你的貪婪！巴比倫的空中花園絕不向耶路撒冷低頭！」",
+        solomonReply: "「星象只告訴弱者命運，卻算不出我手裡有多少柱高階魔神。」",
+        edict: "📜【王室敕令】拆毀巴比倫星靈塔，將其青金石與工匠全數押回耶路撒冷。",
+        halfHpBoss: "「我的星靈術士防線竟撐不住你的高星魔神……」",
+        halfHpSolomon: "「把巴比倫的磚，運回耶路撒冷。」"
+      },
+      r5: {
+        bossTaunt: "「萬王之王的黃金宮殿豈容外邦豎子染指？此處禁絕你的卑劣咒法！」",
+        solomonReply: "「限制魔陷又如何？我的算盤裡，從來不只留一張底牌。」",
+        edict: "📜【王室敕令】波斯萬王城已臣服，帝國金庫即日起向聖殿繳納什一稅。",
+        halfHpBoss: "「波斯不死軍……竟然被你的魔神正面碾碎了！」",
+        halfHpSolomon: "「這世上只能有一位萬王之王。顯然不是你。」"
+      },
+      r6: {
+        bossTaunt: "「凡人，奧林帕斯的雷霆不容褻瀆！貪心的軍隊只會招來天火！」",
+        solomonReply: "「雷域只劈三格之陣？很好，兩柱精銳就足以拆了你的神殿。」",
+        edict: "📜【王室敕令】奧林帕斯青銅巨像已熔鑄為聖殿雙柱的原料。",
+        halfHpBoss: "「這傢伙完全看穿了雷域的規律……好冷靜的怪物！」",
+        halfHpSolomon: "「神話再響亮，寫進規則裡就有漏洞可鑽。」"
+      },
+      r7: {
+        bossTaunt: "「進了羅馬鬥技場，就別想龜縮防守！用血與鐵證明你的王冠！」",
+        solomonReply: "「既然你們把所有防線都撤了，那我也省去試探的步驟——直接斬首。」",
+        edict: "📜【王室敕令】羅馬禁衛軍已解除武裝，鬥技場改作魔神演武場。",
+        halfHpBoss: "「這股殺意……你根本不是什麼賢王，你是披著人皮的暴君！」",
+        halfHpSolomon: "「歷史只由贏家撰寫。仁慈，是輸家才需要的藉口。」"
+      },
+      r8: {
+        bossTaunt: "「極北寒霜會凍結你的魔神，還會引爆牠們心底的叛意！」",
+        solomonReply: "「鎖鏈與忠僕我早已備齊。狂暴若在計算之內，就只是更鋒利的刀。」",
+        edict: "📜【王室敕令】極北冰原已納入版圖，霜巨人的凍土成為聖殿冰窖。",
+        halfHpBoss: "「連極寒凍土都凍不住那枚所羅門之戒嗎？！」",
+        halfHpSolomon: "「失控與掌控之間，只差一道精準的計算。」"
+      },
+      r9: {
+        bossTaunt: "「西域魔主，八卦封印陣已鎖死你的印戒！在玉京城前止步吧！」",
+        solomonReply: "「沒了封印環，我的魔神依然比你的仙兵更懂怎麼流血。破陣！」",
+        edict: "📜【王室敕令】崑崙玉京城已降，人間九大文明盡數俯首於聖殿之下！",
+        halfHpBoss: "「竟能僅靠肉搏與獻祭硬生生踏破八卦陣……天道恐將震怒！」",
+        halfHpSolomon: "「天道？等約櫃落成，連天界也得看我的臉色。」"
+      },
+      final: {
+        bossTaunt: "「所羅門，你的貪婪已觸怒至高天！交出印戒，接受淨化！」",
+        solomonReply: "「這座聖殿是我算盡人間白骨換來的。神明要收回？先問過我的七十二柱魔神！」",
+        edict: "📜【終局轉折】聖殿化為焦土，印戒崩碎——凡間霸主已死，煉獄魔王即將誕生！",
+        halfHpBoss: "「凡人竟然能傷到神之書記官？！展開六翼神怒！」",
+        halfHpSolomon: "「原來天使流出的血，也是滾燙的啊……」"
+      },
+
+      // --- 第二篇章・地獄界：狂傲張揚的暗黑魔神王 ---
+      h1: {
+        bossTaunt: "「哈哈哈！印戒碎了吧？沒了神明撐腰，昔日的主人如今只是地獄的獵物！」",
+        solomonReply: "「沒了那枚礙事的破戒，我才終於不用壓抑殺意！跪下，叛徒！」",
+        edict: "🔥【煉獄宣告】邊獄焦土已化為本王的起點，叛逃魔神全數重新烙印真名！",
+        halfHpBoss: "「你瘋了嗎？！連自己的血都拿來當祭品？！」",
+        halfHpSolomon: "「哈哈哈！這就是地獄的規矩吧？越狂暴，越痛快！」"
+      },
+      h2: {
+        bossTaunt: "「歡迎來到熔金庫，流亡的凡人！你的貪婪會讓這堆手牌壓死你自己！」",
+        solomonReply: "「派蒙，你這點熔金也敢在本王面前炫耀？我連人間九國都吞過了！」",
+        edict: "🔥【煉獄宣告】貪婪熔金庫已易主，瑪門的黃金全數充作萬魔殿軍費！",
+        halfHpBoss: "「這傢伙傾瀉手牌的速度……簡直比惡魔還貪婪！」",
+        halfHpSolomon: "「全都是我的！手牌、黃金，還有你這顆君王的頭顱！」"
+      },
+      h3: {
+        bossTaunt: "「滾出我的血海，凡人！這裡只認最極致的狂怒與殺戮！」",
+        solomonReply: "「正合我意！阿斯莫德，今天就讓你見識誰才是這座地獄最瘋的君王！」",
+        edict: "🔥【煉獄宣告】暴怒血海已被黑焰蒸乾，狂怒之王阿斯莫德再度屈膝！",
+        halfHpBoss: "「痛快！竟然有人能在沸騰血海裡壓過我的狂怒！」",
+        halfHpSolomon: "「別停啊！把你那 3200 攻的烈焰全砸過來，看誰先倒下！」"
+      },
+      h4: {
+        bossTaunt: "「無主之王絕不二度稱臣！在我的永夜黑塔裡，你的咒法只會助長我的力量！」",
+        solomonReply: "「不臣服？那就打到你的黑塔崩塌、打到你親口喊我陛下為止！」",
+        edict: "🔥【煉獄宣告】永夜迷宮已插上煉獄王旗，彼列軍團正式編入逆神前鋒！",
+        halfHpBoss: "「正面擊潰了永夜不滅結界……你真的還是人類嗎？！」",
+        halfHpSolomon: "「人類早在聖殿炸裂那天就死了。站在你面前的，是未來的地獄之主！」"
+      },
+      h5: {
+        bossTaunt: "「昔日的契約者，別以為打贏幾個蠢貨就能挑戰首席魔神王！接下我的霸王雷獄！」",
+        solomonReply: "「巴力，你以前在我麾下可沒這麼多廢話。滾下來，把通往撒旦的路讓開！」",
+        edict: "🔥【煉獄宣告】首席魔神王巴力再度俯首，地獄第九層大門已徹底洞開！",
+        halfHpBoss: "「這股壓迫感……比你當年戴著印戒時還要可怕十倍！」",
+        halfHpSolomon: "「印戒是神給的枷鎖。現在，本王靠自己的雙手碾碎你！」"
+      },
+      h_boss: {
+        bossTaunt: "「有趣的凡人，竟能踩著七十二柱魔神的骸骨走到寒冰獄。來吧，看看你配不配戴上這頂煉獄王冠！」",
+        solomonReply: "「撒旦！我不是來談判的——我是來收編你的地獄，一起去掀翻天界的！」",
+        edict: "👑【煉獄加冕】大惡魔撒旦獻冠臣服！黑焰通天光柱已貫穿雲海，目標——至高天！",
+        halfHpBoss: "「哈哈哈！好狂妄的凡人！那就見識晨星墮天時的真正黑焰吧！」",
+        halfHpSolomon: "「來得好！打碎你的次數盾，整個地獄都得聽本王號令！」"
+      },
+
+      // --- 第三篇章・天界：逆神魔神王踏平諸天 ---
+      c1: {
+        bossTaunt: "「大膽魔孽！竟敢率領地獄大軍踏入雲海星門！沉默戒律，封鎖一切汙穢咒法！」",
+        solomonReply: "「天界就這點迎客的禮數？收起你的破戒律，本王連規則一起撕碎！」",
+        edict: "✨【逆神戰報】第一重天雲海星門已陷落，地獄黑焰正式染黑天界！",
+        halfHpBoss: "「他竟然用七宗罪的權能直接吞噬了天軍？！」",
+        halfHpSolomon: "「你們不是愛談原罪嗎？今天我就用七宗罪把天門砸個稀巴爛！」"
+      },
+      c2: {
+        bossTaunt: "「迷途的君王，不滅聖光會撫平一切暴戾，你的攻勢在此毫無意義！」",
+        solomonReply: "「靠回血和鎖傷拖時間？拉斐爾，看我的【暴食】把你的聖泉連人帶盾一起吞乾淨！」",
+        edict: "✨【逆神戰報】第三重天治癒聖泉已乾涸，天界失去後勤庇護！",
+        halfHpBoss: "「聖泉竟然被這群惡魔吞噬殆盡了……快通知大天使長！」",
+        halfHpSolomon: "「這點聖光還不夠塞牙縫！下一個天使是誰，快滾出來！」"
+      },
+      c3: {
+        bossTaunt: "「末日號角已響！在此審判庭內，汝等君王魔神皆須受威壓束縛，不得妄動！」",
+        solomonReply: "「加百列，你那支破喇叭吵死了！發動【傲慢】——在至高魔王面前，誰敢談威壓？！」",
+        edict: "✨【逆神戰報】第五重天審判庭崩毀，末日號角已被折斷！",
+        halfHpBoss: "「不可能！他竟然憑一己傲慢強行無效了天界戒律？！」",
+        halfHpSolomon: "「告訴你們那位造物主，審判庭換主人了！」"
+      },
+      c4: {
+        bossTaunt: "「到此為止了，墮落的所羅門！我乃天軍統帥米迦勒，今日必以天火聖劍將你與撒旦一同斬滅！」",
+        solomonReply: "「米迦勒！撒旦就在我身後等著算千年舊帳呢——今天就把你的熾天炎劍折在這裡！」",
+        edict: "✨【逆神戰報】天軍統帥米迦勒敗退！前方再無阻礙，直抵至高神座！",
+        halfHpBoss: "「連熾天使的聖盾都擋不住這股黑暗洪流嗎……！」",
+        halfHpSolomon: "「哈哈哈！天界最強戰神也不過如此！神座，本王來了！」"
+      },
+      c_boss: {
+        bossTaunt: "「塵土所造之子，汝既得智慧，為何執迷權柄，率領暗影踏碎吾之穹蒼？」",
+        solomonReply: "「因為你給的印戒太小，裝不下我的野心！今天要麼你毀滅我，要麼我坐上你的位子！」",
+        edict: "👑【弑神終局】至高神座已然傾頹！三界歷史即日起由所羅門親手改寫！",
+        halfHpBoss: "「既如此，便以創世原初之光，將汝與三界一同歸於虛無！」",
+        halfHpSolomon: "「原初之光？三層創世盾？全都放馬過來！七十二柱魔神，隨本王弑神！！」"
+      }
+    };
+
+    const WONDER_CHRONICLES = {
+      mortal: {
+        1: { title: "🏛️ 聖殿編年史・第一階", speaker: "凡間君王・所羅門", portrait: 25, text: "「摩利亞山的白大理石基座已成。世人稱頌我的智慧，卻不知這每一塊巨石，都是我用魔神與算計壓榨出來的。」" },
+        2: { title: "🏛️ 聖殿編年史・第二階", speaker: "凡間君王・所羅門", portrait: 25, text: "「青銅燔祭壇立起來了。獻祭凡間的牲畜太沒效率，讓下級惡魔彼此吞噬、換取更強的奴僕，才是真正的帝王之術。」" },
+        3: { title: "🏛️ 聖殿編年史・第三階", speaker: "凡間君王・所羅門", portrait: 25, text: "「香柏木的香氣掩蓋了工地的血腥味。各國使節都在發抖——很好，恐懼比盟約可靠得多。」" },
+        4: { title: "🏛️ 聖殿編年史・第四階", speaker: "凡間君王・所羅門", portrait: 25, text: "「雅斤與波阿斯雙柱擎天。七十二柱魔神的怨氣越來越重，但我手裡的印戒依然穩如泰山。只要利益算得夠準，魔鬼也是好狗。」" },
+        5: { title: "🏛️ 聖殿編年史・第五階", speaker: "凡間君王・所羅門", portrait: 25, text: "「純金包覆了整座至聖所。看著這片金光，我忽然明白一件事——既然這座聖殿是我建的，裡面的神權，憑什麼要歸天界管？」" }
+      },
+      inferno: {
+        1: { title: "🔥 萬魔殿編年史・第一階", speaker: "煉獄領主・所羅門", portrait: 26, text: "「黑曜石地基在岩漿裡升起。哈哈哈！天界把我踹進地獄，卻忘了給我留下這群最狂暴的建築工人！」" },
+        2: { title: "🔥 萬魔殿編年史・第二階", speaker: "煉獄領主・所羅門", portrait: 26, text: "「血祭祭壇燃起來了！以前的我總在算計得失，現在我才懂——拿自己的血去換毀天滅地的力量，這買賣痛快多了！」" },
+        3: { title: "🔥 萬魔殿編年史・第三階", speaker: "煉獄領主・所羅門", portrait: 26, text: "「熔岩心臟開始跳動！100% 怨氣不再是反噬，而是滋養本王的血酒！讓那些天使看著我從深淵裡越燒越旺吧！」" },
+        4: { title: "🔥 萬魔殿編年史・第四階", speaker: "煉獄領主・所羅門", portrait: 26, text: "「雙柱魔導尖塔完工。那些曾經背叛我的魔神王，如今正爭先恐後地把力量聯攜獻給我——力量，才是地獄唯一的契約！」" },
+        5: { title: "🔥 萬魔殿編年史・第五階", speaker: "煉獄領主・所羅門", portrait: 26, text: "「暗金骸骨迴廊貫穿了八層地獄。撒旦，你的寒冰王座該騰出來了，本王的軍靴已經踩到門口了！」" },
+        6: { title: "🔥 萬魔殿編年史・完全體", speaker: "煉獄神王・所羅門", portrait: 26, text: "「黑焰王座已就緒！整座地獄都在為本王咆哮——等打服撒旦，我們就沿著這道火柱，直接把天界捅個對穿！」" }
+      },
+      celestia: {
+        1: { title: "✨ 通天塔編年史・第一階", speaker: "暗黑魔神王・所羅門", portrait: 26, text: "「白玉雲海被黑焰染焦的味道真不錯。天界不是最愛講純潔嗎？今天起，這座逆神通天塔就是你們最大的汙點！」" },
+        2: { title: "✨ 通天塔編年史・第二階", speaker: "暗黑魔神王・所羅門", portrait: 26, text: "「反制迴路啟動！天使那些高高在上的削弱咒法，在我的魔王軍面前通通成了笑話！」" },
+        3: { title: "✨ 通天塔編年史・第三階", speaker: "暗黑魔神王・所羅門", portrait: 26, text: "「七宗罪方尖碑矗立雲端！每回合湧入的原罪之力，比當年那枚可憐的所羅門之戒強大何止百倍！」" },
+        4: { title: "✨ 通天塔編年史・第四階", speaker: "暗黑魔神王・所羅門", portrait: 26, text: "「破律鎖鏈已斬斷天界戒律的枷鎖！天使們，你們引以為傲的絕對法則正在一片片剝落！」" },
+        5: { title: "✨ 通天塔編年史・第五階", speaker: "暗黑魔神王・所羅門", portrait: 26, text: "「諸神黃昏星辰環開始旋轉。人間與地獄都在仰望這道黑金光柱——這是凡人向神明遞出的最後通牒！」" },
+        6: { title: "✨ 通天塔編年史・至高完全體", speaker: "暗黑魔神王・所羅門", portrait: 26, text: "「通天塔直抵神之王座！無上造物主，洗乾淨脖子等著吧——今天，本王來替三界換一個新神！」" }
+      }
+    };
+
+    const DESTINY_CLASHES = [
+      { cardId: 1, regionId: "h5", quote: "「巴力打巴力？哈哈哈，看看哪邊才是真貨！」" },
+      { cardId: 32, regionId: "h3", quote: "「阿斯莫德，讓你的狂怒替本王撕碎這片血海！」" },
+      { cardId: 68, regionId: "h4", quote: "「無主之王？現在你只聽命於本王一人！」" },
+      { cardId: 9, regionId: "h2", quote: "「派蒙，吹響號角，把你自己的金庫全搬空！」" },
+      { cardId: 301, regionId: "c4", quote: "「撒旦 vs 米迦勒！千年宿怨，今天在本王面前一次了結！」" },
+      { cardId: 301, regionId: "c_boss", quote: "「造物主！看清楚了，連墮天晨星都在為本王衝鋒！」" }
+    ];
+
+    let speechToastTimer = null;
+    function showBattleSpeechToast(speakerName, text, portraitHtml, isBoss = false) {
+      const el = document.getElementById("battle-speech-toast");
+      if (!el) return;
+      if (speechToastTimer) clearTimeout(speechToastTimer);
+      el.className = isBoss ? "boss-voice" : "";
+      el.innerHTML = `
+        <div style="width:38px; height:38px; border-radius:7px; overflow:hidden; border:1.5px solid ${isBoss ? "#f87171" : "#fde047"}; flex-shrink:0; background:#090504;">
+          ${portraitHtml}
+        </div>
+        <div style="min-width:0; flex:1; text-align:left;">
+          <div style="font-size:0.66rem; font-weight:900; color:${isBoss ? "#fca5a5" : "#fde047"}; margin-bottom:2px;">${speakerName}</div>
+          <div style="font-size:0.75rem; font-weight:800; color:#fffbeb; line-height:1.32;">${text}</div>
+        </div>
+      `;
+      appendBattleLog(`💬 <strong>${speakerName}</strong>：${text}`);
+      void el.offsetWidth;
+      el.classList.add("show");
+      speechToastTimer = setTimeout(() => {
+        el.classList.remove("show");
+      }, 2500);
+    }
+
+    function launchRegionBattle(regionId) {
+      const region = getAllRegionsList().find(r => r.id === regionId);
+      if (!region) return;
+      if (region.preCutsceneId) {
+        playCustomCutscene(region.preCutsceneId, false, () => startBattle(region.id));
+        return;
+      }
+      if (region.isFinalBoss) {
+        playAngelDescentCutscene(false);
+        return;
+      }
+      state.seenIntros = state.seenIntros || {};
+      const story = REGION_STORY_DIALOGUES[regionId];
+      if (story && !state.seenIntros[regionId]) {
+        showPreBattleConfrontation(region, story);
+      } else {
+        startBattle(regionId);
+      }
+    }
+
+    function showPreBattleConfrontation(region, story) {
+      const modal = document.getElementById("story-modal");
+      const body = document.getElementById("story-modal-body");
+      if (!modal || !body) { startBattle(region.id); return; }
+
+      const isDemonKing = (region.realm === "inferno" || region.realm === "celestia");
+      const solomonPortraitIdx = isDemonKing ? 26 : 25;
+      const solomonTitle = region.realm === "celestia"
+        ? "😈 暗黑魔神王・所羅門"
+        : (region.realm === "inferno" ? "🔥 煉獄領主・所羅門" : "👑 凡間霸主・所羅門");
+
+      playSfx(isDemonKing ? "ritual" : "summon");
+      body.style.borderColor = isDemonKing ? "#ef4444" : "#f4cb54";
+      body.innerHTML = `
+        <div style="text-align:center; font-size:0.74rem; font-weight:900; color:${isDemonKing ? "#fca5a5" : "#fde047"}; letter-spacing:1.5px; margin-bottom:10px;">
+          ⚔️ 御駕親征・陣前對峙【${region.name}】 ⚔️
+        </div>
+        <div style="display:flex; align-items:flex-start; gap:10px; background:rgba(127,29,29,0.32); border:1px solid #f87171; border-radius:8px; padding:9px; margin-bottom:10px;">
+          <div style="width:52px; height:52px; border-radius:8px; overflow:hidden; border:1.5px solid #fca5a5; flex-shrink:0; background:#140606;">
+            ${generateBossMiniSVG(region.id, false)}
+          </div>
+          <div style="flex:1; min-width:0;">
+            <div style="font-size:0.74rem; font-weight:900; color:#fca5a5; margin-bottom:3px;">${region.bossName}</div>
+            <div style="font-size:0.8rem; color:#fff; line-height:1.45;">${story.bossTaunt}</div>
+          </div>
+        </div>
+        <div style="display:flex; align-items:flex-start; gap:10px; background:${isDemonKing ? "rgba(88,28,135,0.35)" : "rgba(30,58,138,0.32)"}; border:1px solid ${isDemonKing ? "#c084fc" : "#fde047"}; border-radius:8px; padding:9px; margin-bottom:12px;">
+          <div style="flex:1; min-width:0; text-align:right;">
+            <div style="font-size:0.74rem; font-weight:900; color:#fde047; margin-bottom:3px;">${solomonTitle}</div>
+            <div style="font-size:0.82rem; font-weight:800; color:#fffbeb; line-height:1.45;">${story.solomonReply}</div>
+          </div>
+          <div style="width:52px; height:52px; border-radius:8px; overflow:hidden; border:1.5px solid #fde047; flex-shrink:0; background:#090504;">
+            ${renderSpriteFrame("ac11653.png", 6, 5, solomonPortraitIdx, 52, true)}
+          </div>
+        </div>
+        <button class="btn ${isDemonKing ? "btn-crimson" : "btn-gold"}" style="width:100%; padding:11px; font-size:0.95rem;" onclick="confirmPreBattleAndFight('${region.id}')">
+          ⚔️ 踏平敵陣・開啟決鬥！
+        </button>
+      `;
+      modal.classList.remove("hidden");
+    }
+
+    function confirmPreBattleAndFight(regionId) {
+      state.seenIntros = state.seenIntros || {};
+      state.seenIntros[regionId] = true;
+      saveGameState();
+      document.getElementById("story-modal").classList.add("hidden");
+      startBattle(regionId);
+    }
+
+    function showWonderChronicleModal(realm, stageNum) {
+      const entry = WONDER_CHRONICLES[realm] && WONDER_CHRONICLES[realm][stageNum];
+      if (!entry) return;
+      const modal = document.getElementById("story-modal");
+      const body = document.getElementById("story-modal-body");
+      if (!modal || !body) return;
+
+      const isDark = realm !== "mortal";
+      body.style.borderColor = isDark ? "#ef4444" : "#f4cb54";
+      body.innerHTML = `
+        <div style="text-align:center; font-size:0.78rem; font-weight:900; color:${isDark ? "#fca5a5" : "#fde047"}; letter-spacing:1px; margin-bottom:10px;">
+          ${entry.title}
+        </div>
+        <div style="display:flex; flex-direction:column; align-items:center; gap:10px; margin-bottom:12px;">
+          <div class="cutscene-portrait-frame ${isDark ? "crimson-frame" : ""}" style="width:110px; height:88px;">
+            ${renderSpriteFrame("ac11653.png", 6, 5, entry.portrait, 110, true)}
+          </div>
+          <div style="font-size:0.78rem; font-weight:900; color:#fde047;">${entry.speaker}</div>
+          <div style="background:rgba(0,0,0,0.45); border:1px solid rgba(253,224,71,0.35); border-radius:8px; padding:10px 12px; font-size:0.83rem; line-height:1.58; color:#fffbeb; text-align:left;">
+            ${entry.text}
+          </div>
+        </div>
+        <button class="btn ${isDark ? "btn-crimson" : "btn-gold"}" style="width:100%; padding:10px; font-size:0.9rem;" onclick="document.getElementById('story-modal').classList.add('hidden')">
+          👑 繼續征途
+        </button>
+      `;
+      modal.classList.remove("hidden");
+    }
+
 
     // ==========================================
     // 4.5 全三界 21 關專屬新手參考攻略資料庫
@@ -3018,7 +3387,8 @@
       endingTitle: "",
       isTempleRuined: false,
       selectedRegionId: "r1",
-      conqueredRegions: {}
+      conqueredRegions: {},
+      seenIntros: {}
     };
 
     try {
@@ -3035,6 +3405,7 @@
         if (!state.cardLevels) state.cardLevels = {};
         if (!state.relicInventory) state.relicInventory = { relic_golem: 0, relic_incense: 0, relic_dice: 0, relic_bomb: 0 };
         if (!Array.isArray(state.equippedRelics)) state.equippedRelics = [];
+        if (!state.seenIntros) state.seenIntros = {};
       }
     } catch (e) {}
 
@@ -5264,6 +5635,8 @@
         enemyMaxLp: region.bossLp,
         bossHitShield: region.bossHitShield || 0,
         bossPhase2Triggered: false,
+        halfHpTriggered: false,
+        wrath70Spoken: false,
         bossAwakenedTurn: 0,
         bossBarrierUsedTurn: 0,
         decreeDisabledTurn: 0,
@@ -5821,7 +6194,11 @@
         if (!faceDown && card.stars >= 8) {
           BattleVFX.meteor(pos.x, pos.y, { scale: 1.35 });
           const oppAce = (isPlayer ? duel.enemyMonsters : duel.playerMonsters).find(m => m && !m.faceDown);
-          triggerDestinyCutIn(card, oppAce ? oppAce.card : null, isPlayer ? "王權降臨・蹂躪三界！" : "至高神威・審判降臨！");
+          const specialClash = isPlayer ? DESTINY_CLASHES.find(dc => dc.cardId === card.id && dc.regionId === duel.region.id) : null;
+          const defaultQuote = isPlayer
+            ? (duel.realm === "mortal" ? "「算無遺策・君王降臨！」" : "「哈哈哈哈！讓這三界見識本王的魔神！」")
+            : "「至高神威・審判降臨！」";
+          triggerDestinyCutIn(card, oppAce ? oppAce.card : null, specialClash ? specialClash.quote : defaultQuote);
         } else if (!faceDown && card.stars >= 5) {
           BattleVFX.lightning(pos.x, pos.y, { color: isPlayer ? "#38bdf8" : "#fde047" });
         }
@@ -6547,6 +6924,20 @@
       if (targetSide === "enemy") {
         duel.enemyLp = Math.max(0, duel.enemyLp - finalAmt);
         flashScreen("flash-gold");
+        if (!duel.isTutorial && !duel.halfHpTriggered && duel.enemyLp > 0 && duel.enemyLp <= duel.enemyMaxLp * 0.5) {
+          duel.halfHpTriggered = true;
+          const st = REGION_STORY_DIALOGUES[duel.region.id];
+          if (st) {
+            showBattleSpeechToast(duel.region.bossName, st.halfHpBoss, generateBossMiniSVG(duel.region.id, duel.bossPhase2Triggered), true);
+            const curRealm = duel.realm;
+            setTimeout(() => {
+              if (!duel) return;
+              const solIdx = curRealm === "mortal" ? 25 : 26;
+              const solName = curRealm === "celestia" ? "😈 暗黑魔神王・所羅門" : (curRealm === "inferno" ? "🔥 煉獄領主・所羅門" : "👑 凡間霸主・所羅門");
+              showBattleSpeechToast(solName, st.halfHpSolomon, renderSpriteFrame("ac11653.png", 6, 5, solIdx, 38, true), false);
+            }, 2650);
+          }
+        }
       } else {
         duel.playerLp = Math.max(0, duel.playerLp - finalAmt);
         flashScreen("flash-red");
@@ -6561,6 +6952,16 @@
       const maxCap = duel.realm === "inferno" ? 150 : 100;
       duel.wrath = Math.min(maxCap, Math.max(0, duel.wrath + delta));
       enforceBerserkStance();
+      if (!duel.isTutorial && !duel.wrath70Spoken && duel.wrath >= 70) {
+        duel.wrath70Spoken = true;
+        const isDark = duel.realm !== "mortal";
+        const solIdx = isDark ? 26 : 25;
+        const solName = duel.realm === "celestia" ? "😈 暗黑魔神王・所羅門" : (duel.realm === "inferno" ? "🔥 煉獄領主・所羅門" : "👑 凡間霸主・所羅門");
+        const wrathLine = isDark
+          ? "「哈哈哈！怨氣沸騰了嗎？全軍狂暴——把對面撕成碎片！」"
+          : "「怨氣已達 70% 臨界值。趁鎖鏈還扣得住，立刻把這股殺意砸在敵人臉上。」";
+        showBattleSpeechToast(solName, wrathLine, renderSpriteFrame("ac11653.png", 6, 5, solIdx, 38, true), false);
+      }
       if (duel.realm === "mortal" && duel.wrath >= 100) {
         triggerRebellionBetrayal();
       } else if (duel.realm === "celestia" && duel.wrath >= 100) {
@@ -7104,8 +7505,14 @@
       document.getElementById("player-deck-left").textContent = `牌庫:${duel.playerDeck.length}`;
       document.getElementById("duel-turn-num").textContent = duel.turn;
 
-      const realmTitles = { mortal: "👑 所羅門", inferno: "🔥 煉獄領主", celestia: "😈 逆神魔王" };
+      const realmTitles = { mortal: "👑 霸主所羅門", inferno: "🔥 煉獄所羅門", celestia: "😈 魔神王所羅門" };
       document.getElementById("player-duel-title").textContent = realmTitles[duel.realm] || "👑 所羅門";
+      const pCrest = document.getElementById("player-crest-avatar");
+      if (pCrest) {
+        const solSpriteIdx = duel.realm === "mortal" ? 25 : 26;
+        pCrest.innerHTML = renderSpriteFrame("ac11653.png", 6, 5, solSpriteIdx, 36, true);
+        pCrest.classList.toggle("demon-king-aura", duel.wrath >= 70 || duel.realm !== "mortal");
+      }
 
       ["DP", "MP", "BP", "EP"].forEach(p => {
         const el = document.getElementById(`phase-${p}`);
@@ -7480,9 +7887,15 @@
     function showPostBattleRewardModal(region) {
       const pool = shuffleArray(ALL_CARDS.filter(c => c.id !== 301)).slice(0, 3);
       const body = document.getElementById("reward-modal-body");
+      const winsNow = (state.conqueredRegions && state.conqueredRegions[region.id]) || 0;
+      const storyObj = REGION_STORY_DIALOGUES[region.id];
+      const edictHtml = (winsNow === 1 && storyObj && storyObj.edict)
+        ? `<div class="rule-item" style="background:linear-gradient(90deg,#fef3c7,#fde68a); border-left:4px solid #b45309; color:#451a03; font-weight:800;">${storyObj.edict}</div>`
+        : "";
 
       body.innerHTML = `
         <h2>🏆 決鬥凱旋！攻克【${region.name}】</h2>
+        ${edictHtml}
         <div class="rule-item holy" style="text-align:center;">
           <strong>掠奪建殿與淬鍊物資入庫（已自動存檔）：</strong><br>
           🪨 +${region.loot.stone} 巨石 ｜ 🌲 +${region.loot.wood} 香柏木 ｜ 🪙 +${region.loot.gold} 黃金 ｜ 👷 +${region.loot.labor} 人力${region.loot.soulFire ? ` ｜ 🔥 +${region.loot.soulFire} 深淵魂火` : ""}${region.loot.divineEssence ? ` ｜ ✨ +${region.loot.divineEssence} 原初神粹` : ""}
@@ -7627,6 +8040,7 @@
         state.templeStage++;
         updateAllUI();
         if (state.templeStage === 6) playAngelDescentCutscene(false);
+        else showWonderChronicleModal("mortal", state.templeStage);
       } else if (realm === "inferno") {
         if (state.hellStage >= HELL_STAGES.length) return;
         const st = HELL_STAGES[state.hellStage];
@@ -7637,6 +8051,7 @@
         state.hellStage++;
         playSfx("boom");
         updateAllUI();
+        showWonderChronicleModal("inferno", state.hellStage);
       } else if (realm === "celestia") {
         if (state.heavenStage >= HEAVEN_STAGES.length) return;
         const st = HEAVEN_STAGES[state.heavenStage];
@@ -7647,6 +8062,7 @@
         state.heavenStage++;
         playSfx("angel");
         updateAllUI();
+        showWonderChronicleModal("celestia", state.heavenStage);
       }
     }
 
@@ -7999,9 +8415,7 @@
         `;
       }).join("");
 
-      const launchAction = cur.preCutsceneId
-        ? `playCustomCutscene('${cur.preCutsceneId}', false, () => startBattle('${cur.id}'))`
-        : (cur.isFinalBoss ? "playAngelDescentCutscene(false)" : `startBattle('${cur.id}')`);
+      const launchAction = `launchRegionBattle('${cur.id}')`;
 
       panel.innerHTML = `
         <div style="display:flex; justify-content:space-between; align-items:flex-start; border-bottom:1px solid rgba(200,150,35,0.35); padding-bottom:8px; margin-bottom:8px; gap:6px;">
